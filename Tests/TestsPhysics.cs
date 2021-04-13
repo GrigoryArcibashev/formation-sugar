@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using formation_sugar.GameModel;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 
 namespace Tests
 {

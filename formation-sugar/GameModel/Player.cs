@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 
 namespace formation_sugar.GameModel
 {
@@ -9,11 +10,12 @@ namespace formation_sugar.GameModel
         Sitting = 10,
         Running = 1
     }
+
     public class Player : ICreature
     {
-        private static readonly Image PlayerImage = new Bitmap(@"C:\Users\Win10_Game_OS\Desktop\game\Game\formation-sugar\sprites\playerRun.png");
-        
-        public readonly Sprite Sprite = new Sprite (4, new Size(50, 37), PlayerImage);
+        private static Image PlayerImage;
+
+        public readonly Sprite Sprite;
         public Point Location { get; set; }
         public int Health { get; private set; }
         public double Velocity { get; set; }
@@ -25,6 +27,9 @@ namespace formation_sugar.GameModel
             Location = initialLocation;
             Health = initialHealth;
             Velocity = velocity;
+            var currentDirectory = new DirectoryInfo(Directory.GetCurrentDirectory()).Parent?.Parent;
+            PlayerImage = new Bitmap(Path.Combine(currentDirectory?.FullName!, @"Sprites\playerRun.png"));
+            Sprite = new Sprite(4, new Size(50, 37), PlayerImage);
         }
 
         public void ChangeHealthBy(int deltaHealth)
@@ -36,7 +41,7 @@ namespace formation_sugar.GameModel
         {
             MovementCondition = (int) PlayerMovement.Standing;
         }
-        
+
         public void ChangeMovementConditionToRunning()
         {
             MovementCondition = (int) PlayerMovement.Running;

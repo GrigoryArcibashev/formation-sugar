@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using formation_sugar.GameModel;
 
@@ -11,7 +12,9 @@ namespace formation_sugar
         private readonly Box box;
         public Form1()
         {
-            BackgroundImage = new Bitmap(@"C:\Users\Win10_Game_OS\Desktop\game\Game\formation-sugar\sprites\forest.png");
+            var currentDirectory = new DirectoryInfo(Directory.GetCurrentDirectory()).Parent?.Parent;
+            BackgroundImage = new Bitmap(Path.Combine(currentDirectory?.FullName!, @"Sprites\forest.png"));
+            
             InitializeComponent();
             
             SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
@@ -27,7 +30,7 @@ namespace formation_sugar
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            e.Graphics.DrawImageUnscaled(box.boxImage, box.Location);
+            e.Graphics.DrawImageUnscaled(box.BoxImage, box.Location);
             
             if (!player.Sprite.Flipped)
             {
@@ -53,7 +56,7 @@ namespace formation_sugar
             switch (e.KeyCode)
             {
                 case Keys.D:
-                    player.Location = new Point(player.Location.X + 1, player.Location.Y);
+                    player.Location = new Point(player.Location.X + 3, player.Location.Y);
                     if (player.Sprite.Flipped)
                     {
                         player.Sprite.Flip();    
@@ -63,7 +66,7 @@ namespace formation_sugar
                     break;
                 
                 case Keys.A:
-                    player.Location = new Point(player.Location.X - 1, player.Location.Y);
+                    player.Location = new Point(player.Location.X - 3, player.Location.Y);
                     if (!player.Sprite.Flipped)
                     {
                         player.Sprite.Flip();    
