@@ -11,7 +11,7 @@ namespace formation_sugar.GameModel
     }
     public class Player : ICreature
     {
-        private static readonly Image PlayerImage = new Bitmap("C:\\Users\\Win10_Game_OS\\Desktop\\game\\Game\\sprites\\playerRun.png");
+        private static readonly Image PlayerImage = new Bitmap(@"C:\Users\Win10_Game_OS\Desktop\game\Game\formation-sugar\sprites\playerRun.png");
         
         public readonly Sprite Sprite = new Sprite (4, new Size(50, 37), PlayerImage);
         public Point Location { get; set; }

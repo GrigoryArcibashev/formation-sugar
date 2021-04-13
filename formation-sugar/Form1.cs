@@ -8,10 +8,10 @@ namespace formation_sugar
     public sealed partial class Form1 : Form
     {
         private readonly Player player;
-
+        private readonly Box box;
         public Form1()
         {
-            BackgroundImage = new Bitmap(@"C:\Users\Win10_Game_OS\Desktop\game\Game\sprites\forest.png");
+            BackgroundImage = new Bitmap(@"C:\Users\Win10_Game_OS\Desktop\game\Game\formation-sugar\sprites\forest.png");
             InitializeComponent();
             
             SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
@@ -20,12 +20,15 @@ namespace formation_sugar
             ClientSize = new Size(620, 360);
 
             player = new Player(new Point(100, ClientSize.Height - 100), 100, 10);
+            box = new Box(new Point(150, ClientSize.Height - 100), 100);
  
             new Timer { Interval = 125, Enabled = true }.Tick += delegate { player.Sprite.GotoNextFrame(); Invalidate(); };
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
+            e.Graphics.DrawImageUnscaled(box.boxImage, box.Location);
+            
             if (!player.Sprite.Flipped)
             {
                 e.Graphics.DrawImage(player.Sprite.Image,
