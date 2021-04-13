@@ -1,3 +1,8 @@
 .idea/
+packages/
 formation-sugar/bin
 formation-sugar/obj
+Tests/packages.config
+Tests/bin
+Tests/obj
+formation-sugar.sln.DotSettings.user
