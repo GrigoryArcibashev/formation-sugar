@@ -10,42 +10,46 @@ namespace formation_sugar
     {
         private readonly Player player;
         private readonly Box box;
+
         public Form1()
         {
             var currentDirectory = new DirectoryInfo(Directory.GetCurrentDirectory()).Parent?.Parent;
             BackgroundImage = new Bitmap(Path.Combine(currentDirectory?.FullName!, @"Sprites\forest.png"));
-            
-            InitializeComponent();
-            
-            SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
-            UpdateStyles();
-             
             ClientSize = new Size(620, 360);
-
             player = new Player(new Point(100, ClientSize.Height - 100), 100, 10);
             box = new Box(new Point(150, ClientSize.Height - 100), 100);
- 
-            new Timer { Interval = 125, Enabled = true }.Tick += delegate { player.Sprite.GotoNextFrame(); Invalidate(); };
+            new Timer {Interval = 125, Enabled = true}.Tick += delegate
+            {
+                player.Sprite.GotoNextFrame();
+                Invalidate();
+            };
+            InitializeComponent();
+            SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
+            UpdateStyles();
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            e.Graphics.DrawImageUnscaled(box.BoxImage, box.Location);
-            
+            e.Graphics.DrawImageUnscaled(box.Sprite.Image, box.Location);
+
             if (!player.Sprite.Flipped)
             {
                 e.Graphics.DrawImage(player.Sprite.Image,
-                    new Rectangle(player.Location, player.Sprite.FrameSize), 
-                    new Rectangle(new Point(player.Sprite.CurrentFrameLocation.X, player.Sprite.CurrentFrameLocation.Y + 37 * player.MovementCondition), player.Sprite.FrameSize), 
-                    GraphicsUnit.Pixel); 
+                    new Rectangle(player.Location, player.Sprite.FrameSize),
+                    new Rectangle(
+                        new Point(player.Sprite.CurrentFrameLocation.X,
+                            player.Sprite.CurrentFrameLocation.Y + player.Sprite.FrameSize.Height * player.MovementCondition),
+                        player.Sprite.FrameSize),
+                    GraphicsUnit.Pixel);
             }
             else
             {
                 e.Graphics.DrawImage(player.Sprite.Image,
                     new Rectangle(player.Location, player.Sprite.FrameSize),
                     new Rectangle(
-                        new Point(player.Sprite.Image.Width - player.Sprite.CurrentFrameLocation.X - 50,
-                            player.Sprite.CurrentFrameLocation.Y + 37 * player.MovementCondition),
+                        new Point(
+                            player.Sprite.Image.Width - player.Sprite.CurrentFrameLocation.X - player.Sprite.FrameSize.Width,
+                            player.Sprite.CurrentFrameLocation.Y + player.Sprite.FrameSize.Height * player.MovementCondition),
                         player.Sprite.FrameSize),
                     GraphicsUnit.Pixel);
             }
@@ -56,25 +60,23 @@ namespace formation_sugar
             switch (e.KeyCode)
             {
                 case Keys.D:
-                    player.Location = new Point(player.Location.X + 3, player.Location.Y);
+                    player.Location = new Point(player.Location.X + 2, player.Location.Y);
                     if (player.Sprite.Flipped)
                     {
-                        player.Sprite.Flip();    
+                        player.Sprite.Flip();
                     }
-                    
+
                     player.ChangeMovementConditionToRunning();
                     break;
-                
                 case Keys.A:
-                    player.Location = new Point(player.Location.X - 3, player.Location.Y);
+                    player.Location = new Point(player.Location.X - 2, player.Location.Y);
                     if (!player.Sprite.Flipped)
                     {
-                        player.Sprite.Flip();    
+                        player.Sprite.Flip();
                     }
-                    
+
                     player.ChangeMovementConditionToRunning();
                     break;
-                
                 case Keys.S:
                     player.ChangeMovementConditionToSitting();
                     break;

@@ -4,7 +4,7 @@ using System.IO;
 
 namespace formation_sugar.GameModel
 {
-    enum PlayerMovement
+    internal enum PlayerMovement
     {
         Standing = 0,
         Sitting = 10,
@@ -13,13 +13,10 @@ namespace formation_sugar.GameModel
 
     public class Player : ICreature
     {
-        private static Image PlayerImage;
-
-        public readonly Sprite Sprite;
         public Point Location { get; set; }
         public int Health { get; private set; }
         public double Velocity { get; set; }
-
+        public Sprite Sprite { get; }
         public int MovementCondition { get; private set; }
 
         public Player(Point initialLocation, int initialHealth = 0, double velocity = 0.0)
@@ -28,8 +25,10 @@ namespace formation_sugar.GameModel
             Health = initialHealth;
             Velocity = velocity;
             var currentDirectory = new DirectoryInfo(Directory.GetCurrentDirectory()).Parent?.Parent;
-            PlayerImage = new Bitmap(Path.Combine(currentDirectory?.FullName!, @"Sprites\playerRun.png"));
-            Sprite = new Sprite(4, new Size(50, 37), PlayerImage);
+            Sprite = new Sprite(
+                4,
+                new Size(50, 37),
+                new Bitmap(Path.Combine(currentDirectory?.FullName!, @"Sprites\playerRun.png")));
         }
 
         public void ChangeHealthBy(int deltaHealth)
