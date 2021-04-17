@@ -5,12 +5,11 @@ namespace formation_sugar.GameModel
     public class Sprite
     {
         private readonly int frameCount;
-        private int currentFrame = -1;
+        private int currentFrame;
         
-        public bool Flipped;
+        public readonly Image Image;
         public Size FrameSize;
-        public Image Image;
-        public Image FlippedImage;
+        public bool Flipped;
 
         public Sprite(int frameCount, Size frameSize, Image image)
         {

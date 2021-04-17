@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using formation_sugar.GameModel;
+using formation_sugar.View;
 
 namespace formation_sugar
 {
@@ -13,12 +16,18 @@ namespace formation_sugar
         private Point delta;
         const int width=10;
         const int height=15;
+
+        private readonly Dictionary<ICreature, Dictionary<MovementConditions, Animation>> animations; 
+        
         
         public Form1()
         {
+            animations = new Dictionary<ICreature, Dictionary<MovementConditions, Animation>>();
+            
             InitializeComponent();
             
             SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
+            
             UpdateStyles();
              
             ClientSize = new Size(620, 360);
@@ -40,28 +49,16 @@ namespace formation_sugar
             new Timer { Interval = 125, Enabled = true }.Tick += delegate { player.Sprite.GotoNextFrame(); Invalidate(); };
         }
 
+        private void AddAnimations(DirectoryInfo directoryInfo, ICreature creature)
+        {
+            var currentDirectory = new DirectoryInfo(Directory.GetCurrentDirectory()).Parent?.Parent;
+ 
+            Path.Combine(currentDirectory?.FullName!
+        }
+        
         protected override void OnPaint(PaintEventArgs e)
         {
             CreateMap(e.Graphics);
-            e.Graphics.DrawImageUnscaled(box.boxImage, box.Location);
-            
-            if (!player.Sprite.Flipped)
-            {
-                e.Graphics.DrawImage(player.Sprite.Image,
-                    new Rectangle(player.Location, player.Sprite.FrameSize), 
-                    new Rectangle(new Point(player.Sprite.CurrentFrameLocation.X, player.Sprite.CurrentFrameLocation.Y + 37 * player.MovementCondition), player.Sprite.FrameSize), 
-                    GraphicsUnit.Pixel); 
-            }
-            else
-            {
-                e.Graphics.DrawImage(player.Sprite.Image,
-                    new Rectangle(player.Location, player.Sprite.FrameSize),
-                    new Rectangle(
-                        new Point(player.Sprite.Image.Width - player.Sprite.CurrentFrameLocation.X - 50,
-                            player.Sprite.CurrentFrameLocation.Y + 37 * player.MovementCondition),
-                        player.Sprite.FrameSize),
-                    GraphicsUnit.Pixel);
-            }
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -123,3 +120,10 @@ namespace formation_sugar
         }
     }
 }
+
+
+
+
+
+
+
