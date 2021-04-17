@@ -38,7 +38,7 @@ namespace formation_sugar
                     new Rectangle(player.Location, player.Sprite.FrameSize),
                     new Rectangle(
                         new Point(player.Sprite.CurrentFrameLocation.X,
-                            player.Sprite.CurrentFrameLocation.Y + player.Sprite.FrameSize.Height * player.MovementCondition),
+                            player.Sprite.CurrentFrameLocation.Y + player.Sprite.FrameSize.Height * player.MovementsCondition),
                         player.Sprite.FrameSize),
                     GraphicsUnit.Pixel);
             }
@@ -49,7 +49,7 @@ namespace formation_sugar
                     new Rectangle(
                         new Point(
                             player.Sprite.Image.Width - player.Sprite.CurrentFrameLocation.X - player.Sprite.FrameSize.Width,
-                            player.Sprite.CurrentFrameLocation.Y + player.Sprite.FrameSize.Height * player.MovementCondition),
+                            player.Sprite.CurrentFrameLocation.Y + player.Sprite.FrameSize.Height * player.MovementsCondition),
                         player.Sprite.FrameSize),
                     GraphicsUnit.Pixel);
             }
@@ -61,24 +61,14 @@ namespace formation_sugar
             {
                 case Keys.D:
                     player.Location = new Point(player.Location.X + 2, player.Location.Y);
-                    if (player.Sprite.Flipped)
-                    {
-                        player.Sprite.Flip();
-                    }
-
-                    player.ChangeMovementConditionToRunning();
+                    player.MovementsCondition = PlayerMovements.Running;
                     break;
                 case Keys.A:
                     player.Location = new Point(player.Location.X - 2, player.Location.Y);
-                    if (!player.Sprite.Flipped)
-                    {
-                        player.Sprite.Flip();
-                    }
-
-                    player.ChangeMovementConditionToRunning();
+                    player.MovementsCondition = PlayerMovements.Running;
                     break;
                 case Keys.S:
-                    player.ChangeMovementConditionToSitting();
+                    player.MovementsCondition = PlayerMovements.Sitting;
                     break;
             }
         }

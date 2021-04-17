@@ -57,9 +57,11 @@
         <Compile Include="GameModel\ICreature.cs" />
         <Compile Include="GameModel\Physics.cs" />
         <Compile Include="GameModel\Player.cs" />
+        <Compile Include="GameModel\PlayerMovements.cs" />
         <Compile Include="GameModel\Sprite.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="View\Animation.cs" />
         <EmbeddedResource Include="Properties\Resources.resx">
             <Generator>ResXFileCodeGenerator</Generator>
             <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -81,9 +83,6 @@
     </ItemGroup>
     <ItemGroup>
         <None Include="App.config" />
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="View" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
