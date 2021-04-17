@@ -5,6 +5,8 @@
         Standing,
         Running,
         Sitting,
-        Jumping
+        Jumping,
+        Attacking,
+        Die
     }
 }
