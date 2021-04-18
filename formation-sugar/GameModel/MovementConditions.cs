@@ -2,11 +2,18 @@
 {
     public enum MovementConditions
     {
-        Standing,
-        Running,
-        Sitting,
-        Jumping,
-        Attacking,
-        Die
+        Default,
+        StandingRight,
+        StandingLeft,
+        RunningRight,
+        RunningLeft,
+        SittingRight,
+        SittingLeft,
+        JumpingRight,
+        JumpingLeft,
+        AttackingRight,
+        AttackingLeft,
+        DieRight,
+        DieLeft
     }
 }

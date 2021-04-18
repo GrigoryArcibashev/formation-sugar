@@ -8,7 +8,9 @@ namespace formation_sugar.View
     {
         private readonly Bitmap[] sprites;
         private int numberOfCurrentSprite;
+        private int CountOfSprites { get; }
         
+        public Bitmap Current => sprites[numberOfCurrentSprite];
         
         public Animation(DirectoryInfo pathToImages)
         {
@@ -16,17 +18,7 @@ namespace formation_sugar.View
             CountOfSprites = sprites.Length;
             numberOfCurrentSprite = 0;
         }
-
-        public Bitmap Current => sprites[numberOfCurrentSprite];
-        public int CountOfSprites { get; }
-
-        public Animation(params string[] pathsToImages)
-        {
-            sprites = pathsToImages.Select(pathToImage => new Bitmap(pathToImage)).ToArray();
-            CountOfSprites = pathsToImages.Length;
-            numberOfCurrentSprite = 0;
-        }
-
+        
         public void MoveNextSprite()
         {
             numberOfCurrentSprite = (numberOfCurrentSprite + 1) % CountOfSprites;
