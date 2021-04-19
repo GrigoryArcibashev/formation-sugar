@@ -12,6 +12,7 @@ namespace formation_sugar
         private readonly Dictionary<ICreature, Dictionary<MovementConditions, Animation>> animationsForCreatures;
         private readonly Timer timerForPlayerMovement;
         private readonly GameMap map;
+        private readonly Physics physics;
         
         public Form1()
         {
@@ -19,7 +20,7 @@ namespace formation_sugar
             map.CreateMap(1);
             
             ClientSize = new Size(620, 360);
-            
+            physics = new Physics(-5);
             animationsForCreatures = new Dictionary<ICreature, Dictionary<MovementConditions, Animation>>();
             
             foreach (var creature in map.Map)
@@ -70,6 +71,12 @@ namespace formation_sugar
                         ? MovementConditions.SittingRight
                         : MovementConditions.SittingLeft;
                     break;
+                
+                case Keys.W:
+                    map.Player.MovementsCondition = map.Player.Direction is Direction.Right
+                        ? MovementConditions.JumpingRight
+                        : MovementConditions.JumpingLeft;
+                    break;
             }
         }
         
@@ -95,6 +102,10 @@ namespace formation_sugar
                 case MovementConditions.RunningLeft:
                     map.Player.Location = new Point(map.Player.Location.X - 1, map.Player.Location.Y);
                     break;
+                case MovementConditions.JumpingRight:
+                    physics.MoveCreatureByY(map.Player, (double)timerForPlayerMovement.Interval/100);
+                    break;
+                    
             }
         }
 
