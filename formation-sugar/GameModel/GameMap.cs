@@ -8,7 +8,7 @@ namespace formation_sugar.GameModel
     public class GameMap
     {
         private readonly List<string> levels;
-        public List<ICreature> Map { get; private set; }
+        public List<ICreature> Map { get; }
         public Player Player { get; private set; }
 
         public GameMap()
