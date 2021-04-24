@@ -13,7 +13,7 @@ namespace formation_sugar.View
         {
             foreach (var creature in creatures)
             {
-                graphics.DrawImage(animationsForCreatures[creature][creature.MovementsCondition].Current, creature.Location);
+                graphics.DrawImage(animationsForCreatures[creature][creature.MovementCondition].Current, creature.Location);
             }
         }
     }

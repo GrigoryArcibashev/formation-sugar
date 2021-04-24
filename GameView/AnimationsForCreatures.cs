@@ -16,12 +16,14 @@ namespace formation_sugar.View
                 {MovementConditions.JumpingRight, @"Sprites\playerAnimations\jumpingRight"},
                 {MovementConditions.AttackingRight, @"Sprites\playerAnimations\attackingRight"},
                 {MovementConditions.DieRight, @"Sprites\playerAnimations\dieRight"},
+                {MovementConditions.FallingRight, @"Sprites\playerAnimations\fallingRight"},
                 {MovementConditions.StandingLeft, @"Sprites\playerAnimations\standingLeft"},
                 {MovementConditions.RunningLeft, @"Sprites\playerAnimations\runningLeft"},
                 {MovementConditions.SittingLeft, @"Sprites\playerAnimations\sittingLeft"},
                 {MovementConditions.JumpingLeft, @"Sprites\playerAnimations\jumpingLeft"},
                 {MovementConditions.AttackingLeft, @"Sprites\playerAnimations\attackingLeft"},
-                {MovementConditions.DieLeft, @"Sprites\playerAnimations\dieLeft"}
+                {MovementConditions.DieLeft, @"Sprites\playerAnimations\dieLeft"},
+                {MovementConditions.FallingLeft, @"Sprites\playerAnimations\fallingLeft"}
             };
 
         private static readonly Dictionary<MovementConditions, string> AnimationForBox =

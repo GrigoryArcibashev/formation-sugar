@@ -4,6 +4,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "formation-sugar", "formatio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{77FBF8C2-BBDB-4D01-9EAF-12F097D18FE0}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "GameModel", "GameModel\GameModel.shproj", "{1CE72399-69EE-49C9-842A-7C2BA959ED1C}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "GameView", "GameView\GameView.shproj", "{104F8BA8-6CCC-4A65-A3C6-20E7CCA86387}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

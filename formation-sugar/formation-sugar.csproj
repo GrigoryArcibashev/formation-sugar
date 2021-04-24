@@ -53,18 +53,8 @@
         <Compile Include="Form1.Designer.cs">
             <DependentUpon>Form1.cs</DependentUpon>
         </Compile>
-        <Compile Include="GameModel\Box.cs" />
-        <Compile Include="GameModel\Direction.cs" />
-        <Compile Include="GameModel\GameMap.cs" />
-        <Compile Include="GameModel\ICreature.cs" />
-        <Compile Include="GameModel\Physics.cs" />
-        <Compile Include="GameModel\Player.cs" />
-        <Compile Include="GameModel\MovementConditions.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-        <Compile Include="View\Animation.cs" />
-        <Compile Include="View\AnimationsForCreatures.cs" />
-        <Compile Include="View\GraphicsCreator.cs" />
         <EmbeddedResource Include="Properties\Resources.resx">
             <Generator>ResXFileCodeGenerator</Generator>
             <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -88,4 +78,6 @@
         <None Include="App.config" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+    <Import Project="..\GameModel\GameModel.projitems" Label="Shared" />
+    <Import Project="..\GameView\GameView.projitems" Label="Shared" />
 </Project>

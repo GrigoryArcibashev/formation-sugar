@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>6FAD1104-29B4-4A90-AAE2-8B61BE2C2315</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>GameModel</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Box.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Direction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GameMap.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ICreature.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MovementCondition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Physics.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Player.cs" />
+  </ItemGroup>
+</Project>

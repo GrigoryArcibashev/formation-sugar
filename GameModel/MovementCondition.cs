@@ -14,6 +14,8 @@
         AttackingRight,
         AttackingLeft,
         DieRight,
-        DieLeft
+        DieLeft,
+        FallingLeft,
+        FallingRight
     }
 }

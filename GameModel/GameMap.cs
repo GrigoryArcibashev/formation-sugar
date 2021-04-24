@@ -37,7 +37,7 @@ namespace formation_sugar.GameModel
                 switch (parts[0])
                 {
                     case "P":
-                        Player = new Player(coordinates, 100, 8);
+                        Player = new Player(coordinates, 100, 2);
                         Map.Add(Player);
                         break;
                     

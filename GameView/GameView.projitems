@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>627B7E5D-D32E-48A2-9846-E57042C7F890</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>GameView</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Animation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AnimationsForCreatures.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GraphicsCreator.cs" />
+  </ItemGroup>
+</Project>

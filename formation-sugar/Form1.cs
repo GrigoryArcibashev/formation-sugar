@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using formation_sugar.GameModel;
 using formation_sugar.View;
+using formation_sugar.GameModel;
 
 namespace formation_sugar
 {
@@ -11,6 +11,7 @@ namespace formation_sugar
     {
         private readonly Dictionary<ICreature, Dictionary<MovementConditions, Animation>> animationsForCreatures;
         private readonly Timer timerForPlayerMovement;
+        private readonly Timer timerForPlayerAnimation;
         private readonly GameMap map;
         private readonly Physics physics;
         
@@ -20,7 +21,7 @@ namespace formation_sugar
             map.CreateMap(1);
             
             ClientSize = new Size(620, 360);
-            physics = new Physics(-5);
+            physics = new Physics(-10);
             animationsForCreatures = new Dictionary<ICreature, Dictionary<MovementConditions, Animation>>();
             
             foreach (var creature in map.Map)
@@ -28,9 +29,10 @@ namespace formation_sugar
                 AddAnimationsForCreature(creature);
             }
 
-            new Timer {Interval = 125, Enabled = true}.Tick += delegate
+            timerForPlayerAnimation = new Timer {Interval = 100, Enabled = true};
+            timerForPlayerAnimation.Tick += delegate
             {
-                animationsForCreatures[map.Player][map.Player.MovementsCondition].MoveNextSprite();
+                animationsForCreatures[map.Player][map.Player.MovementCondition].MoveNextSprite();
                 Invalidate();
             };
             
@@ -50,30 +52,28 @@ namespace formation_sugar
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
+            timerForPlayerMovement.Interval = e.Modifiers == Keys.Shift ? 10 : 30;
+            timerForPlayerAnimation.Interval = 100;
+            
             switch (e.KeyCode)
             {
-                case Keys.D when e.Modifiers == Keys.Shift:
-                    timerForPlayerMovement.Interval = 10;
+                case Keys.D when !map.Player.IsPlayerJumping():
                     map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.RunningRight, Direction.Right);
                     break;
                 
-                case Keys.D:
-                    timerForPlayerMovement.Interval = 30;
-                    map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.RunningRight, Direction.Right);
-                    break;
-                
-                case Keys.A:
+                case Keys.A when !map.Player.IsPlayerJumping():
                     map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.RunningLeft, Direction.Left);
                     break;
                 
-                case Keys.S:
-                    map.Player.MovementsCondition = map.Player.Direction is Direction.Right
+                case Keys.S when !map.Player.IsPlayerJumping():
+                    map.Player.MovementCondition = map.Player.Direction is Direction.Right
                         ? MovementConditions.SittingRight
                         : MovementConditions.SittingLeft;
                     break;
                 
                 case Keys.W:
-                    map.Player.MovementsCondition = map.Player.Direction is Direction.Right
+                    timerForPlayerAnimation.Interval = 200;
+                    map.Player.MovementCondition = map.Player.Direction is Direction.Right
                         ? MovementConditions.JumpingRight
                         : MovementConditions.JumpingLeft;
                     break;
@@ -82,36 +82,68 @@ namespace formation_sugar
         
         protected override void OnKeyUp(KeyEventArgs e)
         {
-            switch (e.KeyCode)
+            if (!map.Player.IsPlayerFalling() && !map.Player.IsPlayerJumping())
             {
-                default:
-                    map.Player.MovementsCondition = map.Player.Direction is Direction.Right
+                map.Player.MovementCondition = map.Player.Direction is Direction.Right
                         ? MovementConditions.StandingRight
-                        : MovementConditions.StandingLeft; 
-                    break;
+                        : MovementConditions.StandingLeft;
             }
         }
 
         private void UpdatePlayerLocation(object sender, EventArgs e)
         {
-            switch (map.Player.MovementsCondition)
+            switch (map.Player.MovementCondition)
             {
                 case MovementConditions.RunningRight:
                     map.Player.Location = new Point(map.Player.Location.X + 1, map.Player.Location.Y);
                     break;
+                
                 case MovementConditions.RunningLeft:
                     map.Player.Location = new Point(map.Player.Location.X - 1, map.Player.Location.Y);
                     break;
+                
                 case MovementConditions.JumpingRight:
-                    physics.MoveCreatureByY(map.Player, (double)timerForPlayerMovement.Interval/100);
-                    break;
+                    if (map.Player.Velocity < 0)
+                    {
+                        map.Player.MovementCondition = MovementConditions.FallingRight;
+                    }
                     
+                    physics.MoveCreatureByY(map.Player, (double) 5 / 500);
+                    break;
+                
+                case MovementConditions.JumpingLeft:
+                    if (map.Player.Velocity < 0)
+                    {
+                        map.Player.MovementCondition = MovementConditions.FallingLeft;
+                    }
+                    
+                    physics.MoveCreatureByY(map.Player, (double) 5 / 500);
+                    break;
+                
+                case MovementConditions.FallingRight:
+                    physics.MoveCreatureByY(map.Player, (double) 5 / 500);
+                    break;
+                
+                case MovementConditions.FallingLeft:
+                    physics.MoveCreatureByY(map.Player, (double) 5 / 500);
+                    break;
             }
+            
+            IfPlayerOnTheBoard();
         }
 
         private void AddAnimationsForCreature(ICreature creature)
         {
                 animationsForCreatures.Add(creature, AnimationsForCreatures.GetAnimationFor(creature));
+        }
+
+        private void IfPlayerOnTheBoard()
+        {
+            if (map.Player.Location.Y >= ClientSize.Height - 30 && map.Player.IsPlayerFalling())
+            {
+                map.Player.RecoverVelocity();
+                map.Player.MovementCondition = MovementConditions.StandingRight;
+            }
         }
     }
 }

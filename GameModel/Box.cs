@@ -5,7 +5,7 @@ namespace formation_sugar.GameModel
     public class Box : ICreature
     {
         public Point Location { get; set; }
-        public MovementConditions MovementsCondition { get; set; }
+        public MovementConditions MovementCondition { get; set; }
         public Direction Direction { get; set; }
         public double Velocity { get; set; }
         public int Health { get; }
