@@ -23,10 +23,5 @@ namespace formation_sugar.View
         {
             numberOfCurrentSprite = (numberOfCurrentSprite + 1) % CountOfSprites;
         }
-
-        public void ResetAnimation()
-        {
-            numberOfCurrentSprite = 0;
-        }
     }
 }

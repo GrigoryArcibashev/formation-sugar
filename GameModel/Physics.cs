@@ -12,12 +12,12 @@ namespace formation_sugar.GameModel
             this.g = g;
         }
 
-        public void MoveCreatureByY(ICreature creature, double dt)
+        public void MoveCreatureByY(IMovingCreature movingCreature, double dt)
         {
-            creature.Location = new Point(
-                creature.Location.X,
-                creature.Location.Y - (int) (creature.Velocity * Math.Abs(creature.Velocity)));
-            creature.Velocity += g * dt;
+            movingCreature.Location = new Point(
+                movingCreature.Location.X,
+                movingCreature.Location.Y - (int) (movingCreature.Velocity * Math.Abs(movingCreature.Velocity)));
+            movingCreature.Velocity += g * dt;
         }
     }
 }

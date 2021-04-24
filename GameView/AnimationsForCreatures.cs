@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using formation_sugar.GameModel;
@@ -7,44 +8,19 @@ namespace formation_sugar.View
 {
     public static class AnimationsForCreatures
     {
-        private static readonly Dictionary<MovementConditions, string> AnimationForPlayer =
-            new Dictionary<MovementConditions, string>
-            {
-                {MovementConditions.StandingRight, @"Sprites\playerAnimations\standingRight"},
-                {MovementConditions.RunningRight, @"Sprites\playerAnimations\runningRight"},
-                {MovementConditions.SittingRight, @"Sprites\playerAnimations\sittingRight"},
-                {MovementConditions.JumpingRight, @"Sprites\playerAnimations\jumpingRight"},
-                {MovementConditions.AttackingRight, @"Sprites\playerAnimations\attackingRight"},
-                {MovementConditions.DieRight, @"Sprites\playerAnimations\dieRight"},
-                {MovementConditions.FallingRight, @"Sprites\playerAnimations\fallingRight"},
-                {MovementConditions.StandingLeft, @"Sprites\playerAnimations\standingLeft"},
-                {MovementConditions.RunningLeft, @"Sprites\playerAnimations\runningLeft"},
-                {MovementConditions.SittingLeft, @"Sprites\playerAnimations\sittingLeft"},
-                {MovementConditions.JumpingLeft, @"Sprites\playerAnimations\jumpingLeft"},
-                {MovementConditions.AttackingLeft, @"Sprites\playerAnimations\attackingLeft"},
-                {MovementConditions.DieLeft, @"Sprites\playerAnimations\dieLeft"},
-                {MovementConditions.FallingLeft, @"Sprites\playerAnimations\fallingLeft"}
-            };
-
-        private static readonly Dictionary<MovementConditions, string> AnimationForBox =
-            new Dictionary<MovementConditions, string>
-            {
-                {MovementConditions.Default, @"Sprites\simpleGrass"}
-            };
-
-        public static Dictionary<MovementConditions, Animation> GetAnimationFor(ICreature creature)
+        public static Dictionary<MovementConditions, Animation> GetAnimationFor(ICreature movingCreature)
         {
-            if (creature.GetType() == typeof(Player))
+            switch (movingCreature.GetTypeAsString())
             {
-                return GetAnimationForCreature(AnimationForPlayer);
+                case "Player":
+                    return GetAnimationForCreature(AnimationsForPlayer.AnimationForPlayer);
+                
+                case "Box":
+                    return GetAnimationForCreature(AnimationsForBox.AnimationForBox);
+                
+                default:
+                    return default;
             }
-
-            if (creature.GetType() == typeof(Box))
-            {
-                return GetAnimationForCreature(AnimationForBox);
-            }
-
-            return default;
         }
 
         private static Dictionary<MovementConditions, Animation> GetAnimationForCreature(Dictionary<MovementConditions, string> creature)

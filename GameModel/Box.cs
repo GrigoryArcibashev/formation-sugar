@@ -6,19 +6,15 @@ namespace formation_sugar.GameModel
     {
         public Point Location { get; set; }
         public MovementConditions MovementCondition { get; set; }
-        public Direction Direction { get; set; }
-        public double Velocity { get; set; }
-        public int Health { get; }
-
-        public Box(Point location, int health)
+       
+        public Box(Point location)
         {
             Location = location;
-            Health = health;
         }
-
-        public void ChangeHealthBy(int deltaHealth)
+        
+        public string GetTypeAsString()
         {
-            throw new System.NotImplementedException();
+            return "Box";
         }
     }
 }

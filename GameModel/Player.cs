@@ -3,15 +3,15 @@ using System.Drawing;
 
 namespace formation_sugar.GameModel
 {
-    public class Player : ICreature
+    public class Player : IMovingCreature
     {
-        private double initialVelocity;
-        public Point Location { get; set; }
-        public int Health { get; private set; }
+        private readonly double initialVelocity;
         
-        public Direction Direction { get; set; }
         public double Velocity { get; set; }
+        public int Health { get; private set; }
+        public Point Location { get; set; }
         public MovementConditions MovementCondition { get; set; }
+        public Direction Direction { get; set; }
 
         public Player(Point initialLocation, int initialHealth = 0, double initialVelocity = 0.0)
         {
@@ -49,6 +49,11 @@ namespace formation_sugar.GameModel
         public void RecoverVelocity()
         {
             Velocity = initialVelocity;
+        }
+        
+        public string GetTypeAsString()
+        {
+            return "Player";
         }
     }
 }

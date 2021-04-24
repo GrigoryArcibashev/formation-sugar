@@ -9,7 +9,7 @@ namespace formation_sugar.View
         public static void CreateGraphic(
             Graphics graphics,
             Dictionary<ICreature, Dictionary<MovementConditions, Animation>> animationsForCreatures,  
-            List<ICreature> creatures)
+            IEnumerable<ICreature> creatures)
         {
             foreach (var creature in creatures)
             {
