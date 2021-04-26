@@ -20,7 +20,7 @@ namespace formation_sugar
             
             animationsForCreatures = new Dictionary<ICreature, Dictionary<MovementConditions, Animation>>();
             
-            foreach (var creature in map.Map)
+            foreach (var creature in map.CreaturesToDraw)
             {
                 AddAnimationsForCreature(creature);
             }
@@ -44,7 +44,7 @@ namespace formation_sugar
         protected override void OnPaint(PaintEventArgs e)
         {
             var graphics = e.Graphics;
-            GraphicsCreator.CreateGraphic(graphics, animationsForCreatures, map.Map);
+            GraphicsCreator.CreateGraphic(graphics, animationsForCreatures, map.CreaturesToDraw);
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
