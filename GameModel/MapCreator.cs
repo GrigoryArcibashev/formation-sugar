@@ -1,17 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace formation_sugar.GameModel
 {
     public static class MapCreator
     {
-        public static MapInfo CreateMap(IEnumerable<string> level)
+        private const int cellSizeInPixels = 50;
+
+        public static MapInfo CreateMap(string[] level)
         {
+            var levelSize = level[0]
+                .Split()
+                .Select(int.Parse)
+                .ToArray();
+            var map = new ICreature[levelSize[0], levelSize[1]];
             Player player = default;
-            var map = new List<ICreature>();
-            
-            foreach (var line in level)
+            var creatures = new List<ICreature>();
+
+            foreach (var line in level.Skip(1))
             {
                 var parts = line.Split();
                 var coordinates = new Point(int.Parse(parts[1]), int.Parse(parts[2]));
@@ -20,11 +28,13 @@ namespace formation_sugar.GameModel
                 {
                     case "P":
                         player = new Player(coordinates, 100, 2);
-                        map.Add(player);
+                        creatures.Add(player);
                         break;
 
                     case "G":
-                        map.Add(new Box(coordinates));
+                        var box = new Box(new Point(coordinates.X * cellSizeInPixels, coordinates.Y * cellSizeInPixels));
+                        creatures.Add(box);
+                        map[coordinates.X, coordinates.Y] = box;
                         break;
                 }
             }
@@ -33,8 +43,8 @@ namespace formation_sugar.GameModel
             {
                 throw new Exception("You forgot to add player on the level");
             }
-            
-            return new MapInfo(player, map);
+
+            return new MapInfo(map, player, creatures);
         }
     }
 }

@@ -5,12 +5,14 @@ namespace formation_sugar.GameModel
     public class MapInfo
     {
         public readonly Player Player;
-        public readonly List<ICreature> Map;
+        public readonly List<ICreature> CreaturesToDraw;
+        public readonly ICreature[,] Map;
 
-        public MapInfo(Player player, List<ICreature> map)
+        public MapInfo(ICreature[,] map, Player player, List<ICreature> creaturesToDraw)
         {
-            Player = player;
             Map = map;
+            Player = player;
+            CreaturesToDraw = creaturesToDraw;
         }
     }
 }

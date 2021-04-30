@@ -9,6 +9,7 @@ namespace formation_sugar.GameModel
         private readonly List<string> levels;
         
         public List<ICreature> CreaturesToDraw { get; private set; }
+        public ICreature[,] Map { get; private set; }
         public Player Player { get; private set; }
 
         public GameMap(int levelNumber)
@@ -22,8 +23,9 @@ namespace formation_sugar.GameModel
         private void CreateMap(int levelNumber)
         {
             var mapInfo = MapCreator.CreateMap(File.ReadAllLines(levels[levelNumber - 1]));
-            CreaturesToDraw = mapInfo.Map;
+            CreaturesToDraw = mapInfo.CreaturesToDraw;
             Player = mapInfo.Player;
+            Map = mapInfo.Map;
         }
 
         private void AddLevels()
