@@ -24,7 +24,7 @@ namespace Tests
         public void SimpleTests(int initialY, double initialVelocity, double g, IEnumerable<double> dts, int expectedY,
             double expectedVelocity)
         {
-            var player = new Player(new Point(0, initialY), initialVelocity : initialVelocity);
+            var player = new Player(new Point(0, initialY), new Size(), initialVelocity: initialVelocity);
             var physics = new Physics(g);
 
             foreach (var dt in dts)
