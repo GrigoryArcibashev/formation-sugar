@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using formation_sugar.GameModel;
 using formation_sugar.View;
@@ -30,6 +31,7 @@ namespace formation_sugar
             };
 
             timerForPlayerMovement = new Timer {Interval = 30, Enabled = true};
+            timerForPlayerMovement.Tick += M;
             timerForPlayerMovement.Tick += UpdatePlayerLocation;
 
             ClientSize = new Size(620, 360);
@@ -84,6 +86,20 @@ namespace formation_sugar
                 map.Player.MovementCondition = map.Player.Direction is Direction.Right
                     ? MovementConditions.StandingRight
                     : MovementConditions.StandingLeft;
+        }
+
+        private void M(object sender, EventArgs eventArgs)
+        {
+            foreach (var creature in map.ListOfCreatures.OfType<IMovingCreature>())
+            {
+                if (!creature.IsPlayerFalling() && !creature.IsPlayerJumping() && map.IsThereNothingUnderCreature(creature))
+                {
+                    creature.RecoverVelocity();
+                    creature.MovementCondition = creature.Direction is Direction.Right
+                        ? MovementConditions.FallingRight
+                        : MovementConditions.FallingLeft;
+                }
+            }
         }
 
         private void UpdatePlayerLocation(object sender, EventArgs e)

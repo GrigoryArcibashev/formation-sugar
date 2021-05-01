@@ -49,6 +49,11 @@ namespace formation_sugar.GameModel
             creature.Velocity++;
         }
 
+        public bool IsThereNothingUnderCreature(IMovingCreature creature)
+        {
+            return IsMovementPossible(creature, creature.Location + new Size(0, 1));
+        }
+
         private void MoveCreatureOn(IMovingCreature creature, Point targetLocation)
         {
             if (!IsMovementPossible(creature, targetLocation))
