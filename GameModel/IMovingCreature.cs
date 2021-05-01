@@ -1,8 +1,11 @@
-﻿
-namespace formation_sugar.GameModel
+﻿namespace formation_sugar.GameModel
 {
     public interface IMovingCreature : ICreature
     {
-        double Velocity { get; set; }
+        int Velocity { get; set; }
+        Direction Direction { get; set; }
+        void RecoverVelocity();
+        bool IsPlayerJumping();
+        bool IsPlayerFalling();
     }
 }

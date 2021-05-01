@@ -17,7 +17,7 @@ namespace formation_sugar.GameModel
             movingCreature.Location = new Point(
                 movingCreature.Location.X,
                 movingCreature.Location.Y - (int) (movingCreature.Velocity * Math.Abs(movingCreature.Velocity)));
-            movingCreature.Velocity += g * dt;
+            //movingCreature.Velocity += g * dt;
         }
     }
 }

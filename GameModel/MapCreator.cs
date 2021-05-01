@@ -27,7 +27,7 @@ namespace formation_sugar.GameModel
                 switch (parts[0])
                 {
                     case "P":
-                        player = new Player(coordinates, new Size(3, 4));
+                        player = new Player(coordinates, new Size(3, 4),initialVelocity:8);
                         AddCreatureOnMapAndListOfCreatures(player, coordinates);
                         break;
 

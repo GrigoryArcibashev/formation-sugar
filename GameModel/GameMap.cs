@@ -23,26 +23,50 @@ namespace formation_sugar.GameModel
             CreateMap(levelNumber);
         }
 
-        public void MoveCreatureToRight(ICreature creature)
+        public void MoveCreatureToRight(IMovingCreature creature)
         {
             MoveCreatureOn(creature, creature.Location + new Size(1, 0));
         }
 
-        public void MoveCreatureToLeft(ICreature creature)
+        public void MoveCreatureToLeft(IMovingCreature creature)
         {
             MoveCreatureOn(creature, creature.Location - new Size(1, 0));
         }
 
-        private void MoveCreatureOn(ICreature creature, Point targetLocation)
+        public void MoveCreatureUp(IMovingCreature creature)
+        {
+            MoveCreatureOn(creature, creature.Location - new Size(0, creature.Velocity));
+            creature.Velocity--;
+            if (creature.Velocity <= 0)
+                creature.MovementCondition = creature.Direction == Direction.Right
+                    ? creature.MovementCondition = MovementConditions.FallingRight
+                    : creature.MovementCondition = MovementConditions.FallingLeft;
+        }
+
+        public void MoveCreatureDown(IMovingCreature creature)
+        {
+            MoveCreatureOn(creature, creature.Location + new Size(0, creature.Velocity));
+            creature.Velocity++;
+        }
+
+        private void MoveCreatureOn(IMovingCreature creature, Point targetLocation)
         {
             if (!IsMovementPossible(creature, targetLocation))
+            {
+                creature.RecoverVelocity();
+                if (creature.IsPlayerFalling() || creature.IsPlayerJumping())
+                    creature.MovementCondition = creature.Direction is Direction.Right
+                        ? MovementConditions.StandingRight
+                        : MovementConditions.StandingLeft;
                 return;
+            }
+
             Map[creature.Location.X, creature.Location.Y] = null;
             Map[targetLocation.X, targetLocation.Y] = creature;
             creature.Location = targetLocation;
         }
 
-        private bool IsMovementPossible(ICreature creature, Point target)
+        private bool IsMovementPossible(IMovingCreature creature, Point target)
         {
             var topLeftCorner = new Point(
                 Math.Min(target.X, creature.Location.X),

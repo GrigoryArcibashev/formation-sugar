@@ -8,13 +8,11 @@ namespace formation_sugar.View
     {
         public static void CreateGraphic(
             Graphics graphics,
-            Dictionary<ICreature, Dictionary<MovementConditions, Animation>> animationsForCreatures,  
+            Dictionary<ICreature, Dictionary<MovementConditions, Animation>> animationsForCreatures,
             IEnumerable<ICreature> creatures)
         {
             foreach (var creature in creatures)
-            {
                 graphics.DrawImage(animationsForCreatures[creature][creature.MovementCondition].Current, creature.Location);
-            }
         }
     }
 }

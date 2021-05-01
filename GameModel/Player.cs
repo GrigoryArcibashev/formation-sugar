@@ -5,16 +5,16 @@ namespace formation_sugar.GameModel
 {
     public class Player : IMovingCreature
     {
-        private readonly double initialVelocity;
-        
+        private readonly int initialVelocity;
+
         public Point Location { get; set; }
         public Size Size { get; set; }
-        public double Velocity { get; set; }
+        public int Velocity { get; set; }
         public int Health { get; private set; }
         public MovementConditions MovementCondition { get; set; }
         public Direction Direction { get; set; }
 
-        public Player(Point initialLocation, Size size, int initialHealth = 0, double initialVelocity = 0.0)
+        public Player(Point initialLocation, Size size, int initialHealth = 0, int initialVelocity = 0)
         {
             Location = initialLocation;
             Size = size;
@@ -41,7 +41,7 @@ namespace formation_sugar.GameModel
             return MovementCondition == MovementConditions.JumpingRight ||
                    MovementCondition == MovementConditions.JumpingLeft;
         }
-        
+
         public bool IsPlayerFalling()
         {
             return MovementCondition == MovementConditions.FallingRight ||
@@ -52,7 +52,7 @@ namespace formation_sugar.GameModel
         {
             Velocity = initialVelocity;
         }
-        
+
         public string GetTypeAsString()
         {
             return "Player";

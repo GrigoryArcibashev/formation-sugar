@@ -18,7 +18,7 @@ namespace formation_sugar
         {
             map = new GameMap(1);
             animationsForCreatures = new Dictionary<ICreature, Dictionary<MovementConditions, Animation>>();
-            
+
             foreach (var creature in map.ListOfCreatures)
                 AddAnimationsForCreature(creature);
 
@@ -31,7 +31,7 @@ namespace formation_sugar
 
             timerForPlayerMovement = new Timer {Interval = 30, Enabled = true};
             timerForPlayerMovement.Tick += UpdatePlayerLocation;
-            
+
             ClientSize = new Size(620, 360);
             SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
             UpdateStyles();
@@ -48,11 +48,9 @@ namespace formation_sugar
         {
             timerForPlayerMovement.Interval = e.Modifiers == Keys.Shift ? 10 : 30;
 
-            /*if (map.Player.IsPlayerFalling() || map.Player.IsPlayerJumping())
-            {
+            if (map.Player.IsPlayerFalling() || map.Player.IsPlayerJumping())
                 return;
-            }*/
-            
+
             switch (e.KeyCode)
             {
                 case Keys.D:
@@ -63,7 +61,7 @@ namespace formation_sugar
                     map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.RunningLeft, Direction.Left);
                     break;
 
-                /*case Keys.S:
+                case Keys.S:
                     map.Player.MovementCondition = map.Player.Direction is Direction.Right
                         ? MovementConditions.SittingRight
                         : MovementConditions.SittingLeft;
@@ -71,12 +69,12 @@ namespace formation_sugar
 
                 case Keys.W:
                     timerForPlayerAnimation.Interval = 200;
-                        map.Player.MovementCondition = map.Player.Direction is Direction.Right
-                            ? MovementConditions.JumpingRight
-                            : MovementConditions.JumpingLeft;
-                    return;*/
+                    map.Player.MovementCondition = map.Player.Direction is Direction.Right
+                        ? MovementConditions.JumpingRight
+                        : MovementConditions.JumpingLeft;
+                    return;
             }
-            
+
             timerForPlayerAnimation.Interval = 100;
         }
 
@@ -92,7 +90,7 @@ namespace formation_sugar
         {
             PlayerLocationUpdater.UpdatePlayerLocation(map);
         }
-        
+
         private void AddAnimationsForCreature(ICreature creature)
         {
             animationsForCreatures.Add(creature, AnimationsForCreatures.GetAnimationFor(creature));

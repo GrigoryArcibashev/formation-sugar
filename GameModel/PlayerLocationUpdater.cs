@@ -2,8 +2,6 @@
 {
     public static class PlayerLocationUpdater
     {
-        //private static readonly Physics Physics = new Physics(-10);
-
         public static void UpdatePlayerLocation(GameMap map)
         {
             switch (map.Player.MovementCondition)
@@ -16,27 +14,25 @@
                     map.MoveCreatureToLeft(map.Player);
                     break;
 
-                /*case MovementConditions.JumpingRight:
-                    if (map.Player.Velocity < 0) map.Player.MovementCondition = MovementConditions.FallingRight;
-                    Physics.MoveCreatureByY(map.Player, (double) 5 / 500);
-                    map.Player.Location = new Point(map.Player.Location.X + 1, map.Player.Location.Y);
+                case MovementConditions.JumpingRight:
+                    map.MoveCreatureUp(map.Player);
+                    map.MoveCreatureToRight(map.Player);
                     break;
 
                 case MovementConditions.JumpingLeft:
-                    if (map.Player.Velocity < 0) map.Player.MovementCondition = MovementConditions.FallingLeft;
-                    Physics.MoveCreatureByY(map.Player, (double) 5 / 500);
-                    map.Player.Location = new Point(map.Player.Location.X - 1, map.Player.Location.Y);
+                    map.MoveCreatureUp(map.Player);
+                    map.MoveCreatureToLeft(map.Player);
                     break;
 
                 case MovementConditions.FallingRight:
-                    Physics.MoveCreatureByY(map.Player, (double) 5 / 500);
-                    map.Player.Location = new Point(map.Player.Location.X + 1, map.Player.Location.Y);
+                    map.MoveCreatureDown(map.Player);
+                    map.MoveCreatureToRight(map.Player);
                     break;
 
                 case MovementConditions.FallingLeft:
-                    Physics.MoveCreatureByY(map.Player, (double) 5 / 500);
-                    map.Player.Location = new Point(map.Player.Location.X - 1, map.Player.Location.Y);
-                    break;*/
+                    map.MoveCreatureDown(map.Player);
+                    map.MoveCreatureToLeft(map.Player);
+                    break;
             }
         }
     }
