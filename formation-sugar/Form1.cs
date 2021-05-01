@@ -17,7 +17,6 @@ namespace formation_sugar
         public Form1()
         {
             map = new GameMap(1);
-            
             animationsForCreatures = new Dictionary<ICreature, Dictionary<MovementConditions, Animation>>();
             
             foreach (var creature in map.CreaturesToDraw)
