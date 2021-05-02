@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 
 namespace formation_sugar.GameModel
 {
     public class GameMap
     {
-        private readonly List<string> levels;
+        private readonly List<FileInfo> levels;
+        private DirectoryInfo fullPathToLevels;
 
         public List<ICreature> ListOfCreatures { get; private set; }
         public ICreature[,] Map { get; private set; }
@@ -15,12 +17,21 @@ namespace formation_sugar.GameModel
         public int Width => Map.GetLength(0);
         public int Height => Map.GetLength(1);
 
-        public GameMap(int levelNumber)
+        private GameMap()
         {
-            levels = new List<string>();
+            levels = new List<FileInfo>();
             ListOfCreatures = new List<ICreature>();
             AddLevels();
+        }
+
+        public GameMap(int levelNumber) : this()
+        {
             CreateMap(levelNumber);
+        }
+
+        public GameMap(string levelName) : this()
+        {
+            CreateMap(levelName);
         }
 
         public void MoveCreatureToRight(IMovingCreature creature)
@@ -35,36 +46,36 @@ namespace formation_sugar.GameModel
 
         public void MoveCreatureToRightAndToUp(IMovingCreature creature)
         {
-            MoveCreatureOn(creature, creature.Location + new Size(1 ,-creature.Velocity));
+            MoveCreatureOn(creature, creature.Location + new Size(1, -creature.Velocity));
             creature.Velocity--;
             if (creature.Velocity <= 0)
                 creature.MovementCondition = creature.Direction == Direction.Right
                     ? creature.MovementCondition = MovementConditions.FallingRight
                     : creature.MovementCondition = MovementConditions.FallingLeft;
         }
-        
+
         public void MoveCreatureToRightAndToDown(IMovingCreature creature)
         {
-            MoveCreatureOn(creature, creature.Location + new Size(1 ,creature.Velocity / 10));
+            MoveCreatureOn(creature, creature.Location + new Size(1, creature.Velocity / 10));
             creature.Velocity++;
         }
-        
+
         public void MoveCreatureToLeftAndToDown(IMovingCreature creature)
         {
-            MoveCreatureOn(creature, creature.Location + new Size(-1 ,creature.Velocity / 10));
+            MoveCreatureOn(creature, creature.Location + new Size(-1, creature.Velocity / 10));
             creature.Velocity++;
         }
-        
+
         public void MoveCreatureToLeftAndToUp(IMovingCreature creature)
         {
-            MoveCreatureOn(creature, creature.Location + new Size(-1 ,-creature.Velocity));
+            MoveCreatureOn(creature, creature.Location + new Size(-1, -creature.Velocity));
             creature.Velocity--;
             if (creature.Velocity <= 0)
                 creature.MovementCondition = creature.Direction == Direction.Right
                     ? creature.MovementCondition = MovementConditions.FallingRight
                     : creature.MovementCondition = MovementConditions.FallingLeft;
         }
-        
+
         public void MoveCreatureDown(IMovingCreature creature)
         {
             MoveCreatureOn(creature, creature.Location + new Size(0, creature.Velocity));
@@ -127,7 +138,23 @@ namespace formation_sugar.GameModel
 
         private void CreateMap(int levelNumber)
         {
-            var mapInfo = MapCreator.CreateMap(File.ReadAllLines(levels[levelNumber - 1]));
+            var mapInfo = MapCreator.CreateMap(File.ReadAllLines(levels[levelNumber - 1].FullName));
+            ListOfCreatures = mapInfo.ListOfCreatures;
+            Player = mapInfo.Player;
+            Map = mapInfo.Map;
+        }
+
+        private void CreateMap(string levelName)
+        {
+            if (!levels
+                .Select(fileInfo => fileInfo.Name)
+                .Contains(levelName))
+                throw new Exception($"Невозможно загрузить уровень\nУровень {levelName} отсутсвует в папке уровней");
+            var mapInfo = MapCreator.CreateMap(
+                File.ReadAllLines(
+                    Path.Combine(
+                        fullPathToLevels.FullName,
+                        levelName)));
             ListOfCreatures = mapInfo.ListOfCreatures;
             Player = mapInfo.Player;
             Map = mapInfo.Map;
@@ -135,12 +162,14 @@ namespace formation_sugar.GameModel
 
         private void AddLevels()
         {
-            var directoryWithLevels = new DirectoryInfo(
+            fullPathToLevels = new DirectoryInfo(
                 Path.Combine(
-                    new DirectoryInfo(Directory.GetCurrentDirectory()).Parent?.Parent?.Parent?.FullName ??
-                    throw new InvalidOperationException(), "levels"));
-            foreach (var levelName in directoryWithLevels.EnumerateFiles())
-                levels.Add(levelName.FullName);
+                    new DirectoryInfo(
+                        Directory.GetCurrentDirectory()).Parent?.Parent?.Parent?.FullName ??
+                    throw new InvalidOperationException(),
+                    "levels"));
+            foreach (var levelName in fullPathToLevels.EnumerateFiles())
+                levels.Add(levelName);
         }
     }
 }
