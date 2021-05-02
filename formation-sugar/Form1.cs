@@ -16,7 +16,7 @@ namespace formation_sugar
 
         public Form1()
         {
-            map = new GameMap("test4.txt");
+            map = new GameMap("test5.txt");
             animationsForCreatures = new Dictionary<ICreature, Dictionary<MovementConditions, Animation>>();
 
             foreach (var creature in map.ListOfCreatures)
@@ -49,6 +49,7 @@ namespace formation_sugar
         {
             if (!ShouldButtonPressesBeProcessed())
                 return;
+            
             timerForCreaturesMovements.Interval = e.Modifiers == Keys.Shift ? 10 : 30;
             switch (e.KeyCode)
             {

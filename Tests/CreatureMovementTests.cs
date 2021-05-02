@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using formation_sugar.GameModel;
 using NUnit.Framework;
 
@@ -119,14 +120,45 @@ namespace Tests
             }
         }
 
-        private static void CheckCreaturesForFalling()
+        [Test]
+        public void CheckCreaturesForFalling()
         {
-            map.CheckCreaturesForFalling();
+            map = new GameMap("test4.txt");
+            map.Player.ChangeConditionToFallingDown();
+            var initialPlayerLocation = map.GetCreatureLocation(map.Player);
+
+            while (initialPlayerLocation == map.GetCreatureLocation(map.Player))
+            {
+                PlayerLocationUpdater.UpdatePlayerLocation(map);
+            }
+            
+            Assert.AreEqual(new Point(initialPlayerLocation.X, initialPlayerLocation.Y + 1), map.GetCreatureLocation(map.Player));
         }
 
-        private static void UpdatePlayerLocationOnMap()
+        [Test]
+        public void UpdatePlayerLocationOnMap()
         {
+            map = new GameMap("test1.txt");
+            
+            var initialPlayerLocation = map.GetCreatureLocation(map.Player);
+            map.Player.ChangeConditionToRun(Direction.Right);
             PlayerLocationUpdater.UpdatePlayerLocation(map);
+            
+            Assert.AreEqual(new Point(initialPlayerLocation.X + 1, initialPlayerLocation.Y), map.GetCreatureLocation(map.Player));
+            
+            map.Player.ChangeConditionToRun(Direction.Left);
+            PlayerLocationUpdater.UpdatePlayerLocation(map);
+            
+            Assert.AreEqual(initialPlayerLocation, map.GetCreatureLocation(map.Player));
+            
+            map.Player.ChangeConditionToFallingDown();
+
+            while (initialPlayerLocation.Y + 1 != map.GetCreatureLocation(map.Player).Y)
+            {
+                PlayerLocationUpdater.UpdatePlayerLocation(map);
+            }
+            
+            Assert.AreEqual(new Point(initialPlayerLocation.X, initialPlayerLocation.Y + 1), map.GetCreatureLocation(map.Player));
         }
     }
 }

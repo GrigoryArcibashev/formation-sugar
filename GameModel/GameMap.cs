@@ -142,9 +142,15 @@ namespace formation_sugar.GameModel
         private bool IsMapPieceEmpty(Point topLeftCorner, Point bottomRightCorner)
         {
             for (var x = topLeftCorner.X; x <= bottomRightCorner.X; x++)
-            for (var y = topLeftCorner.Y; y <= bottomRightCorner.Y; y++)
-                if (map[x, y] != Player && map[x, y] != null)
-                    return false;
+            {
+                for (var y = topLeftCorner.Y; y <= bottomRightCorner.Y; y++)
+                {
+                    if (map[x, y] != Player && map[x, y] != null)
+                        return false;
+                }
+                
+            }
+            
             return true;
         }
 

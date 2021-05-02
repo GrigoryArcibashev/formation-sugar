@@ -33,7 +33,6 @@
                 case MovementConditions.FallingDown:
                     map.MoveCreatureToDown(map.Player);
                     break;
-                
             }
         }
     }
