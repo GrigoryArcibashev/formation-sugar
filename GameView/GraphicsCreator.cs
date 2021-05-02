@@ -9,10 +9,10 @@ namespace formation_sugar.View
         public static void CreateGraphic(
             Graphics graphics,
             Dictionary<ICreature, Dictionary<MovementConditions, Animation>> animationsForCreatures,
-            IEnumerable<ICreature> creatures)
+            GameMap map)
         {
-            foreach (var creature in creatures)
-                graphics.DrawImage(animationsForCreatures[creature][creature.MovementCondition].Current, creature.Location);
+            foreach (var creature in map.ListOfCreatures)
+                graphics.DrawImage(animationsForCreatures[creature][creature.MovementCondition].Current, map.GetCreatureLocation(creature));
         }
     }
 }

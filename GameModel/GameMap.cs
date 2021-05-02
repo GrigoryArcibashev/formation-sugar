@@ -11,23 +11,19 @@ namespace formation_sugar.GameModel
         private readonly List<FileInfo> levels;
         private DirectoryInfo fullPathToLevels;
         private ICreature[,] map;
+        private Dictionary<ICreature, Point> creaturesLocations;
 
         public List<ICreature> ListOfCreatures { get; private set; }
         public Player Player { get; private set; }
         public int Width => map.GetLength(0);
         public int Height => map.GetLength(1);
-
-        public ICreature this[int x, int y]
-        {
-            get => map[x, y];
-            set => map[x, y] = value;
-        }
-
+        
         private GameMap()
         {
             levels = new List<FileInfo>();
             ListOfCreatures = new List<ICreature>();
             AddLevels();
+            creaturesLocations = new Dictionary<ICreature, Point>();
         }
 
         public GameMap(int levelNumber) : this()
@@ -39,20 +35,31 @@ namespace formation_sugar.GameModel
         {
             CreateMap(levelName);
         }
+        
+        public ICreature this[int x, int y]
+        {
+            get => map[x, y];
+            set => map[x, y] = value;
+        }
 
+        public Point GetCreatureLocation(ICreature creature)
+        {
+            return creaturesLocations[creature];
+        }
+        
         public void MoveCreatureToRight(IMovingCreature creature)
         {
-            MoveCreatureOn(creature, creature.Location + new Size(1, 0));
+            MoveCreatureOn(creature, creaturesLocations[creature] + new Size(1, 0));
         }
 
         public void MoveCreatureToLeft(IMovingCreature creature)
         {
-            MoveCreatureOn(creature, creature.Location + new Size(-1, 0));
+            MoveCreatureOn(creature, creaturesLocations[creature] + new Size(-1, 0));
         }
 
         public void MoveCreatureToRightAndToUp(IMovingCreature creature)
         {
-            MoveCreatureOn(creature, creature.Location + new Size(1, -creature.Velocity));
+            MoveCreatureOn(creature, creaturesLocations[creature] + new Size(1, -creature.Velocity));
             creature.Velocity--;
             if (creature.Velocity <= 0)
                 creature.ChangeConditionToFalling();
@@ -60,7 +67,7 @@ namespace formation_sugar.GameModel
 
         public void MoveCreatureToLeftAndToUp(IMovingCreature creature)
         {
-            MoveCreatureOn(creature, creature.Location + new Size(-1, -creature.Velocity));
+            MoveCreatureOn(creature, creaturesLocations[creature] + new Size(-1, -creature.Velocity));
             creature.Velocity--;
             if (creature.Velocity <= 0)
                 creature.ChangeConditionToFalling();
@@ -68,19 +75,19 @@ namespace formation_sugar.GameModel
 
         public void MoveCreatureToRightAndToDown(IMovingCreature creature)
         {
-            MoveCreatureOn(creature, creature.Location + new Size(1, creature.Velocity / 10));
+            MoveCreatureOn(creature, creaturesLocations[creature] + new Size(1, creature.Velocity / 10));
             creature.Velocity++;
         }
 
         public void MoveCreatureToLeftAndToDown(IMovingCreature creature)
         {
-            MoveCreatureOn(creature, creature.Location + new Size(-1, creature.Velocity / 10));
+            MoveCreatureOn(creature, creaturesLocations[creature] + new Size(-1, creature.Velocity / 10));
             creature.Velocity++;
         }
 
         public void MoveCreatureToDown(IMovingCreature creature)
         {
-            MoveCreatureOn(creature, creature.Location + new Size(0, creature.Velocity / 10));
+            MoveCreatureOn(creature, creaturesLocations[creature] + new Size(0, creature.Velocity / 10));
             creature.Velocity++;
         }
 
@@ -97,7 +104,7 @@ namespace formation_sugar.GameModel
 
         private bool IsThereNothingUnderCreature(IMovingCreature creature)
         {
-            return IsMovementPossible(creature, creature.Location + new Size(0, 1));
+            return IsMovementPossible(creature, creaturesLocations[creature] + new Size(0, 1));
         }
 
         private void MoveCreatureOn(IMovingCreature creature, Point targetLocation)
@@ -112,19 +119,19 @@ namespace formation_sugar.GameModel
                 return;
             }
 
-            map[creature.Location.X, creature.Location.Y] = null;
+            map[creaturesLocations[creature].X, creaturesLocations[creature].Y] = null;
             map[targetLocation.X, targetLocation.Y] = creature;
-            creature.Location = targetLocation;
+            creaturesLocations[creature] = targetLocation;
         }
 
         private bool IsMovementPossible(IMovingCreature creature, Point target)
         {
             var topLeftCorner = new Point(
-                Math.Min(target.X, creature.Location.X),
-                Math.Min(target.Y, creature.Location.Y));
+                Math.Min(target.X, creaturesLocations[creature].X),
+                Math.Min(target.Y, creaturesLocations[creature].Y));
             var bottomRightCorner = new Point(
-                Math.Max(target.X, creature.Location.X),
-                Math.Max(target.Y, creature.Location.Y));
+                Math.Max(target.X, creaturesLocations[creature].X),
+                Math.Max(target.Y, creaturesLocations[creature].Y));
             return IsPointInBounds(target)
                    && IsPointInBounds(target + creature.Size)
                    && IsMapPieceEmpty(topLeftCorner, bottomRightCorner);
@@ -155,6 +162,7 @@ namespace formation_sugar.GameModel
             ListOfCreatures = mapInfo.ListOfCreatures;
             Player = mapInfo.Player;
             map = mapInfo.Map;
+            FillLocations();
         }
 
         private void CreateMap(string levelName)
@@ -171,6 +179,7 @@ namespace formation_sugar.GameModel
             ListOfCreatures = mapInfo.ListOfCreatures;
             Player = mapInfo.Player;
             map = mapInfo.Map;
+            FillLocations();
         }
 
         private void AddLevels()
@@ -183,6 +192,23 @@ namespace formation_sugar.GameModel
                     "levels"));
             foreach (var levelName in fullPathToLevels.EnumerateFiles())
                 levels.Add(levelName);
+        }
+
+        private void FillLocations()
+        {
+            foreach (var creature in ListOfCreatures)
+            {
+                for (var x = 0; x < Width; x++)
+                {
+                    for (var y = 0; y < Height; y++)
+                    {
+                        if (map[x, y] == creature)
+                        {
+                            creaturesLocations.Add(creature, new Point(x, y));
+                        }
+                    }
+                }
+            }
         }
     }
 }

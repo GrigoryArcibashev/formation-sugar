@@ -13,20 +13,20 @@ namespace Tests
         public void CreatureMoveToLeftAndRight()
         {
             map = new GameMap("test1.txt");
-            var initCreatureLocation = map.Player.Location;
+            var initCreatureLocation = map.GetCreatureLocation(map.Player);
             var expectedCreatureCoordinates = new[]
             {
                 initCreatureLocation + new Size(1, 0),
-                initCreatureLocation + new Size(-1, 0)
+                initCreatureLocation
             };
 
             map.MoveCreatureToRight(map.Player);
-            Assert.AreEqual(expectedCreatureCoordinates[0], map.Player.Location);
+            Assert.AreEqual(expectedCreatureCoordinates[0], map.GetCreatureLocation(map.Player));
             Assert.AreEqual(map[expectedCreatureCoordinates[0].X, expectedCreatureCoordinates[0].Y], map.Player);
-            map.Player.Location = initCreatureLocation;
-
+            
             map.MoveCreatureToLeft(map.Player);
-            Assert.AreEqual(expectedCreatureCoordinates[1], map.Player.Location);
+            
+            Assert.AreEqual(expectedCreatureCoordinates[1], map.GetCreatureLocation(map.Player));
             Assert.AreEqual(map[expectedCreatureCoordinates[1].X, expectedCreatureCoordinates[1].Y], map.Player);
         }
 
@@ -34,20 +34,19 @@ namespace Tests
         public void CreatureMoveUp()
         {
             map = new GameMap("test1.txt");
-            var initCreatureLocation = map.Player.Location;
+            var initCreatureLocation = map.GetCreatureLocation(map.Player);
             var expectedCreatureCoordinates = new[]
             {
                 initCreatureLocation + new Size(1, -map.Player.Velocity),
-                initCreatureLocation + new Size(-1, -map.Player.Velocity + 1)
+                initCreatureLocation + new Size(0, -2 * map.Player.Velocity + 1)
             };
 
             map.MoveCreatureToRightAndToUp(map.Player);
-            Assert.AreEqual(expectedCreatureCoordinates[0], map.Player.Location);
+            Assert.AreEqual(expectedCreatureCoordinates[0], map.GetCreatureLocation(map.Player));
             Assert.AreEqual(map[expectedCreatureCoordinates[0].X, expectedCreatureCoordinates[0].Y], map.Player);
-            map.Player.Location = initCreatureLocation;
 
             map.MoveCreatureToLeftAndToUp(map.Player);
-            Assert.AreEqual(expectedCreatureCoordinates[1], map.Player.Location);
+            Assert.AreEqual(expectedCreatureCoordinates[1], map.GetCreatureLocation(map.Player));
             Assert.AreEqual(map[expectedCreatureCoordinates[1].X, expectedCreatureCoordinates[1].Y], map.Player);
         }
 
@@ -55,26 +54,24 @@ namespace Tests
         public void CreatureMoveDown()
         {
             map = new GameMap("test1.txt");
-            var initCreatureLocation = map.Player.Location;
+            var initCreatureLocation = map.GetCreatureLocation(map.Player);
             var expectedCreatureCoordinates = new[]
             {
                 initCreatureLocation + new Size(1, map.Player.Velocity / 10),
-                initCreatureLocation + new Size(-1, (map.Player.Velocity + 1) / 10),
-                initCreatureLocation + new Size(0, (map.Player.Velocity + 2) / 10)
+                initCreatureLocation + new Size(0, (map.Player.Velocity + 1) / 10 + map.Player.Velocity / 10),
+                initCreatureLocation + new Size(0, (map.Player.Velocity + 2) / 10 + (map.Player.Velocity + 1) / 10 + map.Player.Velocity / 10)
             };
 
             map.MoveCreatureToRightAndToDown(map.Player);
-            Assert.AreEqual(expectedCreatureCoordinates[0], map.Player.Location);
+            Assert.AreEqual(expectedCreatureCoordinates[0], map.GetCreatureLocation(map.Player));
             Assert.AreEqual(map[expectedCreatureCoordinates[0].X, expectedCreatureCoordinates[0].Y], map.Player);
-            map.Player.Location = initCreatureLocation;
 
             map.MoveCreatureToLeftAndToDown(map.Player);
-            Assert.AreEqual(expectedCreatureCoordinates[1], map.Player.Location);
+            Assert.AreEqual(expectedCreatureCoordinates[1], map.GetCreatureLocation(map.Player));
             Assert.AreEqual(map[expectedCreatureCoordinates[1].X, expectedCreatureCoordinates[1].Y], map.Player);
-            map.Player.Location = initCreatureLocation;
 
             map.MoveCreatureToDown(map.Player);
-            Assert.AreEqual(expectedCreatureCoordinates[2], map.Player.Location);
+            Assert.AreEqual(expectedCreatureCoordinates[2], map.GetCreatureLocation(map.Player));
             Assert.AreEqual(map[expectedCreatureCoordinates[2].X, expectedCreatureCoordinates[2].Y], map.Player);
         }
 
@@ -82,28 +79,28 @@ namespace Tests
         public void CreatureCanNotMoveOffMap()
         {
             map = new GameMap("test2.txt");
-            var expectedCreatureLocation = map.Player.Location;
+            var expectedCreatureLocation = map.GetCreatureLocation(map.Player);
 
             map.MoveCreatureToRight(map.Player);
-            Assert.AreEqual(expectedCreatureLocation, map.Player.Location);
+            Assert.AreEqual(expectedCreatureLocation, map.GetCreatureLocation(map.Player));
 
             map.MoveCreatureToLeft(map.Player);
-            Assert.AreEqual(expectedCreatureLocation, map.Player.Location);
+            Assert.AreEqual(expectedCreatureLocation, map.GetCreatureLocation(map.Player));
 
             map.MoveCreatureToRightAndToUp(map.Player);
-            Assert.AreEqual(expectedCreatureLocation, map.Player.Location);
+            Assert.AreEqual(expectedCreatureLocation, map.GetCreatureLocation(map.Player));
 
             map.MoveCreatureToLeftAndToUp(map.Player);
-            Assert.AreEqual(expectedCreatureLocation, map.Player.Location);
+            Assert.AreEqual(expectedCreatureLocation, map.GetCreatureLocation(map.Player));
 
             map.MoveCreatureToRightAndToDown(map.Player);
-            Assert.AreEqual(expectedCreatureLocation, map.Player.Location);
+            Assert.AreEqual(expectedCreatureLocation, map.GetCreatureLocation(map.Player));
 
             map.MoveCreatureToLeftAndToDown(map.Player);
-            Assert.AreEqual(expectedCreatureLocation, map.Player.Location);
+            Assert.AreEqual(expectedCreatureLocation, map.GetCreatureLocation(map.Player));
 
             map.MoveCreatureToDown(map.Player);
-            Assert.AreEqual(expectedCreatureLocation, map.Player.Location);
+            Assert.AreEqual(expectedCreatureLocation, map.GetCreatureLocation(map.Player));
         }
 
         [Test]
@@ -112,13 +109,13 @@ namespace Tests
             foreach (var testName in new[] {"test3.txt", "test4.txt"})
             {
                 map = new GameMap(testName);
-                var expectedCreatureLocation = map.Player.Location;
+                var expectedCreatureLocation = map.GetCreatureLocation(map.Player);
 
                 map.MoveCreatureToRightAndToUp(map.Player);
-                Assert.AreEqual(expectedCreatureLocation, map.Player.Location);
+                Assert.AreEqual(expectedCreatureLocation, map.GetCreatureLocation(map.Player));
 
                 map.MoveCreatureToLeftAndToDown(map.Player);
-                Assert.AreEqual(expectedCreatureLocation, map.Player.Location);
+                Assert.AreEqual(expectedCreatureLocation, map.GetCreatureLocation(map.Player));
             }
         }
 

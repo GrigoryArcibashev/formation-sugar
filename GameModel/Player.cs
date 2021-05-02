@@ -7,17 +7,14 @@ namespace formation_sugar.GameModel
     {
         private readonly int initialVelocity;
         private Direction direction;
-
-        public Point Location { get; set; }
         public Size Size { get; }
         public int Velocity { get; set; }
         public int Health { get; private set; }
         public MovementConditions MovementCondition { get; private set; }
 
 
-        public Player(Point initialLocation, Size size, int initialHealth = 0, int initialVelocity = 0)
+        public Player(Size size, int initialHealth = 0, int initialVelocity = 0)
         {
-            Location = initialLocation;
             Size = size;
             Health = initialHealth;
             Velocity = initialVelocity;

@@ -42,7 +42,7 @@ namespace formation_sugar
         protected override void OnPaint(PaintEventArgs e)
         {
             var graphics = e.Graphics;
-            GraphicsCreator.CreateGraphic(graphics, animationsForCreatures, map.ListOfCreatures);
+            GraphicsCreator.CreateGraphic(graphics, animationsForCreatures, map);
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
