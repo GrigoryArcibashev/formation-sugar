@@ -49,9 +49,15 @@ namespace formation_sugar.GameModel
             MoveCreatureOn(creature, creature.Location + new Size(1, -creature.Velocity));
             creature.Velocity--;
             if (creature.Velocity <= 0)
-                creature.MovementCondition = creature.Direction == Direction.Right
-                    ? creature.MovementCondition = MovementConditions.FallingRight
-                    : creature.MovementCondition = MovementConditions.FallingLeft;
+                creature.ChangeConditionToFalling();
+        }
+
+        public void MoveCreatureToLeftAndToUp(IMovingCreature creature)
+        {
+            MoveCreatureOn(creature, creature.Location + new Size(-1, -creature.Velocity));
+            creature.Velocity--;
+            if (creature.Velocity <= 0)
+                creature.ChangeConditionToFalling();
         }
 
         public void MoveCreatureToRightAndToDown(IMovingCreature creature)
@@ -66,23 +72,24 @@ namespace formation_sugar.GameModel
             creature.Velocity++;
         }
 
-        public void MoveCreatureToLeftAndToUp(IMovingCreature creature)
-        {
-            MoveCreatureOn(creature, creature.Location + new Size(-1, -creature.Velocity));
-            creature.Velocity--;
-            if (creature.Velocity <= 0)
-                creature.MovementCondition = creature.Direction == Direction.Right
-                    ? creature.MovementCondition = MovementConditions.FallingRight
-                    : creature.MovementCondition = MovementConditions.FallingLeft;
-        }
-
         public void MoveCreatureDown(IMovingCreature creature)
         {
             MoveCreatureOn(creature, creature.Location + new Size(0, creature.Velocity));
             creature.Velocity++;
         }
 
-        public bool IsThereNothingUnderCreature(IMovingCreature creature)
+        public void CheckCreaturesForFalling()
+        {
+            foreach (var creature in ListOfCreatures.OfType<IMovingCreature>())
+            {
+                if (creature.IsFalling() || creature.IsJumping() || !IsThereNothingUnderCreature(creature))
+                    continue;
+                creature.RecoverVelocity();
+                creature.ChangeConditionToFallingDown();
+            }
+        }
+
+        private bool IsThereNothingUnderCreature(IMovingCreature creature)
         {
             return IsMovementPossible(creature, creature.Location + new Size(0, 1));
         }
@@ -92,10 +99,8 @@ namespace formation_sugar.GameModel
             if (!IsMovementPossible(creature, targetLocation))
             {
                 creature.RecoverVelocity();
-                if (creature.IsPlayerFalling() || creature.IsPlayerJumping())
-                    creature.MovementCondition = creature.Direction is Direction.Right
-                        ? MovementConditions.StandingRight
-                        : MovementConditions.StandingLeft;
+                if (creature.IsFalling() || creature.IsJumping())
+                    creature.ChangeConditionToStanding();
                 return;
             }
 

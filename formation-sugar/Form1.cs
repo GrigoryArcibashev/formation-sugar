@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 using formation_sugar.GameModel;
 using formation_sugar.View;
@@ -17,7 +16,7 @@ namespace formation_sugar
 
         public Form1()
         {
-            map = new GameMap(1);
+            map = new GameMap("test1.txt");
             animationsForCreatures = new Dictionary<ICreature, Dictionary<MovementConditions, Animation>>();
 
             foreach (var creature in map.ListOfCreatures)
@@ -32,7 +31,7 @@ namespace formation_sugar
 
             timerForPlayerMovement = new Timer {Interval = 30, Enabled = true};
             timerForPlayerMovement.Tick += CheckCreaturesForFalling;
-            timerForPlayerMovement.Tick += UpdatePlayerLocation;
+            timerForPlayerMovement.Tick += UpdatePlayerLocationOnMap;
 
             ClientSize = new Size(620, 360);
             SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
@@ -49,58 +48,49 @@ namespace formation_sugar
         protected override void OnKeyDown(KeyEventArgs e)
         {
             timerForPlayerMovement.Interval = e.Modifiers == Keys.Shift ? 10 : 30;
-
-            if (map.Player.IsPlayerFalling() || map.Player.IsPlayerJumping())
+            if (!ShouldButtonPressesBeProcessed())
                 return;
-
             switch (e.KeyCode)
             {
                 case Keys.D:
-                    map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.RunningRight, Direction.Right);
+                    map.Player.ChangeConditionToRun(Direction.Right);
                     break;
 
                 case Keys.A:
-                    map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.RunningLeft, Direction.Left);
+                    map.Player.ChangeConditionToRun(Direction.Left);
                     break;
 
                 case Keys.S:
-                    map.Player.MovementCondition = map.Player.Direction is Direction.Right
-                        ? MovementConditions.SittingRight
-                        : MovementConditions.SittingLeft;
+                    map.Player.ChangeConditionToSitting();
                     break;
 
                 case Keys.W:
                     timerForPlayerAnimation.Interval = 200;
-                    map.Player.MovementCondition = map.Player.Direction is Direction.Right
-                        ? MovementConditions.JumpingRight
-                        : MovementConditions.JumpingLeft;
+                    map.Player.ChangeConditionToJumping();
                     return;
             }
 
             timerForPlayerAnimation.Interval = 100;
         }
 
+
         protected override void OnKeyUp(KeyEventArgs e)
         {
-            if (!map.Player.IsPlayerFalling() && !map.Player.IsPlayerJumping())
-                map.Player.MovementCondition = map.Player.Direction is Direction.Right
-                    ? MovementConditions.StandingRight
-                    : MovementConditions.StandingLeft;
+            if (!map.Player.IsFalling() && !map.Player.IsJumping())
+                map.Player.ChangeConditionToStanding();
+        }
+
+        private bool ShouldButtonPressesBeProcessed()
+        {
+            return !map.Player.IsFalling() && !map.Player.IsJumping();
         }
 
         private void CheckCreaturesForFalling(object sender, EventArgs eventArgs)
         {
-            foreach (var creature in map.ListOfCreatures.OfType<IMovingCreature>())
-            {
-                if (!creature.IsPlayerFalling() && !creature.IsPlayerJumping() && map.IsThereNothingUnderCreature(creature))
-                {
-                    creature.RecoverVelocity();
-                    creature.MovementCondition = MovementConditions.FallingDown;
-                }
-            }
+            map.CheckCreaturesForFalling();
         }
 
-        private void UpdatePlayerLocation(object sender, EventArgs e)
+        private void UpdatePlayerLocationOnMap(object sender, EventArgs e)
         {
             PlayerLocationUpdater.UpdatePlayerLocation(map);
         }

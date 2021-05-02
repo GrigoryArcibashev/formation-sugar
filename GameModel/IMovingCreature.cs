@@ -3,9 +3,14 @@
     public interface IMovingCreature : ICreature
     {
         int Velocity { get; set; }
-        Direction Direction { get; set; }
         void RecoverVelocity();
-        bool IsPlayerJumping();
-        bool IsPlayerFalling();
+        bool IsJumping();
+        bool IsFalling();
+        void ChangeConditionToStanding();
+        void ChangeConditionToSitting();
+        void ChangeConditionToJumping();
+        void ChangeConditionToFalling();
+        void ChangeConditionToFallingDown();
+        void ChangeConditionToRun(Direction direction);
     }
 }

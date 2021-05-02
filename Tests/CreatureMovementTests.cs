@@ -12,6 +12,8 @@ namespace Tests
         [Test]
         public void Test1()
         {
+            var map = new GameMap("test1.txt");
+            
         }
     }
 }
