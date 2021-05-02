@@ -113,7 +113,7 @@ namespace Tests
             {
                 map = new GameMap(testName);
                 var expectedCreatureLocation = map.Player.Location;
-                
+
                 map.MoveCreatureToRightAndToUp(map.Player);
                 Assert.AreEqual(expectedCreatureLocation, map.Player.Location);
 
