@@ -21,7 +21,8 @@ namespace formation_sugar.View
                 {MovementConditions.JumpingLeft, @"Sprites\playerAnimations\jumpingLeft"},
                 {MovementConditions.AttackingLeft, @"Sprites\playerAnimations\attackingLeft"},
                 {MovementConditions.DieLeft, @"Sprites\playerAnimations\dieLeft"},
-                {MovementConditions.FallingLeft, @"Sprites\playerAnimations\fallingLeft"}
+                {MovementConditions.FallingLeft, @"Sprites\playerAnimations\fallingLeft"},
+                {MovementConditions.FallingDown, @"Sprites\playerAnimations\fallingDown"}
             };
     }
 }

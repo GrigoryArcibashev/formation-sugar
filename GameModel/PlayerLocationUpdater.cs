@@ -15,24 +15,25 @@
                     break;
 
                 case MovementConditions.JumpingRight:
-                    map.MoveCreatureUp(map.Player);
-                    map.MoveCreatureToRight(map.Player);
+                    map.MoveCreatureToRightAndToUp(map.Player);
                     break;
 
                 case MovementConditions.JumpingLeft:
-                    map.MoveCreatureUp(map.Player);
-                    map.MoveCreatureToLeft(map.Player);
+                    map.MoveCreatureToLeftAndToUp(map.Player);
                     break;
 
                 case MovementConditions.FallingRight:
-                    map.MoveCreatureDown(map.Player);
-                    map.MoveCreatureToRight(map.Player);
+                    map.MoveCreatureToRightAndToDown(map.Player);
                     break;
 
                 case MovementConditions.FallingLeft:
-                    map.MoveCreatureDown(map.Player);
-                    map.MoveCreatureToLeft(map.Player);
+                    map.MoveCreatureToLeftAndToDown(map.Player);
                     break;
+                
+                case MovementConditions.FallingDown:
+                    map.MoveCreatureDown(map.Player);
+                    break;
+                
             }
         }
     }

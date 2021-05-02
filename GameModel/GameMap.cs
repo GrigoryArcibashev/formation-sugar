@@ -30,19 +30,41 @@ namespace formation_sugar.GameModel
 
         public void MoveCreatureToLeft(IMovingCreature creature)
         {
-            MoveCreatureOn(creature, creature.Location - new Size(1, 0));
+            MoveCreatureOn(creature, creature.Location + new Size(-1, 0));
         }
 
-        public void MoveCreatureUp(IMovingCreature creature)
+        public void MoveCreatureToRightAndToUp(IMovingCreature creature)
         {
-            MoveCreatureOn(creature, creature.Location - new Size(0, creature.Velocity));
+            MoveCreatureOn(creature, creature.Location + new Size(1 ,-creature.Velocity));
             creature.Velocity--;
             if (creature.Velocity <= 0)
                 creature.MovementCondition = creature.Direction == Direction.Right
                     ? creature.MovementCondition = MovementConditions.FallingRight
                     : creature.MovementCondition = MovementConditions.FallingLeft;
         }
-
+        
+        public void MoveCreatureToRightAndToDown(IMovingCreature creature)
+        {
+            MoveCreatureOn(creature, creature.Location + new Size(1 ,creature.Velocity / 10));
+            creature.Velocity++;
+        }
+        
+        public void MoveCreatureToLeftAndToDown(IMovingCreature creature)
+        {
+            MoveCreatureOn(creature, creature.Location + new Size(-1 ,creature.Velocity / 10));
+            creature.Velocity++;
+        }
+        
+        public void MoveCreatureToLeftAndToUp(IMovingCreature creature)
+        {
+            MoveCreatureOn(creature, creature.Location + new Size(-1 ,-creature.Velocity));
+            creature.Velocity--;
+            if (creature.Velocity <= 0)
+                creature.MovementCondition = creature.Direction == Direction.Right
+                    ? creature.MovementCondition = MovementConditions.FallingRight
+                    : creature.MovementCondition = MovementConditions.FallingLeft;
+        }
+        
         public void MoveCreatureDown(IMovingCreature creature)
         {
             MoveCreatureOn(creature, creature.Location + new Size(0, creature.Velocity));

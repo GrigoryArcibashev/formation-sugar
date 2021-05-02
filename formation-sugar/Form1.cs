@@ -31,7 +31,7 @@ namespace formation_sugar
             };
 
             timerForPlayerMovement = new Timer {Interval = 30, Enabled = true};
-            timerForPlayerMovement.Tick += M;
+            timerForPlayerMovement.Tick += CheckCreaturesForFalling;
             timerForPlayerMovement.Tick += UpdatePlayerLocation;
 
             ClientSize = new Size(620, 360);
@@ -88,16 +88,14 @@ namespace formation_sugar
                     : MovementConditions.StandingLeft;
         }
 
-        private void M(object sender, EventArgs eventArgs)
+        private void CheckCreaturesForFalling(object sender, EventArgs eventArgs)
         {
             foreach (var creature in map.ListOfCreatures.OfType<IMovingCreature>())
             {
                 if (!creature.IsPlayerFalling() && !creature.IsPlayerJumping() && map.IsThereNothingUnderCreature(creature))
                 {
                     creature.RecoverVelocity();
-                    creature.MovementCondition = creature.Direction is Direction.Right
-                        ? MovementConditions.FallingRight
-                        : MovementConditions.FallingLeft;
+                    creature.MovementCondition = MovementConditions.FallingDown;
                 }
             }
         }

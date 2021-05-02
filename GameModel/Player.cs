@@ -45,7 +45,8 @@ namespace formation_sugar.GameModel
         public bool IsPlayerFalling()
         {
             return MovementCondition == MovementConditions.FallingRight ||
-                   MovementCondition == MovementConditions.FallingLeft;
+                   MovementCondition == MovementConditions.FallingLeft ||
+                   MovementCondition == MovementConditions.FallingDown;
         }
 
         public void RecoverVelocity()

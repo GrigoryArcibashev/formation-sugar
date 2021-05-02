@@ -16,6 +16,7 @@ namespace formation_sugar.GameModel
                 .Split()
                 .Select(int.Parse)
                 .ToArray();
+            
             map = new ICreature[levelSize[0], levelSize[1]];
             listOfCreatures = new List<ICreature>();
             Player player = default;

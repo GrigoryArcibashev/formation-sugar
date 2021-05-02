@@ -16,6 +16,7 @@
         DieRight,
         DieLeft,
         FallingLeft,
-        FallingRight
+        FallingRight,
+        FallingDown
     }
 }
