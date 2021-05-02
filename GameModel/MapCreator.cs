@@ -27,12 +27,12 @@ namespace formation_sugar.GameModel
                 switch (parts[0])
                 {
                     case "P":
-                        player = new Player(new Size(2, 3),initialVelocity:8);
+                        player = new Player(initialVelocity:8);
                         AddCreatureOnMapAndListOfCreatures(player, coordinates);
                         break;
 
                     case "G":
-                        var box = new Box(new Size(1, 1));
+                        var box = new Box();
                         AddCreatureOnMapAndListOfCreatures(box, coordinates);
                         break;
                 }

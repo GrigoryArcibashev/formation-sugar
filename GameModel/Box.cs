@@ -7,9 +7,8 @@ namespace formation_sugar.GameModel
         public Size Size { get; }
         public MovementConditions MovementCondition { get; private set; }
 
-        public Box(Size size)
+        public Box()
         {
-            Size = size;
             MovementCondition = MovementConditions.Default;
         }
 

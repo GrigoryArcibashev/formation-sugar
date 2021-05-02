@@ -133,7 +133,6 @@ namespace formation_sugar.GameModel
                 Math.Max(target.X, creaturesLocations[creature].X),
                 Math.Max(target.Y, creaturesLocations[creature].Y));
             return IsPointInBounds(target)
-                   && IsPointInBounds(target + creature.Size)
                    && IsMapPieceEmpty(topLeftCorner, bottomRightCorner);
         }
 
