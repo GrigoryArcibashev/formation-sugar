@@ -10,17 +10,17 @@ namespace formation_sugar.GameModel
     {
         private readonly List<FileInfo> levels;
         private DirectoryInfo fullPathToLevels;
+        private ICreature[,] map;
 
         public List<ICreature> ListOfCreatures { get; private set; }
-        public ICreature[,] Map { get; private set; }
         public Player Player { get; private set; }
-        public int Width => Map.GetLength(0);
-        public int Height => Map.GetLength(1);
+        public int Width => map.GetLength(0);
+        public int Height => map.GetLength(1);
 
         public ICreature this[int x, int y]
         {
-            get => Map[x, y];
-            set => Map[x, y] = value;
+            get => map[x, y];
+            set => map[x, y] = value;
         }
 
         private GameMap()
@@ -78,9 +78,9 @@ namespace formation_sugar.GameModel
             creature.Velocity++;
         }
 
-        public void MoveCreatureDown(IMovingCreature creature)
+        public void MoveCreatureToDown(IMovingCreature creature)
         {
-            MoveCreatureOn(creature, creature.Location + new Size(0, creature.Velocity));
+            MoveCreatureOn(creature, creature.Location + new Size(0, creature.Velocity / 10));
             creature.Velocity++;
         }
 
@@ -110,8 +110,8 @@ namespace formation_sugar.GameModel
                 return;
             }
 
-            Map[creature.Location.X, creature.Location.Y] = null;
-            Map[targetLocation.X, targetLocation.Y] = creature;
+            map[creature.Location.X, creature.Location.Y] = null;
+            map[targetLocation.X, targetLocation.Y] = creature;
             creature.Location = targetLocation;
         }
 
@@ -134,7 +134,7 @@ namespace formation_sugar.GameModel
         {
             for (var x = topLeftCorner.X; x <= bottomRightCorner.X; x++)
             for (var y = topLeftCorner.Y; y <= bottomRightCorner.Y; y++)
-                if (Map[x, y] != Player && Map[x, y] != null)
+                if (map[x, y] != Player && map[x, y] != null)
                     return false;
             return true;
         }
@@ -152,7 +152,7 @@ namespace formation_sugar.GameModel
             var mapInfo = MapCreator.CreateMap(File.ReadAllLines(levels[levelNumber - 1].FullName));
             ListOfCreatures = mapInfo.ListOfCreatures;
             Player = mapInfo.Player;
-            Map = mapInfo.Map;
+            map = mapInfo.Map;
         }
 
         private void CreateMap(string levelName)
@@ -168,7 +168,7 @@ namespace formation_sugar.GameModel
                         levelName)));
             ListOfCreatures = mapInfo.ListOfCreatures;
             Player = mapInfo.Player;
-            Map = mapInfo.Map;
+            map = mapInfo.Map;
         }
 
         private void AddLevels()

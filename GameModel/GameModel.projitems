@@ -17,7 +17,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)MapCreator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MapInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MovementCondition.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Physics.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Player.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PlayerLocationUpdater.cs" />
   </ItemGroup>

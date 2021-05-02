@@ -9,7 +9,7 @@ namespace formation_sugar.GameModel
         private Direction direction;
 
         public Point Location { get; set; }
-        public Size Size { get; set; }
+        public Size Size { get; }
         public int Velocity { get; set; }
         public int Health { get; private set; }
         public MovementConditions MovementCondition { get; set; }
