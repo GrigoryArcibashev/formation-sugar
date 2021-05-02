@@ -12,7 +12,7 @@ namespace formation_sugar
         private readonly GameMap map;
         private readonly Dictionary<ICreature, Dictionary<MovementConditions, Animation>> animationsForCreatures;
         private readonly Timer timerForPlayerAnimation;
-        private readonly Timer timerForPlayerMovement;
+        private readonly Timer timerForCreaturesMovements;
 
         public Form1()
         {
@@ -29,9 +29,9 @@ namespace formation_sugar
                 Invalidate();
             };
 
-            timerForPlayerMovement = new Timer {Interval = 30, Enabled = true};
-            timerForPlayerMovement.Tick += CheckCreaturesForFalling;
-            timerForPlayerMovement.Tick += UpdatePlayerLocationOnMap;
+            timerForCreaturesMovements = new Timer {Interval = 30, Enabled = true};
+            timerForCreaturesMovements.Tick += CheckCreaturesForFalling;
+            timerForCreaturesMovements.Tick += UpdatePlayerLocationOnMap;
 
             ClientSize = new Size(620, 360);
             SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
@@ -47,7 +47,7 @@ namespace formation_sugar
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            timerForPlayerMovement.Interval = e.Modifiers == Keys.Shift ? 10 : 30;
+            timerForCreaturesMovements.Interval = e.Modifiers == Keys.Shift ? 10 : 30;
             if (!ShouldButtonPressesBeProcessed())
                 return;
             switch (e.KeyCode)
@@ -72,7 +72,6 @@ namespace formation_sugar
 
             timerForPlayerAnimation.Interval = 100;
         }
-
 
         protected override void OnKeyUp(KeyEventArgs e)
         {

@@ -16,7 +16,6 @@ namespace formation_sugar.GameModel
                 .Split()
                 .Select(int.Parse)
                 .ToArray();
-            
             map = new ICreature[levelSize[0], levelSize[1]];
             listOfCreatures = new List<ICreature>();
             Player player = default;
@@ -28,7 +27,7 @@ namespace formation_sugar.GameModel
                 switch (parts[0])
                 {
                     case "P":
-                        player = new Player(coordinates, new Size(3, 4),initialVelocity:8);
+                        player = new Player(coordinates, new Size(2, 3),initialVelocity:8);
                         AddCreatureOnMapAndListOfCreatures(player, coordinates);
                         break;
 

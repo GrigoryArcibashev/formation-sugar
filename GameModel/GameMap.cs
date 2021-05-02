@@ -17,6 +17,12 @@ namespace formation_sugar.GameModel
         public int Width => Map.GetLength(0);
         public int Height => Map.GetLength(1);
 
+        public ICreature this[int x, int y]
+        {
+            get => Map[x, y];
+            set => Map[x, y] = value;
+        }
+
         private GameMap()
         {
             levels = new List<FileInfo>();

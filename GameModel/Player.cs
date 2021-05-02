@@ -31,12 +31,6 @@ namespace formation_sugar.GameModel
             Health = Math.Max(0, Health + deltaHealth);
         }
 
-        public void ChangeMovementConditionAndDirectionTo(MovementConditions movementCondition, Direction direction)
-        {
-            MovementCondition = movementCondition;
-            this.direction = direction;
-        }
-
         public bool IsJumping()
         {
             return MovementCondition == MovementConditions.JumpingRight ||

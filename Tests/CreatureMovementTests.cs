@@ -10,7 +10,7 @@ namespace Tests
     public class CreatureMovementTests
     {
         [Test]
-        public void Test1()
+        public void CreatureDoNotMoveBeyondWindow()
         {
             var map = new GameMap("test1.txt");
             
