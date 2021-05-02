@@ -16,7 +16,7 @@ namespace formation_sugar
 
         public Form1()
         {
-            map = new GameMap("test1.txt");
+            map = new GameMap("test2.txt");
             animationsForCreatures = new Dictionary<ICreature, Dictionary<MovementConditions, Animation>>();
 
             foreach (var creature in map.ListOfCreatures)
@@ -75,7 +75,7 @@ namespace formation_sugar
 
         protected override void OnKeyUp(KeyEventArgs e)
         {
-            if (!map.Player.IsFalling() && !map.Player.IsJumping())
+            if (ShouldButtonPressesBeProcessed())
                 map.Player.ChangeConditionToStanding();
         }
 

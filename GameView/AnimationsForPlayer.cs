@@ -22,7 +22,7 @@ namespace formation_sugar.View
                 {MovementConditions.AttackingLeft, @"Sprites\playerAnimations\attackingLeft"},
                 {MovementConditions.DieLeft, @"Sprites\playerAnimations\dieLeft"},
                 {MovementConditions.FallingLeft, @"Sprites\playerAnimations\fallingLeft"},
-                {MovementConditions.FallingDown, @"Sprites\playerAnimations\fallingDown"}
+                {MovementConditions.FallingDown, @"Sprites\playerAnimations\fallingRight"}
             };
     }
 }

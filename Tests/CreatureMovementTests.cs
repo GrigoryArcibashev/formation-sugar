@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Reflection;
-using System.Windows.Forms;
+﻿using System.Drawing;
 using formation_sugar.GameModel;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 
 namespace Tests
 {
@@ -82,6 +76,50 @@ namespace Tests
             map.MoveCreatureToDown(map.Player);
             Assert.AreEqual(expectedCreatureCoordinates[2], map.Player.Location);
             Assert.AreEqual(map[expectedCreatureCoordinates[2].X, expectedCreatureCoordinates[2].Y], map.Player);
+        }
+
+        [Test]
+        public void CreatureCanNotMoveOffMap()
+        {
+            map = new GameMap("test2.txt");
+            var expectedCreatureLocation = map.Player.Location;
+
+            map.MoveCreatureToRight(map.Player);
+            Assert.AreEqual(expectedCreatureLocation, map.Player.Location);
+
+            map.MoveCreatureToLeft(map.Player);
+            Assert.AreEqual(expectedCreatureLocation, map.Player.Location);
+
+            map.MoveCreatureToRightAndToUp(map.Player);
+            Assert.AreEqual(expectedCreatureLocation, map.Player.Location);
+
+            map.MoveCreatureToLeftAndToUp(map.Player);
+            Assert.AreEqual(expectedCreatureLocation, map.Player.Location);
+
+            map.MoveCreatureToRightAndToDown(map.Player);
+            Assert.AreEqual(expectedCreatureLocation, map.Player.Location);
+
+            map.MoveCreatureToLeftAndToDown(map.Player);
+            Assert.AreEqual(expectedCreatureLocation, map.Player.Location);
+
+            map.MoveCreatureToDown(map.Player);
+            Assert.AreEqual(expectedCreatureLocation, map.Player.Location);
+        }
+
+        [Test]
+        public void ImpossibilityOfDiagonalMovementWhenItIsImpossibleMoveInOneOfDirections()
+        {
+            foreach (var testName in new[] {"test3.txt", "test4.txt"})
+            {
+                map = new GameMap(testName);
+                var expectedCreatureLocation = map.Player.Location;
+                
+                map.MoveCreatureToRightAndToUp(map.Player);
+                Assert.AreEqual(expectedCreatureLocation, map.Player.Location);
+
+                map.MoveCreatureToLeftAndToDown(map.Player);
+                Assert.AreEqual(expectedCreatureLocation, map.Player.Location);
+            }
         }
 
         private static void CheckCreaturesForFalling()

@@ -105,7 +105,9 @@ namespace formation_sugar.GameModel
             if (!IsMovementPossible(creature, targetLocation))
             {
                 creature.RecoverVelocity();
-                if (creature.IsFalling() || creature.IsJumping())
+                if (creature.IsJumping())
+                    creature.ChangeConditionToFalling();
+                else if (creature.IsFalling())
                     creature.ChangeConditionToStanding();
                 return;
             }
