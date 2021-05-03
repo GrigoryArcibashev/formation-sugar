@@ -1,6 +1,9 @@
-﻿namespace formation_sugar
+﻿using System.Drawing;
+using System.Windows.Forms;
+
+namespace formation_sugar
 {
-    sealed partial class Form1
+    sealed partial class Game
     {
         /// <summary>
         /// Required designer variable.
@@ -29,10 +32,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
+            UpdateStyles();
             this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Form1";
+            this.ClientSize = new Size(300, 300);;
+            this.MaximumSize = ClientSize;
+            this.MinimumSize = ClientSize;
+            this.MaximizeBox = false;
+            this.Text = "Game";
         }
 
         #endregion

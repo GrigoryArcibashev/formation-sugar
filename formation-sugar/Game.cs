@@ -1,41 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Windows.Forms;
 using formation_sugar.GameModel;
 using formation_sugar.View;
 
 namespace formation_sugar
 {
-    public sealed partial class Form1 : Form
+    public sealed partial class Game : Form
     {
         private readonly GameMap map;
         private readonly Dictionary<ICreature, Dictionary<MovementConditions, Animation>> animationsForCreatures;
-        private readonly Timer timerForPlayerAnimation;
         private readonly Timer timerForCreaturesMovements;
 
-        public Form1()
+        public Game()
         {
-            map = new GameMap("test5.txt");
-            animationsForCreatures = new Dictionary<ICreature, Dictionary<MovementConditions, Animation>>();
+            map = new GameMap("level1.txt");
+            timerForCreaturesMovements = new Timer {Interval = 30, Enabled = true};
+            timerForCreaturesMovements.Tick += CheckCreaturesForFalling;
+            timerForCreaturesMovements.Tick += UpdatePlayerLocationOnMap;
 
+            animationsForCreatures = new Dictionary<ICreature, Dictionary<MovementConditions, Animation>>();
             foreach (var creature in map.ListOfCreatures)
                 AddAnimationsForCreature(creature);
-
-            timerForPlayerAnimation = new Timer {Interval = 100, Enabled = true};
-            timerForPlayerAnimation.Tick += (sender, args) =>
+            new Timer {Interval = 50, Enabled = true}.Tick += (sender, args) =>
             {
                 animationsForCreatures[map.Player][map.Player.MovementCondition].MoveNextSprite();
                 Invalidate();
             };
 
-            timerForCreaturesMovements = new Timer {Interval = 30, Enabled = true};
-            timerForCreaturesMovements.Tick += CheckCreaturesForFalling;
-            timerForCreaturesMovements.Tick += UpdatePlayerLocationOnMap;
-
-            ClientSize = new Size(620, 360);
-            SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
-            UpdateStyles();
             InitializeComponent();
         }
 
@@ -49,7 +41,7 @@ namespace formation_sugar
         {
             if (!ShouldButtonPressesBeProcessed())
                 return;
-            
+
             timerForCreaturesMovements.Interval = e.Modifiers == Keys.Shift ? 10 : 30;
             switch (e.KeyCode)
             {
@@ -66,12 +58,9 @@ namespace formation_sugar
                     break;
 
                 case Keys.W:
-                    timerForPlayerAnimation.Interval = 200;
                     map.Player.ChangeConditionToJumping();
                     return;
             }
-
-            timerForPlayerAnimation.Interval = 100;
         }
 
         protected override void OnKeyUp(KeyEventArgs e)

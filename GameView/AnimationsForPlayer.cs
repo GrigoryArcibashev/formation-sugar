@@ -9,20 +9,20 @@ namespace formation_sugar.View
             new Dictionary<MovementConditions, string>
             {
                 {MovementConditions.StandingRight, @"Sprites\playerAnimations\standingRight"},
-                {MovementConditions.RunningRight, @"Sprites\playerAnimations\runningRight"},
-                {MovementConditions.SittingRight, @"Sprites\playerAnimations\sittingRight"},
-                {MovementConditions.JumpingRight, @"Sprites\playerAnimations\jumpingRight"},
-                {MovementConditions.AttackingRight, @"Sprites\playerAnimations\attackingRight"},
-                {MovementConditions.DieRight, @"Sprites\playerAnimations\dieRight"},
-                {MovementConditions.FallingRight, @"Sprites\playerAnimations\fallingRight"},
                 {MovementConditions.StandingLeft, @"Sprites\playerAnimations\standingLeft"},
+                {MovementConditions.RunningRight, @"Sprites\playerAnimations\runningRight"},
                 {MovementConditions.RunningLeft, @"Sprites\playerAnimations\runningLeft"},
+                {MovementConditions.SittingRight, @"Sprites\playerAnimations\sittingRight"},
                 {MovementConditions.SittingLeft, @"Sprites\playerAnimations\sittingLeft"},
+                {MovementConditions.JumpingRight, @"Sprites\playerAnimations\jumpingRight"},
                 {MovementConditions.JumpingLeft, @"Sprites\playerAnimations\jumpingLeft"},
+                {MovementConditions.FallingRight, @"Sprites\playerAnimations\jumpingRight"},
+                {MovementConditions.FallingLeft, @"Sprites\playerAnimations\jumpingLeft"},
+                {MovementConditions.FallingDown, @"Sprites\playerAnimations\jumpingRight"},
+                {MovementConditions.AttackingRight, @"Sprites\playerAnimations\attackingRight"},
                 {MovementConditions.AttackingLeft, @"Sprites\playerAnimations\attackingLeft"},
-                {MovementConditions.DieLeft, @"Sprites\playerAnimations\dieLeft"},
-                {MovementConditions.FallingLeft, @"Sprites\playerAnimations\fallingLeft"},
-                {MovementConditions.FallingDown, @"Sprites\playerAnimations\fallingRight"}
+                {MovementConditions.DieRight, @"Sprites\playerAnimations\dieRight"},
+                {MovementConditions.DieLeft, @"Sprites\playerAnimations\dieLeft"}
             };
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 
 namespace formation_sugar.GameModel
 {
@@ -7,7 +6,7 @@ namespace formation_sugar.GameModel
     {
         private readonly int initialVelocity;
         private Direction direction;
-        public int Velocity { get; set; }
+        public int Velocity { get; private set; }
         public int Health { get; private set; }
         public MovementConditions MovementCondition { get; private set; }
 
@@ -25,6 +24,7 @@ namespace formation_sugar.GameModel
         {
             Health = Math.Max(0, Health + deltaHealth);
         }
+
 
         public bool IsJumping()
         {
@@ -67,9 +67,24 @@ namespace formation_sugar.GameModel
                 : MovementCondition = MovementConditions.FallingLeft;
         }
 
+        
         public void ChangeConditionToFallingDown()
         {
             MovementCondition = MovementConditions.FallingDown;
+        }
+
+        public void ChangeConditionToAttacking()
+        {
+            MovementCondition = direction == Direction.Right
+                ? MovementCondition = MovementConditions.AttackingRight
+                : MovementCondition = MovementConditions.AttackingLeft;
+        }
+
+        public void ChangeConditionToDie()
+        {
+            MovementCondition = direction == Direction.Right
+                ? MovementCondition = MovementConditions.DieRight
+                : MovementCondition = MovementConditions.DieLeft;
         }
 
         public void ChangeConditionToRun(Direction direction)
@@ -80,9 +95,25 @@ namespace formation_sugar.GameModel
             this.direction = direction;
         }
 
+
         public void RecoverVelocity()
         {
             Velocity = initialVelocity;
+        }
+
+        public void ResetVelocityToZero()
+        {
+            Velocity = 0;
+        }
+
+        public void IncreaseVelocity()
+        {
+            Velocity++;
+        }
+
+        public void ReduceVelocity()
+        {
+            Velocity--;
         }
 
         public string GetTypeAsString()

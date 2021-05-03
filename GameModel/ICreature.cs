@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-namespace formation_sugar.GameModel
+﻿namespace formation_sugar.GameModel
 {
     public interface ICreature
     {
