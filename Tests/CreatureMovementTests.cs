@@ -160,5 +160,7 @@ namespace Tests
             
             Assert.AreEqual(new Point(initialPlayerLocation.X, initialPlayerLocation.Y + 1), map.GetCreatureLocation(map.Player));
         }
+        
+        
     }
 }
