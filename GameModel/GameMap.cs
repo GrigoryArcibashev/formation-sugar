@@ -58,35 +58,41 @@ namespace formation_sugar.GameModel
         }
 
         [MoveCreatureAttribute]
+        [MoveCreatureDiagonally]
         public void MoveCreatureToRightAndToUp(IMovingCreature creature)
         {
-            MoveCreatureOn(creature, creaturesLocations[creature] + new Size(1, -creature.Velocity));
-            creature.ReduceVelocity();
+            if (MoveCreatureOn(creature, creaturesLocations[creature] + new Size(1, -creature.Velocity)))
+                creature.ReduceVelocity();
+            
             if (creature.Velocity <= 0)
                 creature.ChangeConditionToFalling();
         }
 
         [MoveCreatureAttribute]
+        [MoveCreatureDiagonally]
         public void MoveCreatureToLeftAndToUp(IMovingCreature creature)
         {
-            MoveCreatureOn(creature, creaturesLocations[creature] + new Size(-1, -creature.Velocity));
-            creature.ReduceVelocity();
+            if (MoveCreatureOn(creature, creaturesLocations[creature] + new Size(-1, -creature.Velocity)))
+                creature.ReduceVelocity();
+            
             if (creature.Velocity <= 0)
                 creature.ChangeConditionToFalling();
         }
 
         [MoveCreatureAttribute]
+        [MoveCreatureDiagonally]
         public void MoveCreatureToRightAndToDown(IMovingCreature creature)
         {
-            MoveCreatureOn(creature, creaturesLocations[creature] + new Size(1, creature.Velocity));
-            creature.IncreaseVelocity();
+            if (MoveCreatureOn(creature, creaturesLocations[creature] + new Size(1, creature.Velocity)))
+                creature.IncreaseVelocity();
         }
 
         [MoveCreatureAttribute]
+        [MoveCreatureDiagonally]
         public void MoveCreatureToLeftAndToDown(IMovingCreature creature)
         {
-            MoveCreatureOn(creature, creaturesLocations[creature] + new Size(-1, creature.Velocity));
-            creature.IncreaseVelocity();
+            if (MoveCreatureOn(creature, creaturesLocations[creature] + new Size(-1, creature.Velocity)))
+                creature.IncreaseVelocity();
         }
 
         [MoveCreatureAttribute]
@@ -112,7 +118,7 @@ namespace formation_sugar.GameModel
             return IsMovementPossible(creature, creaturesLocations[creature] + new Size(0, 1));
         }
 
-        private void MoveCreatureOn(IMovingCreature creature, Point targetLocation)
+        private bool MoveCreatureOn(IMovingCreature creature, Point targetLocation)
         {
             if (!IsMovementPossible(creature, targetLocation))
             {
@@ -121,18 +127,20 @@ namespace formation_sugar.GameModel
                     creature.ChangeConditionToFalling();
                     creature.ResetVelocityToZero();
                 }
+                
                 else if (creature.IsFalling())
                 {
                     creature.ChangeConditionToStanding();
                     creature.RecoverVelocity();
                 }
 
-                return;
+                return false;
             }
 
             map[creaturesLocations[creature].X, creaturesLocations[creature].Y] = null;
             map[targetLocation.X, targetLocation.Y] = creature;
             creaturesLocations[creature] = targetLocation;
+            return true;
         }
 
         private bool IsMovementPossible(IMovingCreature creature, Point target)
@@ -154,7 +162,7 @@ namespace formation_sugar.GameModel
             {
                 for (var y = topLeftCorner.Y; y <= bottomRightCorner.Y; y++)
                 {
-                    if (map[x, y] != Player && map[x, y] != null)
+                    if (map [x, y] != Player && map[x, y] != null)
                         return false;
                 }
             }

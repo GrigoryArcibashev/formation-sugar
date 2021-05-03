@@ -17,7 +17,7 @@ namespace formation_sugar.View
                     ScaleCoordinatesInPercents(map.GetCreatureLocation(creature), 300));
         }
 
-        private static Point ScaleCoordinatesInPercents(Point coordinates, double percent)
+        private static Point ScaleCoordinatesInPercents(Point coordinates, double percent) //улучшить метод
         {
             var ds = (int) (1 + percent / 100);
             return new Point(coordinates.X * ds, coordinates.Y * ds);

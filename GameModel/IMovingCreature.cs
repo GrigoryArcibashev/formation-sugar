@@ -11,27 +11,31 @@
         bool IsFalling();
 
         [ChangeCondition]
+        [ChangeConditionThatAffectsMovement]
+        void ChangeConditionToJumping();
+
+        [ChangeCondition]
+        [ChangeConditionThatAffectsMovement]
+        void ChangeConditionToFalling();
+
+        [ChangeCondition]
+        [ChangeConditionThatAffectsMovement]
+        void ChangeConditionToFallingDown();
+        
+        [ChangeCondition]
+        [ChangeConditionThatAffectsMovement]
+        void ChangeConditionToRun(Direction direction);
+        
+        [ChangeCondition]
         void ChangeConditionToStanding();
 
         [ChangeCondition]
         void ChangeConditionToSitting();
-
-        [ChangeCondition]
-        void ChangeConditionToJumping();
-
-        [ChangeCondition]
-        void ChangeConditionToFalling();
-
-        [ChangeCondition]
-        void ChangeConditionToFallingDown();
-
+        
         [ChangeCondition]
         void ChangeConditionToAttacking();
 
         [ChangeCondition]
         void ChangeConditionToDie();
-
-        [ChangeCondition]
-        void ChangeConditionToRun(Direction direction);
     }
 }
