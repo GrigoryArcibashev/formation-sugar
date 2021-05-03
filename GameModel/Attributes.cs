@@ -10,11 +10,11 @@ namespace formation_sugar.GameModel
     {
     }
 
-    public class MoveCreatureDiagonally : Attribute
+    public class MoveCreatureDiagonallyAttribute : Attribute
     {
     }
 
-    public class ChangeConditionThatAffectsMovement : Attribute
+    public class ChangeConditionThatAffectsMovementAttribute : Attribute
     {
     }
 }

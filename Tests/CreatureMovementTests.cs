@@ -3,7 +3,6 @@ using System.Linq;
 using System.Reflection;
 using formation_sugar.GameModel;
 using NUnit.Framework;
-using GameModel_MoveCreatureDiagonally = formation_sugar.GameModel.MoveCreatureDiagonally;
 
 namespace Tests
 {
@@ -29,13 +28,13 @@ namespace Tests
         private static readonly MethodInfo[] infoAboutMethodsOfTypeMoveCreatureDiagonally =
             infoAboutMethodsOfTypeMoveCreature
                 .Where(methodInfo => methodInfo
-                    .GetCustomAttributes<GameModel_MoveCreatureDiagonally>()
+                    .GetCustomAttributes<MoveCreatureDiagonallyAttribute>()
                     .Any())
                 .ToArray();
 
         private static readonly MethodInfo[] infoAboutMethodsOfTypeChangeConditionThatAffectsMovement =
             infoAboutMethodsOfTypeChangeCondition
-                .Where(methodInfo => methodInfo.GetCustomAttributes<ChangeConditionThatAffectsMovement>().Any())
+                .Where(methodInfo => methodInfo.GetCustomAttributes<ChangeConditionThatAffectsMovementAttribute>().Any())
                 .ToArray();
 
         [Test]
