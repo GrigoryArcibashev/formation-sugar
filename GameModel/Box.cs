@@ -1,4 +1,4 @@
-﻿namespace GameModel
+﻿namespace Model
 {
     public class Box : ICreature
     {

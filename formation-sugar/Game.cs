@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using GameModel;
+using Model;
 using View;
 
 namespace formation_sugar

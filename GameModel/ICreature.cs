@@ -1,4 +1,4 @@
-﻿namespace GameModel
+﻿namespace Model
 {
     public interface ICreature
     {

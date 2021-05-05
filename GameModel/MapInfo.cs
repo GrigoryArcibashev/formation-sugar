@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace GameModel
+namespace Model
 {
     public class MapInfo
     {

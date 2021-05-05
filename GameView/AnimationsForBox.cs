@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using GameModel;
+using Model;
 
 namespace View
 {

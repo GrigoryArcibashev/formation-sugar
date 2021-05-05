@@ -1,6 +1,4 @@
-﻿using Model;
-
-namespace GameModel
+﻿namespace Model
 {
     public interface IMovingCreature : ICreature
     {

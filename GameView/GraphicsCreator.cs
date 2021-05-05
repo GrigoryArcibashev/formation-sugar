@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using GameModel;
+using Model;
 
 namespace View
 {

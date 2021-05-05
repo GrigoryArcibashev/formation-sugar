@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using GameModel;
+using Model;
 
 namespace View
 {

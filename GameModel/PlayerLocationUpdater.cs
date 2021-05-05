@@ -1,4 +1,4 @@
-﻿namespace GameModel
+﻿namespace Model
 {
     public static class PlayerLocationUpdater
     {

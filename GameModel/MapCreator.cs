@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
-namespace GameModel
+namespace Model
 {
     public static class MapCreator
     {

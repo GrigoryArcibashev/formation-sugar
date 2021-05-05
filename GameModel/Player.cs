@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GameModel
+namespace Model
 {
     public class Player : IMovingCreature
     {
