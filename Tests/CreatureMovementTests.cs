@@ -157,7 +157,6 @@ namespace Tests
         public void CreatureShouldNotFallWhenNotEmptySpaceUnderIt()
         {
             map = new GameMap("test4.txt");
-            
             var expectedMovementCondition = MovementConditions.Default;
             map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Attacking, map.Player.Direction);
             expectedMovementCondition = GetMovementConditionsOfCreaturesOnMap().FirstOrDefault();
@@ -209,43 +208,6 @@ namespace Tests
             PlayerLocationUpdater.UpdatePlayerLocation(map);
             Assert.AreEqual(expectedCreatureCoordinates[0], map.GetCreatureLocation(map.Player));
         }
-
-        /*
-        [Test]
-        public void UpdateCreatureMovementCondition()
-        {
-            map = new GameMap("test6.txt");
-            var expectedMovementConditionsForRightSide = new []
-            {
-                MovementConditions.Jumping
-                MovementConditions.Falling
-                MovementConditions.Falling
-                MovementConditions.Running,
-                MovementConditions.StandingRight,
-                MovementConditions.SittingRight,
-                MovementConditions.AttackingRight,
-                MovementConditions.DieRight
-            };
-            
-            for (var i = 0; i < infoAboutMethodsOfTypeChangeCondition.Length; i++)
-            {
-                foreach (var creature in map.ListOfCreatures.OfType<IMovingCreature>())
-                {
-                    infoAboutMethodsOfTypeChangeCondition[i].Invoke(
-                        creature,
-                        infoAboutMethodsOfTypeChangeCondition[i].Name == "ChangeConditionToRun"
-                            ? new object[] {Direction.Right}
-                            : new object[] { });
-                    
-                    var conditions = GetMovementConditionsOfCreaturesOnMap();
-                    conditions = conditions.Distinct().ToArray();
-
-                    Assert.AreEqual(1, conditions.Length);
-                    Assert.AreEqual(expectedMovementConditionsForRightSide[i], creature.MovementCondition);
-                }
-            }
-        }
-        */
 
         private static MovementConditions[] GetMovementConditionsOfCreaturesOnMap()
         {
