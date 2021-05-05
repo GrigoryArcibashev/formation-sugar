@@ -62,7 +62,7 @@ namespace formation_sugar.GameModel
 
         public void ChangeConditionToFalling()
         {
-            MovementCondition = direction == Direction.Right
+            MovementCondition = direction is Direction.Right
                 ? MovementCondition = MovementConditions.FallingRight
                 : MovementCondition = MovementConditions.FallingLeft;
         }
@@ -75,24 +75,24 @@ namespace formation_sugar.GameModel
 
         public void ChangeConditionToAttacking()
         {
-            MovementCondition = direction == Direction.Right
+            MovementCondition = direction is Direction.Right
                 ? MovementCondition = MovementConditions.AttackingRight
                 : MovementCondition = MovementConditions.AttackingLeft;
         }
 
         public void ChangeConditionToDie()
         {
-            MovementCondition = direction == Direction.Right
+            MovementCondition = direction is Direction.Right
                 ? MovementCondition = MovementConditions.DieRight
                 : MovementCondition = MovementConditions.DieLeft;
         }
 
-        public void ChangeConditionToRun(Direction direction)
+        public void ChangeConditionToRun(Direction directionToChange)
         {
-            MovementCondition = direction == Direction.Right
+            MovementCondition = directionToChange is Direction.Right
                 ? MovementCondition = MovementConditions.RunningRight
                 : MovementCondition = MovementConditions.RunningLeft;
-            this.direction = direction;
+            this.direction = directionToChange;
         }
 
 

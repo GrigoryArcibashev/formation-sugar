@@ -11,29 +11,29 @@ namespace Tests
     {
         private static GameMap map;
 
-        private static readonly MethodInfo[] infoAboutMethodsOfTypeMoveCreature = typeof(GameMap)
+        private static readonly MethodInfo[] InfoAboutMethodsOfTypeMoveCreature = typeof(GameMap)
             .GetMethods()
             .Where(methodInfo => methodInfo
                 .GetCustomAttributes<MoveCreatureAttribute>()
                 .Any())
             .ToArray();
 
-        private static readonly MethodInfo[] infoAboutMethodsOfTypeChangeCondition = typeof(IMovingCreature)
+        private static readonly MethodInfo[] InfoAboutMethodsOfTypeChangeCondition = typeof(IMovingCreature)
             .GetMethods()
             .Where(methodInfo => methodInfo
                 .GetCustomAttributes<ChangeConditionAttribute>()
                 .Any())
             .ToArray();
 
-        private static readonly MethodInfo[] infoAboutMethodsOfTypeMoveCreatureDiagonally =
-            infoAboutMethodsOfTypeMoveCreature
+        private static readonly MethodInfo[] InfoAboutMethodsOfTypeMoveCreatureDiagonally =
+            InfoAboutMethodsOfTypeMoveCreature
                 .Where(methodInfo => methodInfo
                     .GetCustomAttributes<MoveCreatureDiagonallyAttribute>()
                     .Any())
                 .ToArray();
 
-        private static readonly MethodInfo[] infoAboutMethodsOfTypeChangeConditionThatAffectsMovement =
-            infoAboutMethodsOfTypeChangeCondition
+        private static readonly MethodInfo[] InfoAboutMethodsOfTypeChangeConditionThatAffectsMovement =
+            InfoAboutMethodsOfTypeChangeCondition
                 .Where(methodInfo => methodInfo.GetCustomAttributes<ChangeConditionThatAffectsMovementAttribute>().Any())
                 .ToArray();
 
@@ -53,10 +53,10 @@ namespace Tests
                 initCreatureLocation + new Size(0, map.Player.Velocity)
             };
 
-            for (var i = 0; i < infoAboutMethodsOfTypeMoveCreature.Length; i++)
+            for (var i = 0; i < InfoAboutMethodsOfTypeMoveCreature.Length; i++)
             {
                 map.Player.RecoverVelocity();
-                infoAboutMethodsOfTypeMoveCreature[i].Invoke(map, new object[] {map.Player});
+                InfoAboutMethodsOfTypeMoveCreature[i].Invoke(map, new object[] {map.Player});
                 Assert.AreEqual(expectedCreatureCoordinates[i], map.GetCreatureLocation(map.Player));
                 Assert.AreEqual(map[expectedCreatureCoordinates[i].X, expectedCreatureCoordinates[i].Y], map.Player);
             }
@@ -68,7 +68,7 @@ namespace Tests
             map = new GameMap("test2.txt");
             var expectedCreatureLocation = map.GetCreatureLocation(map.Player);
 
-            foreach (var methodInfo in infoAboutMethodsOfTypeMoveCreature)
+            foreach (var methodInfo in InfoAboutMethodsOfTypeMoveCreature)
             {
                 methodInfo.Invoke(map, new object[] {map.Player});
                 Assert.AreEqual(expectedCreatureLocation, map.GetCreatureLocation(map.Player));
@@ -82,7 +82,7 @@ namespace Tests
             map = new GameMap(level);
             var expectedCreatureLocation = map.GetCreatureLocation(map.Player);
 
-            foreach (var method in infoAboutMethodsOfTypeMoveCreatureDiagonally)
+            foreach (var method in InfoAboutMethodsOfTypeMoveCreatureDiagonally)
             {
                 method.Invoke(map, new object[] {map.Player});
                 Assert.AreEqual(expectedCreatureLocation, map.GetCreatureLocation(map.Player));
@@ -97,15 +97,15 @@ namespace Tests
 
             foreach (var creature in map.ListOfCreatures.OfType<IMovingCreature>())
                 creature.ChangeConditionToJumping();
-            var expectedMovementConditionsOfCreatures = GetMovementConditionsOfCreaturesOnMap(map);
+            var expectedMovementConditionsOfCreatures = GetMovementConditionsOfCreaturesOnMap();
             map.CheckCreaturesForFalling();
-            Assert.AreEqual(GetMovementConditionsOfCreaturesOnMap(map), expectedMovementConditionsOfCreatures);
+            Assert.AreEqual(GetMovementConditionsOfCreaturesOnMap(), expectedMovementConditionsOfCreatures);
 
             foreach (var creature in map.ListOfCreatures.OfType<IMovingCreature>())
                 creature.ChangeConditionToFalling();
-            expectedMovementConditionsOfCreatures = GetMovementConditionsOfCreaturesOnMap(map);
+            expectedMovementConditionsOfCreatures = GetMovementConditionsOfCreaturesOnMap();
             map.CheckCreaturesForFalling();
-            Assert.AreEqual(GetMovementConditionsOfCreaturesOnMap(map), expectedMovementConditionsOfCreatures);
+            Assert.AreEqual(GetMovementConditionsOfCreaturesOnMap(), expectedMovementConditionsOfCreatures);
         }
 
         [Test]
@@ -113,7 +113,7 @@ namespace Tests
         {
             map = new GameMap("test3.txt");
             
-            foreach (var method in infoAboutMethodsOfTypeChangeCondition.Skip(3))
+            foreach (var method in InfoAboutMethodsOfTypeChangeCondition.Skip(3))
             {
                 foreach (var creature in map.ListOfCreatures.OfType<IMovingCreature>())
                 {
@@ -138,7 +138,7 @@ namespace Tests
         {
             map = new GameMap("test4.txt");
 
-            foreach (var method in infoAboutMethodsOfTypeChangeCondition.Skip(3))
+            foreach (var method in InfoAboutMethodsOfTypeChangeCondition.Skip(3))
             {
                 foreach (var creature in map.ListOfCreatures.OfType<IMovingCreature>())
                 {
@@ -149,9 +149,9 @@ namespace Tests
                             : new object[] { });
                 }
 
-                var expectedCondition = GetMovementConditionsOfCreaturesOnMap(map);
+                var expectedCondition = GetMovementConditionsOfCreaturesOnMap();
                 map.CheckCreaturesForFalling();
-                Assert.AreEqual(expectedCondition, GetMovementConditionsOfCreaturesOnMap(map));
+                Assert.AreEqual(expectedCondition, GetMovementConditionsOfCreaturesOnMap());
             }
         }
 
@@ -169,12 +169,12 @@ namespace Tests
                 initCreatureLocation + new Size(3, map.Player.Velocity)
             };
 
-            for (var i = 0; i < infoAboutMethodsOfTypeChangeConditionThatAffectsMovement.Length; i++)
+            for (var i = 0; i < InfoAboutMethodsOfTypeChangeConditionThatAffectsMovement.Length; i++)
             {
                 map.Player.RecoverVelocity();
-                infoAboutMethodsOfTypeChangeConditionThatAffectsMovement[i].Invoke(
+                InfoAboutMethodsOfTypeChangeConditionThatAffectsMovement[i].Invoke(
                     map.Player,
-                    infoAboutMethodsOfTypeChangeConditionThatAffectsMovement[i].Name == "ChangeConditionToRun"
+                    InfoAboutMethodsOfTypeChangeConditionThatAffectsMovement[i].Name == "ChangeConditionToRun"
                         ? new object[] {Direction.Right}
                         : new object[] { });
 
@@ -187,7 +187,7 @@ namespace Tests
         public void UpdateCreatureMovementCondition()
         {
             map = new GameMap("test6.txt");
-            var expectedMovementConditionsForRightSide = new MovementConditions[]
+            var expectedMovementConditionsForRightSide = new []
             {
                 MovementConditions.JumpingRight,
                 MovementConditions.FallingRight,
@@ -199,17 +199,17 @@ namespace Tests
                 MovementConditions.DieRight
             };
             
-            for (var i = 0; i < infoAboutMethodsOfTypeChangeCondition.Length; i++)
+            for (var i = 0; i < InfoAboutMethodsOfTypeChangeCondition.Length; i++)
             {
                 foreach (var creature in map.ListOfCreatures.OfType<IMovingCreature>())
                 {
-                    infoAboutMethodsOfTypeChangeCondition[i].Invoke(
+                    InfoAboutMethodsOfTypeChangeCondition[i].Invoke(
                         creature,
-                        infoAboutMethodsOfTypeChangeCondition[i].Name == "ChangeConditionToRun"
+                        InfoAboutMethodsOfTypeChangeCondition[i].Name == "ChangeConditionToRun"
                             ? new object[] {Direction.Right}
                             : new object[] { });
                     
-                    var conditions = GetMovementConditionsOfCreaturesOnMap(map);
+                    var conditions = GetMovementConditionsOfCreaturesOnMap();
                     conditions = conditions.Distinct().ToArray();
 
                     Assert.AreEqual(1, conditions.Length);
@@ -218,7 +218,7 @@ namespace Tests
             }
         }
 
-        private static MovementConditions[] GetMovementConditionsOfCreaturesOnMap(GameMap map)
+        private static MovementConditions[] GetMovementConditionsOfCreaturesOnMap()
         {
             return map.ListOfCreatures
                 .OfType<IMovingCreature>()

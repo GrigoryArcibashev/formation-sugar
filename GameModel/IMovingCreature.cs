@@ -24,7 +24,7 @@
         
         [ChangeCondition]
         [ChangeConditionThatAffectsMovement]
-        void ChangeConditionToRun(Direction direction);
+        void ChangeConditionToRun(Direction directionToChange);
         
         [ChangeCondition]
         void ChangeConditionToStanding();
