@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using formation_sugar.GameModel;
+using GameModel;
 
-namespace formation_sugar.View
+namespace View
 {
     public static class GraphicsCreator
     {

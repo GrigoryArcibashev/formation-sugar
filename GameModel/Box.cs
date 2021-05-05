@@ -1,4 +1,4 @@
-﻿namespace formation_sugar.GameModel
+﻿namespace GameModel
 {
     public class Box : ICreature
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace formation_sugar.GameModel
+namespace GameModel
 {
     public class MapInfo
     {

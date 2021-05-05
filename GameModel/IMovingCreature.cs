@@ -1,4 +1,6 @@
-﻿namespace formation_sugar.GameModel
+﻿using Model;
+
+namespace GameModel
 {
     public interface IMovingCreature : ICreature
     {

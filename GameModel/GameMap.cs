@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using Model;
 
-namespace formation_sugar.GameModel
+namespace GameModel
 {
     public class GameMap
     {
@@ -45,19 +46,19 @@ namespace formation_sugar.GameModel
             return creaturesLocations[creature];
         }
 
-        [MoveCreatureAttribute]
+        [MoveCreature]
         public void MoveCreatureToRight(IMovingCreature creature)
         {
             MoveCreatureOn(creature, creaturesLocations[creature] + new Size(1, 0));
         }
 
-        [MoveCreatureAttribute]
+        [MoveCreature]
         public void MoveCreatureToLeft(IMovingCreature creature)
         {
             MoveCreatureOn(creature, creaturesLocations[creature] + new Size(-1, 0));
         }
 
-        [MoveCreatureAttribute]
+        [MoveCreature]
         [MoveCreatureDiagonally]
         public void MoveCreatureToRightAndToUp(IMovingCreature creature)
         {
@@ -68,7 +69,7 @@ namespace formation_sugar.GameModel
                 creature.ChangeConditionToFalling();
         }
 
-        [MoveCreatureAttribute]
+        [MoveCreature]
         [MoveCreatureDiagonally]
         public void MoveCreatureToLeftAndToUp(IMovingCreature creature)
         {
@@ -79,7 +80,7 @@ namespace formation_sugar.GameModel
                 creature.ChangeConditionToFalling();
         }
 
-        [MoveCreatureAttribute]
+        [MoveCreature]
         [MoveCreatureDiagonally]
         public void MoveCreatureToRightAndToDown(IMovingCreature creature)
         {
@@ -87,7 +88,7 @@ namespace formation_sugar.GameModel
                 creature.IncreaseVelocity();
         }
 
-        [MoveCreatureAttribute]
+        [MoveCreature]
         [MoveCreatureDiagonally]
         public void MoveCreatureToLeftAndToDown(IMovingCreature creature)
         {
@@ -95,7 +96,7 @@ namespace formation_sugar.GameModel
                 creature.IncreaseVelocity();
         }
 
-        [MoveCreatureAttribute]
+        [MoveCreature]
         public void MoveCreatureToDown(IMovingCreature creature)
         {
             MoveCreatureOn(creature, creaturesLocations[creature] + new Size(0, creature.Velocity));

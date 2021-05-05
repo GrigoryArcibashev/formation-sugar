@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
-namespace formation_sugar.GameModel
+namespace GameModel
 {
     public static class MapCreator
     {

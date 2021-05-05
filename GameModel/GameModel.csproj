@@ -1,16 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <Import Project="..\packages\NUnit.3.13.2\build\NUnit.props" Condition="Exists('..\packages\NUnit.3.13.2\build\NUnit.props')" />
     <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
     <PropertyGroup>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
         <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-        <ProjectGuid>{0DE59D92-0F1A-4B4B-AEFF-B6B6E9E4949F}</ProjectGuid>
-        <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+        <ProjectGuid>{28077754-7778-4C17-A6E1-047C07D2B3A5}</ProjectGuid>
         <OutputType>Library</OutputType>
         <AppDesignerFolder>Properties</AppDesignerFolder>
-        <RootNamespace>Tests</RootNamespace>
-        <AssemblyName>Tests</AssemblyName>
+        <RootNamespace>Model</RootNamespace>
+        <AssemblyName>GameModel</AssemblyName>
         <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
     </PropertyGroup>
@@ -34,41 +32,27 @@
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
     <ItemGroup>
-        <Reference Include="nunit.framework, Version=3.13.2.0, Culture=neutral, PublicKeyToken=2638cd05610744eb">
-          <HintPath>..\packages\NUnit.3.13.2\lib\net45\nunit.framework.dll</HintPath>
-          <Private>True</Private>
-        </Reference>
         <Reference Include="System" />
         <Reference Include="System.Core" />
         <Reference Include="System.Data" />
         <Reference Include="System.Drawing" />
-        <Reference Include="System.Windows.Forms" />
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="CreatureMovementTests.cs" />
+        <Compile Include="Attributes.cs" />
+        <Compile Include="Box.cs" />
+        <Compile Include="Direction.cs" />
+        <Compile Include="GameMap.cs" />
+        <Compile Include="ICreature.cs" />
+        <Compile Include="IMovingCreature.cs" />
+        <Compile Include="MapCreator.cs" />
+        <Compile Include="MapInfo.cs" />
+        <Compile Include="MovementCondition.cs" />
+        <Compile Include="Player.cs" />
+        <Compile Include="PlayerLocationUpdater.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
-    <ItemGroup>
-      <ProjectReference Include="..\formation-sugar\formation-sugar.csproj">
-        <Project>{075e45ef-4124-4937-9b7c-42f7eb22d3d1}</Project>
-        <Name>formation-sugar</Name>
-      </ProjectReference>
-      <ProjectReference Include="..\GameModel\GameModel.csproj">
-        <Project>{28077754-7778-4c17-a6e1-047c07d2b3a5}</Project>
-        <Name>GameModel</Name>
-      </ProjectReference>
-    </ItemGroup>
-    <ItemGroup>
-      <None Include="packages.config" />
-    </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-    <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-      <PropertyGroup>
-        <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105.The missing file is {0}.</ErrorText>
-      </PropertyGroup>
-      <Error Condition="!Exists('..\packages\NUnit.3.13.2\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit.3.13.2\build\NUnit.props'))" />
-    </Target>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
          Other similar extension points exist, see Microsoft.Common.targets.
     <Target Name="BeforeBuild">

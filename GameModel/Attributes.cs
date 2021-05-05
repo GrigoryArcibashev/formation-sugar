@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace formation_sugar.GameModel
+namespace Model
 {
     public class ChangeConditionAttribute : Attribute
     {

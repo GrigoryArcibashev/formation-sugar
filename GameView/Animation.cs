@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 
-namespace formation_sugar.View
+namespace View
 {
     public class Animation
     {

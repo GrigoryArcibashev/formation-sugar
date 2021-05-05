@@ -1,7 +1,8 @@
 ﻿using System.Drawing;
 using System.Linq;
 using System.Reflection;
-using formation_sugar.GameModel;
+using GameModel;
+using Model;
 using NUnit.Framework;
 
 namespace Tests

@@ -1,0 +1,9 @@
+C:\Users\Григорий\RiderProjects\Game\formation-sugar\GameView\bin\Debug\GameView.dll
+C:\Users\Григорий\RiderProjects\Game\formation-sugar\GameView\bin\Debug\GameView.pdb
+C:\Users\Григорий\RiderProjects\Game\formation-sugar\GameView\bin\Debug\GameModel.dll
+C:\Users\Григорий\RiderProjects\Game\formation-sugar\GameView\bin\Debug\GameModel.pdb
+C:\Users\Григорий\RiderProjects\Game\formation-sugar\GameView\obj\Debug\GameView.csprojAssemblyReference.cache
+C:\Users\Григорий\RiderProjects\Game\formation-sugar\GameView\obj\Debug\GameView.csproj.CoreCompileInputs.cache
+C:\Users\Григорий\RiderProjects\Game\formation-sugar\GameView\obj\Debug\GameView.csproj.CopyComplete
+C:\Users\Григорий\RiderProjects\Game\formation-sugar\GameView\obj\Debug\GameView.dll
+C:\Users\Григорий\RiderProjects\Game\formation-sugar\GameView\obj\Debug\GameView.pdb

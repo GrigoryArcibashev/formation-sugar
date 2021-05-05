@@ -77,7 +77,15 @@
     <ItemGroup>
         <None Include="App.config" />
     </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\GameModel\GameModel.csproj">
+        <Project>{28077754-7778-4c17-a6e1-047c07d2b3a5}</Project>
+        <Name>GameModel</Name>
+      </ProjectReference>
+      <ProjectReference Include="..\GameView\GameView.csproj">
+        <Project>{640add98-a2f5-4490-8ade-c7a982ec682a}</Project>
+        <Name>GameView</Name>
+      </ProjectReference>
+    </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-    <Import Project="..\GameModel\GameModel.projitems" Label="Shared" />
-    <Import Project="..\GameView\GameView.projitems" Label="Shared" />
 </Project>

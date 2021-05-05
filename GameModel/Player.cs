@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace formation_sugar.GameModel
+namespace GameModel
 {
     public class Player : IMovingCreature
     {

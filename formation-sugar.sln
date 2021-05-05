@@ -2,11 +2,11 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "formation-sugar", "formation-sugar\formation-sugar.csproj", "{075E45EF-4124-4937-9B7C-42F7EB22D3D1}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "GameModel", "GameModel\GameModel.shproj", "{1CE72399-69EE-49C9-842A-7C2BA959ED1C}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "GameView", "GameView\GameView.shproj", "{104F8BA8-6CCC-4A65-A3C6-20E7CCA86387}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{0DE59D92-0F1A-4B4B-AEFF-B6B6E9E4949F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameModel", "GameModel\GameModel.csproj", "{28077754-7778-4C17-A6E1-047C07D2B3A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameView", "GameView\GameView.csproj", "{640ADD98-A2F5-4490-8ADE-C7A982EC682A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,5 +22,13 @@ Global
 		{0DE59D92-0F1A-4B4B-AEFF-B6B6E9E4949F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0DE59D92-0F1A-4B4B-AEFF-B6B6E9E4949F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0DE59D92-0F1A-4B4B-AEFF-B6B6E9E4949F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28077754-7778-4C17-A6E1-047C07D2B3A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28077754-7778-4C17-A6E1-047C07D2B3A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28077754-7778-4C17-A6E1-047C07D2B3A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28077754-7778-4C17-A6E1-047C07D2B3A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{640ADD98-A2F5-4490-8ADE-C7A982EC682A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{640ADD98-A2F5-4490-8ADE-C7A982EC682A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{640ADD98-A2F5-4490-8ADE-C7A982EC682A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{640ADD98-A2F5-4490-8ADE-C7A982EC682A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,6 @@
+C:\Users\Григорий\RiderProjects\Game\formation-sugar\Model\bin\Debug\Model.dll
+C:\Users\Григорий\RiderProjects\Game\formation-sugar\Model\bin\Debug\Model.pdb
+C:\Users\Григорий\RiderProjects\Game\formation-sugar\Model\obj\Debug\Model.csprojAssemblyReference.cache
+C:\Users\Григорий\RiderProjects\Game\formation-sugar\Model\obj\Debug\Model.csproj.CoreCompileInputs.cache
+C:\Users\Григорий\RiderProjects\Game\formation-sugar\Model\obj\Debug\Model.dll
+C:\Users\Григорий\RiderProjects\Game\formation-sugar\Model\obj\Debug\Model.pdb
