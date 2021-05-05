@@ -11,7 +11,7 @@ namespace Model
         private readonly List<FileInfo> levels;
         private DirectoryInfo fullPathToLevels;
         private ICreature[,] map;
-        private Dictionary<ICreature, Point> creaturesLocations;
+        private readonly Dictionary<ICreature, Point> creaturesLocations;
 
         public List<ICreature> ListOfCreatures { get; private set; }
         public Player Player { get; private set; }

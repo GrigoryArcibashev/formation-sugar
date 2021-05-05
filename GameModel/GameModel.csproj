@@ -41,15 +41,15 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Attributes.cs" />
-        <Compile Include="Box.cs" />
+        <Compile Include="Creatures\Box.cs" />
+        <Compile Include="Creatures\ICreature.cs" />
+        <Compile Include="Creatures\IMovingCreature.cs" />
+        <Compile Include="Creatures\Player.cs" />
         <Compile Include="Direction.cs" />
         <Compile Include="GameMap.cs" />
-        <Compile Include="ICreature.cs" />
-        <Compile Include="IMovingCreature.cs" />
         <Compile Include="MapCreator.cs" />
         <Compile Include="MapInfo.cs" />
         <Compile Include="MovementCondition.cs" />
-        <Compile Include="Player.cs" />
         <Compile Include="PlayerLocationUpdater.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
