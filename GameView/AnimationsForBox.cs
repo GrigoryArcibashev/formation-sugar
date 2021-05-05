@@ -8,7 +8,7 @@ namespace View
         public static readonly Dictionary<MovementConditions, string> AnimationForBox =
             new Dictionary<MovementConditions, string>
             {
-                {MovementConditions.Default, @"Sprites\simpleGrass"}
+                {MovementConditions.Default, @"Sprites\boxAnimations"}
             };
     }
 }
