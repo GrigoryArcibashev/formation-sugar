@@ -10,17 +10,12 @@ namespace View
     {
         public static Dictionary<MovementConditions, Animation> GetAnimationFor(ICreature movingCreature)
         {
-            switch (movingCreature.GetTypeAsString())
+            return movingCreature switch
             {
-                case "Player":
-                    return GetAnimationForCreature(AnimationsForPlayer.AnimationForPlayer);
-
-                case "Box":
-                    return GetAnimationForCreature(AnimationsForBox.AnimationForBox);
-
-                default:
-                    return default;
-            }
+                Player => GetAnimationForCreature(AnimationsForPlayer.AnimationForPlayer),
+                Box => GetAnimationForCreature(AnimationsForBox.AnimationForBox),
+                _ => default
+            };
         }
 
         private static Dictionary<MovementConditions, Animation> GetAnimationForCreature(
