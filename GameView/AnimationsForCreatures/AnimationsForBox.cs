@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Model;
 
-namespace View
+namespace View.AnimationsForCreatures
 {
     public static class AnimationsForBox
     {

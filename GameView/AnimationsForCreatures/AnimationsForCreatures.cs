@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Model;
+using Model.Creatures;
 
-namespace View
+namespace View.AnimationsForCreatures
 {
     public static class AnimationsForCreatures
     {

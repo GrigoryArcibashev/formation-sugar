@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using Model;
+using Model.Creatures;
 using NUnit.Framework;
 
 namespace Tests

@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using Model;
+using Model.Creatures;
 using View;
+using View.AnimationsForCreatures;
 
 namespace formation_sugar
 {

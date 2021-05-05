@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using Model;
+using Model.Creatures;
 
 namespace View
 {
