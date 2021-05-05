@@ -9,7 +9,7 @@ namespace View.AnimationsForCreatures
 {
     public static class AnimationsForCreatures
     {
-        public static Dictionary<MovementConditions, Animation> GetAnimationFor(ICreature movingCreature)
+        public static Dictionary<(MovementConditions, Direction), Animation> GetAnimationFor(ICreature movingCreature)
         {
             return movingCreature.GetTypeAsString() switch
             {
@@ -19,8 +19,8 @@ namespace View.AnimationsForCreatures
             };
         }
 
-        private static Dictionary<MovementConditions, Animation> GetAnimationForCreature(
-            Dictionary<MovementConditions, string> creature)
+        private static Dictionary<(MovementConditions, Direction), Animation> GetAnimationForCreature(
+            Dictionary<(MovementConditions, Direction), string> creature)
         {
             var currentDirectory = new DirectoryInfo(Directory.GetCurrentDirectory()).Parent?.Parent?.FullName;
             return creature.ToDictionary(

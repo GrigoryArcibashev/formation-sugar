@@ -45,58 +45,47 @@ namespace Model
         {
             return creaturesLocations[creature];
         }
-
-        [MoveCreature]
+        
         public void MoveCreatureToRight(IMovingCreature creature)
         {
             MoveCreatureOn(creature, creaturesLocations[creature] + new Size(1, 0));
         }
-
-        [MoveCreature]
+        
         public void MoveCreatureToLeft(IMovingCreature creature)
         {
             MoveCreatureOn(creature, creaturesLocations[creature] + new Size(-1, 0));
         }
-
-        [MoveCreature]
-        [MoveCreatureDiagonally]
+        
         public void MoveCreatureToRightAndToUp(IMovingCreature creature)
         {
             if (MoveCreatureOn(creature, creaturesLocations[creature] + new Size(1, -creature.Velocity)))
                 creature.ReduceVelocity();
             
             if (creature.Velocity <= 0)
-                creature.ChangeConditionToFalling();
+                creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Falling, creature.Direction);
         }
-
-        [MoveCreature]
-        [MoveCreatureDiagonally]
+        
         public void MoveCreatureToLeftAndToUp(IMovingCreature creature)
         {
             if (MoveCreatureOn(creature, creaturesLocations[creature] + new Size(-1, -creature.Velocity)))
                 creature.ReduceVelocity();
             
             if (creature.Velocity <= 0)
-                creature.ChangeConditionToFalling();
+                creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Falling, creature.Direction);
         }
-
-        [MoveCreature]
-        [MoveCreatureDiagonally]
+        
         public void MoveCreatureToRightAndToDown(IMovingCreature creature)
         {
             if (MoveCreatureOn(creature, creaturesLocations[creature] + new Size(1, creature.Velocity)))
                 creature.IncreaseVelocity();
         }
-
-        [MoveCreature]
-        [MoveCreatureDiagonally]
+        
         public void MoveCreatureToLeftAndToDown(IMovingCreature creature)
         {
             if (MoveCreatureOn(creature, creaturesLocations[creature] + new Size(-1, creature.Velocity)))
                 creature.IncreaseVelocity();
         }
-
-        [MoveCreature]
+        
         public void MoveCreatureToDown(IMovingCreature creature)
         {
             MoveCreatureOn(creature, creaturesLocations[creature] + new Size(0, creature.Velocity));
@@ -110,7 +99,7 @@ namespace Model
                 if (creature.IsFalling() || creature.IsJumping() || !IsThereNothingUnderCreature(creature))
                     continue;
                 creature.ResetVelocityToZero();
-                creature.ChangeConditionToFallingDown();
+                creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Falling, Direction.Front);
             }
         }
 
@@ -125,13 +114,18 @@ namespace Model
             {
                 if (creature.IsJumping())
                 {
-                    creature.ChangeConditionToFalling();
+                    creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Falling, creature.Direction);
                     creature.ResetVelocityToZero();
                 }
                 
                 else if (creature.IsFalling())
                 {
-                    creature.ChangeConditionToStanding();
+                    if (creature.Direction is Direction.Front)
+                    {
+                        creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing, Direction.Right);
+                    }
+                    
+                    creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing, creature.Direction);
                     creature.RecoverVelocity();
                 }
 

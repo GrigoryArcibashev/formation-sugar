@@ -5,10 +5,10 @@ namespace View.AnimationsForCreatures
 {
     public static class AnimationsForBox
     {
-        public static readonly Dictionary<MovementConditions, string> AnimationForBox =
-            new Dictionary<MovementConditions, string>
+        public static readonly Dictionary<(MovementConditions, Direction), string> AnimationForBox =
+            new Dictionary<(MovementConditions, Direction), string>
             {
-                {MovementConditions.Default, @"Sprites\boxAnimations"}
+                {(MovementConditions.Default, Direction.Front), @"Sprites\boxAnimations"}
             };
     }
 }

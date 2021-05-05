@@ -1,6 +1,5 @@
 ﻿using System.Drawing;
 using System.Linq;
-using System.Reflection;
 using Model;
 using Model.Creatures;
 using NUnit.Framework;
@@ -11,33 +10,7 @@ namespace Tests
     public class CreatureMovementTests
     {
         private static GameMap map;
-
-        private static readonly MethodInfo[] infoAboutMethodsOfTypeMoveCreature = typeof(GameMap)
-            .GetMethods()
-            .Where(methodInfo => methodInfo
-                .GetCustomAttributes<MoveCreatureAttribute>()
-                .Any())
-            .ToArray();
-
-        private static readonly MethodInfo[] infoAboutMethodsOfTypeChangeCondition = typeof(IMovingCreature)
-            .GetMethods()
-            .Where(methodInfo => methodInfo
-                .GetCustomAttributes<ChangeConditionAttribute>()
-                .Any())
-            .ToArray();
-
-        private static readonly MethodInfo[] infoAboutMethodsOfTypeMoveCreatureDiagonally =
-            infoAboutMethodsOfTypeMoveCreature
-                .Where(methodInfo => methodInfo
-                    .GetCustomAttributes<MoveCreatureDiagonallyAttribute>()
-                    .Any())
-                .ToArray();
-
-        private static readonly MethodInfo[] infoAboutMethodsOfTypeChangeConditionThatAffectsMovement =
-            infoAboutMethodsOfTypeChangeCondition
-                .Where(methodInfo => methodInfo.GetCustomAttributes<ChangeConditionThatAffectsMovementAttribute>().Any())
-                .ToArray();
-
+        
         [Test]
         public void CreatureMoveToEverySide()
         {
@@ -53,14 +26,31 @@ namespace Tests
                 initCreatureLocation + new Size(0, 0),
                 initCreatureLocation + new Size(0, map.Player.Velocity)
             };
-
-            for (var i = 0; i < infoAboutMethodsOfTypeMoveCreature.Length; i++)
-            {
-                map.Player.RecoverVelocity();
-                infoAboutMethodsOfTypeMoveCreature[i].Invoke(map, new object[] {map.Player});
-                Assert.AreEqual(expectedCreatureCoordinates[i], map.GetCreatureLocation(map.Player));
-                Assert.AreEqual(map[expectedCreatureCoordinates[i].X, expectedCreatureCoordinates[i].Y], map.Player);
-            }
+            
+            map.MoveCreatureToRight(map.Player);
+            Assert.AreEqual(expectedCreatureCoordinates[0], map.GetCreatureLocation(map.Player));
+            
+            map.MoveCreatureToLeft(map.Player);
+            Assert.AreEqual(expectedCreatureCoordinates[1], map.GetCreatureLocation(map.Player));
+            
+            map.MoveCreatureToRightAndToUp(map.Player);
+            Assert.AreEqual(expectedCreatureCoordinates[2], map.GetCreatureLocation(map.Player));
+            
+            map.Player.RecoverVelocity();
+            map.MoveCreatureToLeftAndToUp(map.Player);
+            Assert.AreEqual(expectedCreatureCoordinates[3], map.GetCreatureLocation(map.Player));
+            
+            map.Player.RecoverVelocity();
+            map.MoveCreatureToRightAndToDown(map.Player);
+            Assert.AreEqual(expectedCreatureCoordinates[4], map.GetCreatureLocation(map.Player));
+            
+            map.Player.RecoverVelocity();
+            map.MoveCreatureToLeftAndToDown(map.Player);
+            Assert.AreEqual(expectedCreatureCoordinates[5], map.GetCreatureLocation(map.Player));
+            
+            map.Player.RecoverVelocity();
+            map.MoveCreatureToDown(map.Player);
+            Assert.AreEqual(expectedCreatureCoordinates[6], map.GetCreatureLocation(map.Player));
         }
 
         [Test]
@@ -68,12 +58,27 @@ namespace Tests
         {
             map = new GameMap("test2.txt");
             var expectedCreatureLocation = map.GetCreatureLocation(map.Player);
-
-            foreach (var methodInfo in infoAboutMethodsOfTypeMoveCreature)
-            {
-                methodInfo.Invoke(map, new object[] {map.Player});
-                Assert.AreEqual(expectedCreatureLocation, map.GetCreatureLocation(map.Player));
-            }
+            
+            map.MoveCreatureToDown(map.Player);
+            Assert.AreEqual(expectedCreatureLocation, map.GetCreatureLocation(map.Player));
+            
+            map.MoveCreatureToLeft(map.Player);
+            Assert.AreEqual(expectedCreatureLocation, map.GetCreatureLocation(map.Player));
+            
+            map.MoveCreatureToRight(map.Player);
+            Assert.AreEqual(expectedCreatureLocation, map.GetCreatureLocation(map.Player));
+            
+            map.MoveCreatureToLeftAndToDown(map.Player);
+            Assert.AreEqual(expectedCreatureLocation, map.GetCreatureLocation(map.Player));
+            
+            map.MoveCreatureToLeftAndToUp(map.Player);
+            Assert.AreEqual(expectedCreatureLocation, map.GetCreatureLocation(map.Player));
+            
+            map.MoveCreatureToRightAndToDown(map.Player);
+            Assert.AreEqual(expectedCreatureLocation, map.GetCreatureLocation(map.Player));
+            
+            map.MoveCreatureToRightAndToUp(map.Player);
+            Assert.AreEqual(expectedCreatureLocation, map.GetCreatureLocation(map.Player));
         }
 
         [TestCase("test3.txt", TestName = "Creature can't move to right and left")]
@@ -82,12 +87,18 @@ namespace Tests
         {
             map = new GameMap(level);
             var expectedCreatureLocation = map.GetCreatureLocation(map.Player);
-
-            foreach (var method in infoAboutMethodsOfTypeMoveCreatureDiagonally)
-            {
-                method.Invoke(map, new object[] {map.Player});
-                Assert.AreEqual(expectedCreatureLocation, map.GetCreatureLocation(map.Player));
-            }
+            
+            map.MoveCreatureToRightAndToUp(map.Player);
+            Assert.AreEqual(expectedCreatureLocation, map.GetCreatureLocation(map.Player));
+            
+            map.MoveCreatureToLeftAndToUp(map.Player);
+            Assert.AreEqual(expectedCreatureLocation, map.GetCreatureLocation(map.Player));
+            
+            map.MoveCreatureToRightAndToDown(map.Player);
+            Assert.AreEqual(expectedCreatureLocation, map.GetCreatureLocation(map.Player));
+            
+            map.MoveCreatureToLeftAndToDown(map.Player);
+            Assert.AreEqual(expectedCreatureLocation, map.GetCreatureLocation(map.Player));
         }
 
         [TestCase("test3.txt", TestName = "There is not empty space under the creatures")]
@@ -97,65 +108,89 @@ namespace Tests
             map = new GameMap(level);
 
             foreach (var creature in map.ListOfCreatures.OfType<IMovingCreature>())
-                creature.ChangeConditionToJumping();
+                creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Jumping, creature.Direction);
+            
             var expectedMovementConditionsOfCreatures = GetMovementConditionsOfCreaturesOnMap();
             map.CheckCreaturesForFalling();
             Assert.AreEqual(GetMovementConditionsOfCreaturesOnMap(), expectedMovementConditionsOfCreatures);
 
             foreach (var creature in map.ListOfCreatures.OfType<IMovingCreature>())
-                creature.ChangeConditionToFalling();
+                creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Falling, creature.Direction);
+            
             expectedMovementConditionsOfCreatures = GetMovementConditionsOfCreaturesOnMap();
             map.CheckCreaturesForFalling();
             Assert.AreEqual(GetMovementConditionsOfCreaturesOnMap(), expectedMovementConditionsOfCreatures);
         }
 
         [Test]
-        public void CreatureShouldFallWhenEmptySpaceUnderIt()
+        public void CreatureShouldFallWhenEmptySpaceUnderItAndWhenNotJumping()
         {
             map = new GameMap("test3.txt");
             
-            foreach (var method in infoAboutMethodsOfTypeChangeCondition.Skip(3))
-            {
-                foreach (var creature in map.ListOfCreatures.OfType<IMovingCreature>())
-                {
-                    method.Invoke(
-                        creature,
-                        method.Name == "ChangeConditionToRun"
-                            ? new object[] {Direction.Right}
-                            : new object[] { });
-                }
-                
-                map.CheckCreaturesForFalling();
-                
-                foreach (var creature in map.ListOfCreatures.OfType<IMovingCreature>())
-                {
-                    Assert.AreEqual(MovementConditions.FallingDown, creature.MovementCondition);
-                }
-            }
+            map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Attacking, map.Player.Direction);
+            map.CheckCreaturesForFalling();
+            Assert.AreEqual(MovementConditions.Falling, map.Player.MovementCondition);
+            
+            map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Dying, map.Player.Direction);
+            map.CheckCreaturesForFalling();
+            Assert.AreEqual(MovementConditions.Falling, map.Player.MovementCondition);
+            
+            map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Falling, map.Player.Direction);
+            map.CheckCreaturesForFalling();
+            Assert.AreEqual(MovementConditions.Falling, map.Player.MovementCondition);
+
+            map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Running, map.Player.Direction);
+            map.CheckCreaturesForFalling();
+            Assert.AreEqual(MovementConditions.Falling, map.Player.MovementCondition);
+            
+            map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Sitting, map.Player.Direction);
+            map.CheckCreaturesForFalling();
+            Assert.AreEqual(MovementConditions.Falling, map.Player.MovementCondition);
+            
+            map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing, map.Player.Direction);
+            map.CheckCreaturesForFalling();
+            Assert.AreEqual(MovementConditions.Falling, map.Player.MovementCondition);
         }
+        
         
         [Test]
         public void CreatureShouldNotFallWhenNotEmptySpaceUnderIt()
         {
             map = new GameMap("test4.txt");
+            
+            var expectedMovementCondition = MovementConditions.Default;
+            map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Attacking, map.Player.Direction);
+            expectedMovementCondition = GetMovementConditionsOfCreaturesOnMap().FirstOrDefault();
+            map.CheckCreaturesForFalling();
+            Assert.AreEqual(expectedMovementCondition, map.Player.MovementCondition);
+            
+            map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Dying, map.Player.Direction);
+            expectedMovementCondition = GetMovementConditionsOfCreaturesOnMap().FirstOrDefault();
+            map.CheckCreaturesForFalling();
+            Assert.AreEqual(expectedMovementCondition, map.Player.MovementCondition);
 
-            foreach (var method in infoAboutMethodsOfTypeChangeCondition.Skip(3))
-            {
-                foreach (var creature in map.ListOfCreatures.OfType<IMovingCreature>())
-                {
-                    method.Invoke(
-                        creature,
-                        method.Name == "ChangeConditionToRun"
-                            ? new object[] {Direction.Right}
-                            : new object[] { });
-                }
+            map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Falling, map.Player.Direction);
+            expectedMovementCondition = GetMovementConditionsOfCreaturesOnMap().FirstOrDefault();
+            map.CheckCreaturesForFalling();
+            Assert.AreEqual(expectedMovementCondition, map.Player.MovementCondition);
 
-                var expectedCondition = GetMovementConditionsOfCreaturesOnMap();
-                map.CheckCreaturesForFalling();
-                Assert.AreEqual(expectedCondition, GetMovementConditionsOfCreaturesOnMap());
-            }
+            map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Running, map.Player.Direction);
+            expectedMovementCondition = GetMovementConditionsOfCreaturesOnMap().FirstOrDefault();
+            map.CheckCreaturesForFalling();
+            Assert.AreEqual(expectedMovementCondition, map.Player.MovementCondition);
+            
+            map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Sitting, map.Player.Direction);
+            expectedMovementCondition = GetMovementConditionsOfCreaturesOnMap().FirstOrDefault();
+            map.CheckCreaturesForFalling();
+            Assert.AreEqual(expectedMovementCondition, map.Player.MovementCondition);
+            
+            map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing, map.Player.Direction);
+            expectedMovementCondition = GetMovementConditionsOfCreaturesOnMap().FirstOrDefault();
+            map.CheckCreaturesForFalling();
+            Assert.AreEqual(expectedMovementCondition, map.Player.MovementCondition);
         }
 
+        
         [Test]
         public void UpdatePlayerLocationOnMap()
         {
@@ -169,31 +204,23 @@ namespace Tests
                 initCreatureLocation + new Size(2, map.Player.Velocity),
                 initCreatureLocation + new Size(3, map.Player.Velocity)
             };
-
-            for (var i = 0; i < infoAboutMethodsOfTypeChangeConditionThatAffectsMovement.Length; i++)
-            {
-                map.Player.RecoverVelocity();
-                infoAboutMethodsOfTypeChangeConditionThatAffectsMovement[i].Invoke(
-                    map.Player,
-                    infoAboutMethodsOfTypeChangeConditionThatAffectsMovement[i].Name == "ChangeConditionToRun"
-                        ? new object[] {Direction.Right}
-                        : new object[] { });
-
-                PlayerLocationUpdater.UpdatePlayerLocation(map);
-                Assert.AreEqual(expectedCreatureCoordinates[i], map.GetCreatureLocation(map.Player));
-            }
+            
+            
+            PlayerLocationUpdater.UpdatePlayerLocation(map);
+            Assert.AreEqual(expectedCreatureCoordinates[0], map.GetCreatureLocation(map.Player));
         }
 
+        /*
         [Test]
         public void UpdateCreatureMovementCondition()
         {
             map = new GameMap("test6.txt");
             var expectedMovementConditionsForRightSide = new []
             {
-                MovementConditions.JumpingRight,
-                MovementConditions.FallingRight,
-                MovementConditions.FallingDown,
-                MovementConditions.RunningRight,
+                MovementConditions.Jumping
+                MovementConditions.Falling
+                MovementConditions.Falling
+                MovementConditions.Running,
                 MovementConditions.StandingRight,
                 MovementConditions.SittingRight,
                 MovementConditions.AttackingRight,
@@ -218,6 +245,7 @@ namespace Tests
                 }
             }
         }
+        */
 
         private static MovementConditions[] GetMovementConditionsOfCreaturesOnMap()
         {

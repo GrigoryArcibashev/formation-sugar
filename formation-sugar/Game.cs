@@ -11,7 +11,7 @@ namespace formation_sugar
     public sealed partial class Game : Form
     {
         private readonly GameMap map;
-        private readonly Dictionary<ICreature, Dictionary<MovementConditions, Animation>> animationsForCreatures;
+        private readonly Dictionary<ICreature, Dictionary<(MovementConditions, Direction), Animation>> animationsForCreatures;
         private readonly Timer timerForCreaturesMovements;
 
         public Game()
@@ -21,12 +21,12 @@ namespace formation_sugar
             timerForCreaturesMovements.Tick += CheckCreaturesForFalling;
             timerForCreaturesMovements.Tick += UpdatePlayerLocationOnMap;
 
-            animationsForCreatures = new Dictionary<ICreature, Dictionary<MovementConditions, Animation>>();
+            animationsForCreatures = new Dictionary<ICreature, Dictionary<(MovementConditions, Direction), Animation>>();
             foreach (var creature in map.ListOfCreatures)
                 AddAnimationsForCreature(creature);
             new Timer {Interval = 50, Enabled = true}.Tick += (sender, args) =>
             {
-                animationsForCreatures[map.Player][map.Player.MovementCondition].MoveNextSprite();
+                animationsForCreatures[map.Player][(map.Player.MovementCondition, map.Player.Direction)].MoveNextSprite();
                 Invalidate();
             };
 
@@ -48,19 +48,19 @@ namespace formation_sugar
             switch (e.KeyCode)
             {
                 case Keys.D:
-                    map.Player.ChangeConditionToRun(Direction.Right);
+                    map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Running, Direction.Right);
                     break;
 
                 case Keys.A:
-                    map.Player.ChangeConditionToRun(Direction.Left);
+                    map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Running, Direction.Left);
                     break;
 
                 case Keys.S:
-                    map.Player.ChangeConditionToSitting();
+                    map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Sitting, map.Player.Direction);
                     break;
 
                 case Keys.W:
-                    map.Player.ChangeConditionToJumping();
+                    map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Jumping, map.Player.Direction);
                     return;
             }
         }
@@ -68,7 +68,7 @@ namespace formation_sugar
         protected override void OnKeyUp(KeyEventArgs e)
         {
             if (ShouldButtonPressesBeProcessed())
-                map.Player.ChangeConditionToStanding();
+                map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing, map.Player.Direction);
         }
 
         private bool ShouldButtonPressesBeProcessed()

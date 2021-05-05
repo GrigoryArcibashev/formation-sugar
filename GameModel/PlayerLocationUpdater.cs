@@ -4,33 +4,33 @@
     {
         public static void UpdatePlayerLocation(GameMap map)
         {
-            switch (map.Player.MovementCondition)
+            switch (map.Player.MovementCondition, map.Player.Direction)
             {
-                case MovementConditions.RunningRight:
+                case (MovementConditions.Running, Direction.Right):
                     map.MoveCreatureToRight(map.Player);
                     break;
 
-                case MovementConditions.RunningLeft:
+                case (MovementConditions.Running, Direction.Left):
                     map.MoveCreatureToLeft(map.Player);
                     break;
 
-                case MovementConditions.JumpingRight:
+                case (MovementConditions.Jumping, Direction.Right):
                     map.MoveCreatureToRightAndToUp(map.Player);
                     break;
 
-                case MovementConditions.JumpingLeft:
+                case (MovementConditions.Jumping, Direction.Left):
                     map.MoveCreatureToLeftAndToUp(map.Player);
                     break;
 
-                case MovementConditions.FallingRight:
+                case (MovementConditions.Falling, Direction.Right):
                     map.MoveCreatureToRightAndToDown(map.Player);
                     break;
 
-                case MovementConditions.FallingLeft:
+                case (MovementConditions.Falling, Direction.Left):
                     map.MoveCreatureToLeftAndToDown(map.Player);
                     break;
                 
-                case MovementConditions.FallingDown:
+                case (MovementConditions.Falling, Direction.Front):
                     map.MoveCreatureToDown(map.Player);
                     break;
             }

@@ -5,19 +5,18 @@ namespace Model.Creatures
     public class Player : IMovingCreature
     {
         private readonly int initialVelocity;
-        private Direction direction;
         public int Velocity { get; private set; }
         public int Health { get; private set; }
         public MovementConditions MovementCondition { get; private set; }
-
+        public Direction Direction { get; private set; }
 
         public Player(int initialHealth = 0, int initialVelocity = 0)
         {
             Health = initialHealth;
             Velocity = initialVelocity;
             this.initialVelocity = initialVelocity;
-            MovementCondition = MovementConditions.StandingRight;
-            direction = Direction.Right;
+            MovementCondition = MovementConditions.Standing;
+            Direction = Direction.Right;
         }
 
         public void ChangeHealthBy(int deltaHealth)
@@ -28,71 +27,18 @@ namespace Model.Creatures
 
         public bool IsJumping()
         {
-            return MovementCondition == MovementConditions.JumpingRight ||
-                   MovementCondition == MovementConditions.JumpingLeft;
+            return MovementCondition == MovementConditions.Jumping;
         }
 
         public bool IsFalling()
         {
-            return MovementCondition == MovementConditions.FallingRight ||
-                   MovementCondition == MovementConditions.FallingLeft ||
-                   MovementCondition == MovementConditions.FallingDown;
+            return MovementCondition == MovementConditions.Falling;
         }
-
-        public void ChangeConditionToStanding()
-        {
-            MovementCondition = direction is Direction.Right
-                ? MovementConditions.StandingRight
-                : MovementConditions.StandingLeft;
-        }
-
-        public void ChangeConditionToSitting()
-        {
-            MovementCondition = direction is Direction.Right
-                ? MovementConditions.SittingRight
-                : MovementConditions.SittingLeft;
-        }
-
-        public void ChangeConditionToJumping()
-        {
-            MovementCondition = direction is Direction.Right
-                ? MovementConditions.JumpingRight
-                : MovementConditions.JumpingLeft;
-        }
-
-        public void ChangeConditionToFalling()
-        {
-            MovementCondition = direction is Direction.Right
-                ? MovementCondition = MovementConditions.FallingRight
-                : MovementCondition = MovementConditions.FallingLeft;
-        }
-
         
-        public void ChangeConditionToFallingDown()
+        public void ChangeMovementConditionAndDirectionTo(MovementConditions movementConditionTo, Direction directionTo)
         {
-            MovementCondition = MovementConditions.FallingDown;
-        }
-
-        public void ChangeConditionToAttacking()
-        {
-            MovementCondition = direction is Direction.Right
-                ? MovementCondition = MovementConditions.AttackingRight
-                : MovementCondition = MovementConditions.AttackingLeft;
-        }
-
-        public void ChangeConditionToDie()
-        {
-            MovementCondition = direction is Direction.Right
-                ? MovementCondition = MovementConditions.DieRight
-                : MovementCondition = MovementConditions.DieLeft;
-        }
-
-        public void ChangeConditionToRun(Direction directionToChange)
-        {
-            MovementCondition = directionToChange is Direction.Right
-                ? MovementCondition = MovementConditions.RunningRight
-                : MovementCondition = MovementConditions.RunningLeft;
-            this.direction = directionToChange;
+            MovementCondition = movementConditionTo;
+            Direction = directionTo;
         }
 
 

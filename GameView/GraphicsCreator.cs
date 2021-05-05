@@ -9,12 +9,12 @@ namespace View
     {
         public static void CreateGraphic(
             Graphics graphics,
-            Dictionary<ICreature, Dictionary<MovementConditions, Animation>> animationsForCreatures,
+            Dictionary<ICreature, Dictionary<(MovementConditions, Direction), Animation>> animationsForCreatures,
             GameMap map)
         {
             foreach (var creature in map.ListOfCreatures)
                 graphics.DrawImage(
-                    animationsForCreatures[creature][creature.MovementCondition].Current,
+                    animationsForCreatures[creature][(creature.MovementCondition, creature.Direction)].Current,
                     ScaleCoordinatesInPercents(map.GetCreatureLocation(creature), 300));
         }
 

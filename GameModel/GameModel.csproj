@@ -40,7 +40,6 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Attributes.cs" />
         <Compile Include="Creatures\Box.cs" />
         <Compile Include="Creatures\ICreature.cs" />
         <Compile Include="Creatures\IMovingCreature.cs" />
