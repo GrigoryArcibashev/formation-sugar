@@ -41,7 +41,7 @@ namespace Model
             }
 
             if (player == default)
-                throw new Exception("You forgot to add player on the level");
+                throw new Exception("You forgot to add a player on the level");
             return new MapInfo(map, player, listOfCreatures);
         }
 
