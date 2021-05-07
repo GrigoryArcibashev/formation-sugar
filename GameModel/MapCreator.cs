@@ -31,9 +31,9 @@ namespace Model
 
         public static MapInfo GetNextMap()
         {
-            var cratedMap = CreateMap(File.ReadAllLines(levels[numberOfCurrentLevel]));
+            var createdMap = CreateMap(File.ReadAllLines(levels[numberOfCurrentLevel]));
             numberOfCurrentLevel = (numberOfCurrentLevel + 1) % levels.Length;
-            return cratedMap;
+            return createdMap;
         }
 
         public static void GoToLevel(string levelName)

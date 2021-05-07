@@ -17,7 +17,9 @@ namespace Tests
             MapCreator.LoadLevels("LevelsForTests");
             MapCreator.GoToLevel("test1.txt");
             map = new GameMap();
+            
             var initCreatureLocation = map.GetCreatureLocation(map.Player);
+            
             var expectedCreatureCoordinates = new[]
             {
                 initCreatureLocation + new Size(1, 0),

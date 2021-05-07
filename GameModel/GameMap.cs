@@ -20,16 +20,7 @@ namespace Model
         {
             LoadNextMap();
         }
-
-        public void LoadNextMap()
-        {
-            var mapInfo = MapCreator.GetNextMap();
-            ListOfCreatures = mapInfo.ListOfCreatures;
-            Player = mapInfo.Player;
-            map = mapInfo.Map;
-            creaturesLocations = GetCreaturesLocations();
-        }
-
+        
         public Point GetCreatureLocation(ICreature creature)
         {
             return creaturesLocations[creature];
@@ -81,6 +72,7 @@ namespace Model
                     nameof(horizontalShift),
                     "The direction of movement is specified incorrectly")
             };
+            
             MoveCreatureOn(creature, creaturesLocations[creature] + shift);
         }
 
@@ -94,8 +86,10 @@ namespace Model
                     nameof(horizontalShift),
                     "The direction of movement is specified incorrectly")
             };
+            
             if (MoveCreatureOn(creature, creaturesLocations[creature] + shift))
                 creature.ReduceVelocity();
+            
             if (creature.Velocity <= 0)
                 creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Falling, creature.Direction);
         }
@@ -111,6 +105,7 @@ namespace Model
                     nameof(horizontalShift),
                     "The direction of movement is specified incorrectly")
             };
+            
             if (MoveCreatureOn(creature, creaturesLocations[creature] + shift))
                 creature.IncreaseVelocity();
         }
@@ -167,6 +162,15 @@ namespace Model
                     if (map[x, y] == creature)
                         locations.Add(creature, new Point(x, y));
             return locations;
+        }
+        
+        private void LoadNextMap()
+        {
+            var mapInfo = MapCreator.GetNextMap();
+            ListOfCreatures = mapInfo.ListOfCreatures;
+            Player = mapInfo.Player;
+            map = mapInfo.Map;
+            creaturesLocations = GetCreaturesLocations();
         }
     }
 }
