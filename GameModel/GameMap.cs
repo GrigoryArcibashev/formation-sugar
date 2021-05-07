@@ -10,11 +10,11 @@ namespace Model
     {
         private ICreature[,] map;
         private Dictionary<ICreature, Point> creaturesLocations;
+        private int Width => map.GetLength(0);
+        private int Height => map.GetLength(1);
 
         public List<ICreature> ListOfCreatures { get; private set; }
         public Player Player { get; private set; }
-        private int Width => map.GetLength(0);
-        private int Height => map.GetLength(1);
 
         public GameMap()
         {
@@ -147,24 +147,7 @@ namespace Model
 
         private bool IsMovementPossible(IMovingCreature creature, Point target)
         {
-            var topLeftCorner = new Point(
-                Math.Min(target.X, creaturesLocations[creature].X),
-                Math.Min(target.Y, creaturesLocations[creature].Y));
-            var bottomRightCorner = new Point(
-                Math.Max(target.X, creaturesLocations[creature].X),
-                Math.Max(target.Y, creaturesLocations[creature].Y));
-            return IsPointInBounds(target) && IsMapPieceEmpty(topLeftCorner, bottomRightCorner);
-        }
-
-        // Тут стоит временный костыль Map[x, y] != Player
-        // В дальнейшем его нужно будет обязательно убрать
-        private bool IsMapPieceEmpty(Point topLeftCorner, Point bottomRightCorner)
-        {
-            for (var x = topLeftCorner.X; x <= bottomRightCorner.X; x++)
-            for (var y = topLeftCorner.Y; y <= bottomRightCorner.Y; y++)
-                if (map[x, y] != Player && map[x, y] != null)
-                    return false;
-            return true;
+            return IsPointInBounds(target) && map[target.X, target.Y] == null;
         }
 
         private bool IsPointInBounds(Point point)
