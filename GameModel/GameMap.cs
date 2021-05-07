@@ -68,7 +68,7 @@ namespace Model
 
         private bool IsThereNothingUnderCreature(IMovingCreature creature)
         {
-            return IsMovementPossible(creature, creaturesLocations[creature] + new Size(0, 1));
+            return IsMovementPossible(creaturesLocations[creature] + new Size(0, 1));
         }
 
         private void MoveCreatureToSide(IMovingCreature creature, Direction horizontalShift)
@@ -117,7 +117,7 @@ namespace Model
 
         private bool MoveCreatureOn(IMovingCreature creature, Point targetLocation)
         {
-            if (!IsMovementPossible(creature, targetLocation))
+            if (!IsMovementPossible(targetLocation))
             {
                 if (creature.IsJumping())
                 {
@@ -145,7 +145,7 @@ namespace Model
             return true;
         }
 
-        private bool IsMovementPossible(IMovingCreature creature, Point target)
+        private bool IsMovementPossible(Point target)
         {
             return IsPointInBounds(target) && map[target.X, target.Y] == null;
         }
