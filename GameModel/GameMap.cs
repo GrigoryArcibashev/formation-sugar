@@ -138,7 +138,16 @@ namespace Model
 
         private bool IsMovementPossible(IMovingCreature creature, Point target)
         {
-            return IsPointInBounds(target) && (map[target.X, target.Y] is null || map[target.X, target.Y] == creature);
+            return IsPointInBounds(target) && (map[target.X, target.Y] is null || map[target.X, target.Y] == creature ||
+                                               IsCreatureNotBlockedFromAbove(creature));
+        }
+
+        private bool IsCreatureNotBlockedFromAbove(IMovingCreature creature)
+        {
+            var creatureLocation = GetCreatureLocation(creature);
+            if (IsPointInBounds(new Point(creatureLocation.X, creatureLocation.Y + 1)))
+                return map[creatureLocation.X, creatureLocation.Y + 1] is null;
+            return false;
         }
 
         private bool IsPointInBounds(Point point)

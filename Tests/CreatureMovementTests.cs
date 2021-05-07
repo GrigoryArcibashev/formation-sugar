@@ -315,8 +315,8 @@ namespace Tests
             map.MoveCreature(map.Player, Direction.NoMovement, Direction.Down);
             Assert.AreEqual(initialPosition, map.GetCreatureLocation(map.Player));
             
-            /*map.MoveCreature(map.Player, Direction.Right, Direction.Up);
-            Assert.AreEqual(initialPosition, map.GetCreatureLocation(map.Player));*/ // not works, need to fix jumping
+            map.MoveCreature(map.Player, Direction.Right, Direction.Up);
+            Assert.AreEqual(initialPosition, map.GetCreatureLocation(map.Player));
         }
         
         private static MovementConditions[] GetMovementConditionsOfCreaturesOnMap()
