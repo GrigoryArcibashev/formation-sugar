@@ -39,57 +39,65 @@ namespace Model
             FillLocations();
         }
 
-        public ICreature this[int x, int y] => map[x, y];
-
         public Point GetCreatureLocation(ICreature creature)
         {
             return creaturesLocations[creature];
         }
-        
-        public void MoveCreatureToRight(IMovingCreature creature)
+
+        public void MoveCreature(IMovingCreature creature, Direction horizontalDirection, Direction verticalDirection)
         {
-            MoveCreatureOn(creature, creaturesLocations[creature] + new Size(1, 0));
+            switch (verticalDirection)
+            {
+                case Direction.NoMovement:
+                    MoveCreatureToSide(creature, horizontalDirection);
+                    break;
+                case Direction.Up:
+                    MoveCreatureUp(creature, horizontalDirection);
+                    break;
+                case Direction.Down:
+                    MoveCreatureDown(creature, horizontalDirection);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("Неверно указано направление движения");
+            }
         }
-        
-        public void MoveCreatureToLeft(IMovingCreature creature)
+
+        private void MoveCreatureToSide(IMovingCreature creature, Direction horizontalShift)
         {
-            MoveCreatureOn(creature, creaturesLocations[creature] + new Size(-1, 0));
+            var shift = horizontalShift switch
+            {
+                Direction.Right => new Size(1, 0),
+                Direction.Left => new Size(-1, 0),
+                _ => throw new ArgumentOutOfRangeException("Неверно указано направление движения")
+            };
+            MoveCreatureOn(creature, creaturesLocations[creature] + shift);
         }
-        
-        public void MoveCreatureToRightAndToUp(IMovingCreature creature)
+
+        private void MoveCreatureUp(IMovingCreature creature, Direction horizontalShift)
         {
-            if (MoveCreatureOn(creature, creaturesLocations[creature] + new Size(1, -creature.Velocity)))
+            var shift = horizontalShift switch
+            {
+                Direction.Right => new Size(1, -creature.Velocity),
+                Direction.Left => new Size(-1, -creature.Velocity),
+                _ => throw new ArgumentOutOfRangeException("Неверно указано направление движения")
+            };
+            if (MoveCreatureOn(creature, creaturesLocations[creature] + shift))
                 creature.ReduceVelocity();
-            
             if (creature.Velocity <= 0)
                 creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Falling, creature.Direction);
         }
-        
-        public void MoveCreatureToLeftAndToUp(IMovingCreature creature)
+
+        private void MoveCreatureDown(IMovingCreature creature, Direction horizontalShift)
         {
-            if (MoveCreatureOn(creature, creaturesLocations[creature] + new Size(-1, -creature.Velocity)))
-                creature.ReduceVelocity();
-            
-            if (creature.Velocity <= 0)
-                creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Falling, creature.Direction);
-        }
-        
-        public void MoveCreatureToRightAndToDown(IMovingCreature creature)
-        {
-            if (MoveCreatureOn(creature, creaturesLocations[creature] + new Size(1, creature.Velocity)))
+            var shift = horizontalShift switch
+            {
+                Direction.NoMovement => new Size(0, creature.Velocity),
+                Direction.Right => new Size(1, creature.Velocity),
+                Direction.Left => new Size(-1, creature.Velocity),
+                _ => throw new ArgumentOutOfRangeException("Неверно указано направление движения")
+            };
+            if (MoveCreatureOn(creature, creaturesLocations[creature] + shift))
                 creature.IncreaseVelocity();
-        }
-        
-        public void MoveCreatureToLeftAndToDown(IMovingCreature creature)
-        {
-            if (MoveCreatureOn(creature, creaturesLocations[creature] + new Size(-1, creature.Velocity)))
-                creature.IncreaseVelocity();
-        }
-        
-        public void MoveCreatureToDown(IMovingCreature creature)
-        {
-            MoveCreatureOn(creature, creaturesLocations[creature] + new Size(0, creature.Velocity));
-            creature.IncreaseVelocity();
         }
 
         public void CheckCreaturesForFalling()
@@ -99,7 +107,7 @@ namespace Model
                 if (creature.IsFalling() || creature.IsJumping() || !IsThereNothingUnderCreature(creature))
                     continue;
                 creature.ResetVelocityToZero();
-                creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Falling, Direction.Front);
+                creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Falling, Direction.NoMovement);
             }
         }
 
@@ -117,14 +125,14 @@ namespace Model
                     creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Falling, creature.Direction);
                     creature.ResetVelocityToZero();
                 }
-                
+
                 else if (creature.IsFalling())
                 {
-                    if (creature.Direction is Direction.Front)
+                    if (creature.Direction is Direction.NoMovement)
                     {
                         creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing, Direction.Right);
                     }
-                    
+
                     creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing, creature.Direction);
                     creature.RecoverVelocity();
                 }
@@ -154,14 +162,9 @@ namespace Model
         private bool IsMapPieceEmpty(Point topLeftCorner, Point bottomRightCorner)
         {
             for (var x = topLeftCorner.X; x <= bottomRightCorner.X; x++)
-            {
-                for (var y = topLeftCorner.Y; y <= bottomRightCorner.Y; y++)
-                {
-                    if (map [x, y] != Player && map[x, y] != null)
-                        return false;
-                }
-            }
-
+            for (var y = topLeftCorner.Y; y <= bottomRightCorner.Y; y++)
+                if (map[x, y] != Player && map[x, y] != null)
+                    return false;
             return true;
         }
 
@@ -212,18 +215,10 @@ namespace Model
         private void FillLocations()
         {
             foreach (var creature in ListOfCreatures)
-            {
                 for (var x = 0; x < Width; x++)
-                {
-                    for (var y = 0; y < Height; y++)
-                    {
-                        if (map[x, y] == creature)
-                        {
-                            creaturesLocations.Add(creature, new Point(x, y));
-                        }
-                    }
-                }
-            }
+                for (var y = 0; y < Height; y++)
+                    if (map[x, y] == creature)
+                        creaturesLocations.Add(creature, new Point(x, y));
         }
     }
 }

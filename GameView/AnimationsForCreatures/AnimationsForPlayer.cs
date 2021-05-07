@@ -18,7 +18,7 @@ namespace View.AnimationsForCreatures
                 {(MovementConditions.Jumping, Direction.Left), @"Sprites\playerAnimations\jumpingLeft"},
                 {(MovementConditions.Falling, Direction.Right), @"Sprites\playerAnimations\jumpingRight"},
                 {(MovementConditions.Falling, Direction.Left), @"Sprites\playerAnimations\jumpingLeft"},
-                {(MovementConditions.Falling, Direction.Front), @"Sprites\playerAnimations\jumpingRight"},
+                {(MovementConditions.Falling, Direction.NoMovement), @"Sprites\playerAnimations\jumpingRight"},
                 {(MovementConditions.Attacking, Direction.Right), @"Sprites\playerAnimations\attackingRight"},
                 {(MovementConditions.Attacking, Direction.Left), @"Sprites\playerAnimations\attackingLeft"},
                 {(MovementConditions.Dying, Direction.Right), @"Sprites\playerAnimations\dieRight"},

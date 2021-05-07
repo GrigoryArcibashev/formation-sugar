@@ -8,7 +8,7 @@
         public Box()
         {
             MovementCondition = MovementConditions.Default;
-            Direction = Direction.Front;
+            Direction = Direction.NoMovement;
         }
 
         public string GetTypeAsString()

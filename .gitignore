@@ -2,6 +2,10 @@
 packages/
 formation-sugar/bin
 formation-sugar/obj
+GameModel/bin
+GameModel/obj
+GameView/bin
+GameView/obj
 Tests/bin
 Tests/obj
 formation-sugar.sln.DotSettings.user

@@ -4,6 +4,8 @@
     {
         Left,
         Right,
-        Front,
+        NoMovement,
+        Up,
+        Down
     }
 }

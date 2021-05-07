@@ -8,7 +8,7 @@ namespace View.AnimationsForCreatures
         public static readonly Dictionary<(MovementConditions, Direction), string> AnimationForBox =
             new Dictionary<(MovementConditions, Direction), string>
             {
-                {(MovementConditions.Default, Direction.Front), @"Sprites\boxAnimations"}
+                {(MovementConditions.Default, Direction.NoMovement), @"Sprites\boxAnimations"}
             };
     }
 }

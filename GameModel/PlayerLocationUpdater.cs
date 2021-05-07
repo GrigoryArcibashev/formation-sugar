@@ -7,31 +7,31 @@
             switch (map.Player.MovementCondition, map.Player.Direction)
             {
                 case (MovementConditions.Running, Direction.Right):
-                    map.MoveCreatureToRight(map.Player);
+                    map.MoveCreature(map.Player, Direction.Right, Direction.NoMovement);
                     break;
 
                 case (MovementConditions.Running, Direction.Left):
-                    map.MoveCreatureToLeft(map.Player);
+                    map.MoveCreature(map.Player, Direction.Left, Direction.NoMovement);
                     break;
 
                 case (MovementConditions.Jumping, Direction.Right):
-                    map.MoveCreatureToRightAndToUp(map.Player);
+                    map.MoveCreature(map.Player, Direction.Right, Direction.Up);
                     break;
 
                 case (MovementConditions.Jumping, Direction.Left):
-                    map.MoveCreatureToLeftAndToUp(map.Player);
+                    map.MoveCreature(map.Player, Direction.Left, Direction.Up);
                     break;
 
                 case (MovementConditions.Falling, Direction.Right):
-                    map.MoveCreatureToRightAndToDown(map.Player);
+                    map.MoveCreature(map.Player, Direction.Right, Direction.Down);
                     break;
 
                 case (MovementConditions.Falling, Direction.Left):
-                    map.MoveCreatureToLeftAndToDown(map.Player);
+                    map.MoveCreature(map.Player, Direction.Left, Direction.Down);
                     break;
-                
-                case (MovementConditions.Falling, Direction.Front):
-                    map.MoveCreatureToDown(map.Player);
+
+                case (MovementConditions.Falling, Direction.NoMovement):
+                    map.MoveCreature(map.Player, Direction.NoMovement, Direction.Down);
                     break;
             }
         }
