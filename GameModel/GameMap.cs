@@ -20,16 +20,7 @@ namespace Model
         {
             LoadNextMap();
         }
-
-        public void LoadNextMap()
-        {
-            var mapInfo = MapCreator.GetNextMap();
-            ListOfCreatures = mapInfo.ListOfCreatures;
-            Player = mapInfo.Player;
-            map = mapInfo.Map;
-            creaturesLocations = GetCreaturesLocations();
-        }
-
+        
         public Point GetCreatureLocation(ICreature creature)
         {
             return creaturesLocations[creature];
@@ -167,6 +158,15 @@ namespace Model
                     if (map[x, y] == creature)
                         locations.Add(creature, new Point(x, y));
             return locations;
+        }
+        
+        private void LoadNextMap()
+        {
+            var mapInfo = MapCreator.GetNextMap();
+            ListOfCreatures = mapInfo.ListOfCreatures;
+            Player = mapInfo.Player;
+            map = mapInfo.Map;
+            creaturesLocations = GetCreaturesLocations();
         }
     }
 }
