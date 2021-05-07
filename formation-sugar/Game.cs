@@ -16,7 +16,7 @@ namespace formation_sugar
 
         public Game()
         {
-            map = new GameMap("level1.txt");
+            map = new GameMap();
             timerForCreaturesMovements = new Timer {Interval = 30, Enabled = true};
             timerForCreaturesMovements.Tick += CheckCreaturesForFalling;
             timerForCreaturesMovements.Tick += UpdatePlayerLocationOnMap;

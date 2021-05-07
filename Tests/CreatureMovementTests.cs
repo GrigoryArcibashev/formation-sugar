@@ -14,7 +14,9 @@ namespace Tests
         [Test]
         public void CreatureMoveToEverySide()
         {
-            map = new GameMap("test1.txt");
+            MapCreator.LoadLevels("LevelsForTests");
+            MapCreator.GoToLevel("test1.txt");
+            map = new GameMap();
             var initCreatureLocation = map.GetCreatureLocation(map.Player);
             var expectedCreatureCoordinates = new[]
             {
@@ -56,7 +58,9 @@ namespace Tests
         [Test]
         public void CreatureCanNotMoveOffMap()
         {
-            map = new GameMap("test2.txt");
+            MapCreator.LoadLevels("LevelsForTests");
+            MapCreator.GoToLevel("test2.txt");
+            map = new GameMap();
             var expectedCreatureLocation = map.GetCreatureLocation(map.Player);
 
             map.MoveCreature(map.Player, Direction.Right, Direction.NoMovement);
@@ -85,7 +89,9 @@ namespace Tests
         [TestCase("test4.txt", TestName = "Creature can't move to up and down")]
         public void CannotMoveDiagonallyWhenImpossibleMoveInAnyDirection(string level)
         {
-            map = new GameMap(level);
+            MapCreator.LoadLevels("LevelsForTests");
+            MapCreator.GoToLevel(level);
+            map = new GameMap();
             var expectedCreatureLocation = map.GetCreatureLocation(map.Player);
 
             map.MoveCreature(map.Player, Direction.Right, Direction.Up);
@@ -105,7 +111,9 @@ namespace Tests
         [TestCase("test4.txt", TestName = "Empty space under the creatures")]
         public void CheckCreaturesForFallingTestWhenCreaturesAreJumpingOrFalling(string level)
         {
-            map = new GameMap(level);
+            MapCreator.LoadLevels("LevelsForTests");
+            MapCreator.GoToLevel(level);
+            map = new GameMap();
 
             foreach (var creature in map.ListOfCreatures.OfType<IMovingCreature>())
                 creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Jumping, creature.Direction);
@@ -125,7 +133,9 @@ namespace Tests
         [Test]
         public void CreatureShouldFallWhenEmptySpaceUnderItAndWhenNotJumping()
         {
-            map = new GameMap("test3.txt");
+            MapCreator.LoadLevels("LevelsForTests");
+            MapCreator.GoToLevel("test3.txt");
+            map = new GameMap();
 
             map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Attacking, map.Player.Direction);
             map.CheckCreaturesForFalling();
@@ -156,10 +166,12 @@ namespace Tests
         [Test]
         public void CreatureShouldNotFallWhenNotEmptySpaceUnderIt()
         {
-            map = new GameMap("test4.txt");
-            var expectedMovementCondition = MovementConditions.Default;
+            MapCreator.LoadLevels("LevelsForTests");
+            MapCreator.GoToLevel("test4.txt");
+            map = new GameMap();
+
             map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Attacking, map.Player.Direction);
-            expectedMovementCondition = GetMovementConditionsOfCreaturesOnMap().FirstOrDefault();
+            var expectedMovementCondition = GetMovementConditionsOfCreaturesOnMap().FirstOrDefault();
             map.CheckCreaturesForFalling();
             Assert.AreEqual(expectedMovementCondition, map.Player.MovementCondition);
 
@@ -193,7 +205,9 @@ namespace Tests
         [Test]
         public void UpdatePlayerLocationOnMap()
         {
-            map = new GameMap("test1.txt");
+            /*MapCreator.LoadLevels("LevelsForTests");
+            MapCreator.GoToLevel("test1.txt");
+            map = new GameMap();
 
             var initCreatureLocation = map.GetCreatureLocation(map.Player);
             var expectedCreatureCoordinates = new[]
@@ -205,8 +219,8 @@ namespace Tests
             };
 
 
-            // PlayerLocationUpdater.UpdatePlayerLocation(map);
-            // Assert.AreEqual(expectedCreatureCoordinates[0], map.GetCreatureLocation(map.Player));
+            PlayerLocationUpdater.UpdatePlayerLocation(map);
+            Assert.AreEqual(expectedCreatureCoordinates[0], map.GetCreatureLocation(map.Player));*/
         }
 
         private static MovementConditions[] GetMovementConditionsOfCreaturesOnMap()
