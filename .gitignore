@@ -1,11 +1,8 @@
+#Ignore files built by Rider
 .idea/
+*/bin/
+*/obj/
+*.exe
+*.user
+#Nuget packages folder
 packages/
-formation-sugar/bin
-formation-sugar/obj
-GameModel/bin
-GameModel/obj
-GameView/bin
-GameView/obj
-Tests/bin
-Tests/obj
-formation-sugar.sln.DotSettings.user
