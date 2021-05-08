@@ -1,4 +1,4 @@
-﻿using System.Drawing;
+﻿/*using System.Drawing;
 using System.Linq;
 using Model;
 using Model.Creatures;
@@ -327,4 +327,4 @@ namespace Tests
                 .ToArray();
         }
     }
-}
+}*/

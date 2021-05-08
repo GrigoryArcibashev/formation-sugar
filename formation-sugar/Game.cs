@@ -17,14 +17,14 @@ namespace formation_sugar
         public Game()
         {
             map = new GameMap();
-            timerForCreaturesMovements = new Timer {Interval = 30, Enabled = true};
+            timerForCreaturesMovements = new Timer {Interval = 100, Enabled = true};
             timerForCreaturesMovements.Tick += CheckCreaturesForFalling;
             timerForCreaturesMovements.Tick += UpdatePlayerLocationOnMap;
 
             animationsForCreatures = new Dictionary<ICreature, Dictionary<(MovementConditions, Direction), Animation>>();
             foreach (var creature in map.ListOfCreatures)
                 AddAnimationsForCreature(creature);
-            new Timer {Interval = 50, Enabled = true}.Tick += (sender, args) =>
+            new Timer {Interval = 100, Enabled = true}.Tick += (sender, args) =>
             {
                 animationsForCreatures[map.Player][(map.Player.MovementCondition, map.Player.Direction)].MoveNextSprite();
                 Invalidate();
@@ -41,34 +41,46 @@ namespace formation_sugar
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            if (!ShouldButtonPressesBeProcessed())
+            /*if (!ShouldButtonPressesBeProcessed())
                 return;
-
-            timerForCreaturesMovements.Interval = e.Modifiers == Keys.Shift ? 10 : 30;
+            timerForCreaturesMovements.Interval = e.Modifiers == Keys.Shift ? 10 : 30;*/
             switch (e.KeyCode)
             {
                 case Keys.D:
-                    map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Running, Direction.Right);
+                    if (map.Player.IsFalling() || map.Player.IsJumping())
+                        map.Player.ChangeMovementConditionAndDirectionTo(map.Player.MovementCondition, Direction.Right);
+                    else
+                        map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Running, Direction.Right);
                     break;
 
                 case Keys.A:
-                    map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Running, Direction.Left);
+                    if (map.Player.IsFalling() || map.Player.IsJumping())
+                        map.Player.ChangeMovementConditionAndDirectionTo(map.Player.MovementCondition, Direction.Left);
+                    else
+                        map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Running, Direction.Left);
                     break;
 
                 case Keys.S:
-                    map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Sitting, map.Player.Direction);
+                    if (ShouldButtonPressesBeProcessed())
+                        map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Sitting, map.Player.Direction);
                     break;
 
                 case Keys.W:
-                    map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Jumping, map.Player.Direction);
+                    if (ShouldButtonPressesBeProcessed())
+                        map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Jumping, Direction.NoMovement);
                     return;
             }
         }
 
         protected override void OnKeyUp(KeyEventArgs e)
         {
-            if (ShouldButtonPressesBeProcessed())
-                map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing, map.Player.Direction);
+            if (map.Player.IsFalling() || map.Player.IsJumping())
+                map.Player.ChangeMovementConditionAndDirectionTo(map.Player.MovementCondition, Direction.NoMovement);
+            else
+            {
+                var direction = map.Player.Direction == Direction.NoMovement ? Direction.Right : map.Player.Direction;
+                map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing, direction);
+            }
         }
 
         private bool ShouldButtonPressesBeProcessed()
