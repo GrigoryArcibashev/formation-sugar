@@ -106,6 +106,7 @@ namespace Model
 
             creature.ReduceVelocity();
             return true;
+            
             /*if (MoveCreatureOn(creature, creaturesLocations[creature] + new Size(0, -creature.Velocity)))
                 creature.ReduceVelocity();
             if (creature.Velocity <= 0)
@@ -120,6 +121,10 @@ namespace Model
                 return true;
             }
 
+            while (MoveCreatureOn(creature, creaturesLocations[creature] + new Size(0, 1)))
+            {
+            }
+            
             if (creature.Direction is Direction.NoMovement)
                 creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing, Direction.Right);
             creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing, creature.Direction);
@@ -170,18 +175,29 @@ namespace Model
 
         private bool IsMovementPossible(IMovingCreature creature, Point target)
         {
-            return IsPointInBounds(target) && (map[target.X, target.Y] is null || map[target.X, target.Y] == creature ||
-                                               IsCreatureNotBlockedFromAbove(creature));
+            var topLeftCorner = new Point(
+                Math.Min(target.X, creaturesLocations[creature].X),
+                Math.Min(target.Y, creaturesLocations[creature].Y));
+            var bottomRightCorner = new Point(
+                Math.Max(target.X, creaturesLocations[creature].X),
+                Math.Max(target.Y, creaturesLocations[creature].Y));
+            return IsPointInBounds(target) && IsMapPieceEmpty(creature, topLeftCorner, bottomRightCorner);
         }
-
-        private bool IsCreatureNotBlockedFromAbove(IMovingCreature creature)
+        
+        private bool IsMapPieceEmpty(IMovingCreature creature, Point topLeftCorner, Point bottomRightCorner)
         {
-            var creatureLocation = GetCreatureLocation(creature);
-            if (IsPointInBounds(new Point(creatureLocation.X, creatureLocation.Y + 1)))
-                return map[creatureLocation.X, creatureLocation.Y + 1] is null;
-            return false;
-        }
+            for (var x = topLeftCorner.X; x <= bottomRightCorner.X; x++)
+            {
+                for (var y = topLeftCorner.Y; y <= bottomRightCorner.Y; y++)
+                {
+                    if (map [x, y] != creature && map[x, y] != null)
+                        return false;
+                }
+            }
 
+            return true;
+        }
+        
         private bool IsPointInBounds(Point point)
         {
             return point.X >= 0
