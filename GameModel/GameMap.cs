@@ -20,13 +20,32 @@ namespace Model
         {
             LoadNextMap();
         }
-        
+
         public Point GetCreatureLocation(ICreature creature)
         {
             return creaturesLocations[creature];
         }
 
-        public void MoveCreature(IMovingCreature creature, Direction horizontalDirection, Direction verticalDirection)
+        public bool MoveCreature(IMovingCreature creature, Direction direction)
+        {
+            switch (direction)
+            {
+                case Direction.Right:
+                    return MoveCreatureToSide(creature, direction);
+                case Direction.Left:
+                    return MoveCreatureToSide(creature, direction);
+                case Direction.Up:
+                    return MoveCreatureUp(creature);
+                case Direction.Down:
+                    return MoveCreatureDown(creature);
+                case Direction.NoMovement:
+                    return true;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
+            }
+        }
+
+        /*public void MoveCreature(IMovingCreature creature, Direction horizontalDirection, Direction verticalDirection)
         {
             switch (verticalDirection)
             {
@@ -44,7 +63,7 @@ namespace Model
                         nameof(verticalDirection),
                         "The direction of movement is specified incorrectly");
             }
-        }
+        }*/
 
         public void CheckCreaturesForFalling()
         {
@@ -62,20 +81,53 @@ namespace Model
             return IsMovementPossible(creature, creaturesLocations[creature] + new Size(0, 1));
         }
 
-        private void MoveCreatureToSide(IMovingCreature creature, Direction horizontalShift)
+        private bool MoveCreatureToSide(IMovingCreature creature, Direction direction)
         {
-            var shift = horizontalShift switch
+            var shift = direction switch
             {
                 Direction.Right => new Size(1, 0),
                 Direction.Left => new Size(-1, 0),
                 _ => throw new ArgumentOutOfRangeException(
-                    nameof(horizontalShift),
+                    nameof(direction),
                     "The direction of movement is specified incorrectly")
             };
-            MoveCreatureOn(creature, creaturesLocations[creature] + shift);
+            return MoveCreatureOn(creature, creaturesLocations[creature] + shift);
         }
 
-        private void MoveCreatureUp(IMovingCreature creature, Direction horizontalShift)
+        private bool MoveCreatureUp(IMovingCreature creature)
+        {
+            if (!MoveCreatureOn(creature, creaturesLocations[creature] + new Size(0, -creature.Velocity))
+                || creature.Velocity <= 0)
+            {
+                creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Falling, creature.Direction);
+                creature.ResetVelocityToZero();
+                return false;
+            }
+
+            creature.ReduceVelocity();
+            return true;
+            /*if (MoveCreatureOn(creature, creaturesLocations[creature] + new Size(0, -creature.Velocity)))
+                creature.ReduceVelocity();
+            if (creature.Velocity <= 0)
+                creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Falling, creature.Direction);*/
+        }
+
+        private bool MoveCreatureDown(IMovingCreature creature)
+        {
+            if (MoveCreatureOn(creature, creaturesLocations[creature] + new Size(0, creature.Velocity)))
+            {
+                creature.IncreaseVelocity();
+                return true;
+            }
+
+            if (creature.Direction is Direction.NoMovement)
+                creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing, Direction.Right);
+            creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing, creature.Direction);
+            creature.RecoverVelocity();
+            return false;
+        }
+
+        /*private void MoveCreatureUp(IMovingCreature creature, Direction horizontalShift)
         {
             var shift = horizontalShift switch
             {
@@ -104,32 +156,12 @@ namespace Model
             };
             if (MoveCreatureOn(creature, creaturesLocations[creature] + shift))
                 creature.IncreaseVelocity();
-        }
+        }*/
 
         private bool MoveCreatureOn(IMovingCreature creature, Point targetLocation)
         {
             if (!IsMovementPossible(creature, targetLocation))
-            {
-                if (creature.IsJumping())
-                {
-                    creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Falling, creature.Direction);
-                    creature.ResetVelocityToZero();
-                }
-
-                else if (creature.IsFalling())
-                {
-                    if (creature.Direction is Direction.NoMovement)
-                    {
-                        creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing, Direction.Right);
-                    }
-
-                    creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing, creature.Direction);
-                    creature.RecoverVelocity();
-                }
-
                 return false;
-            }
-
             map[creaturesLocations[creature].X, creaturesLocations[creature].Y] = null;
             map[targetLocation.X, targetLocation.Y] = creature;
             creaturesLocations[creature] = targetLocation;
@@ -168,7 +200,7 @@ namespace Model
                         locations.Add(creature, new Point(x, y));
             return locations;
         }
-        
+
         private void LoadNextMap()
         {
             var mapInfo = MapCreator.GetNextMap();

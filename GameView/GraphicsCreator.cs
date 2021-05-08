@@ -15,7 +15,7 @@ namespace View
             foreach (var creature in map.ListOfCreatures)
                 graphics.DrawImage(
                     animationsForCreatures[creature][(creature.MovementCondition, creature.Direction)].Current,
-                    ScaleCoordinatesInPercents(map.GetCreatureLocation(creature), 300));
+                    ScaleCoordinatesInPercents(map.GetCreatureLocation(creature), 200));
         }
 
         private static Point ScaleCoordinatesInPercents(Point coordinates, double percent) //улучшить метод

@@ -36,7 +36,7 @@ namespace formation_sugar
             UpdateStyles();
             this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new Size(300, 300);;
+            this.ClientSize = new Size(300, 950);
             this.MaximumSize = ClientSize;
             this.MinimumSize = ClientSize;
             this.MaximizeBox = false;

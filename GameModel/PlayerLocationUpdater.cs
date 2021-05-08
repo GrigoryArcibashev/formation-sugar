@@ -4,34 +4,20 @@
     {
         public static void UpdatePlayerLocation(GameMap map)
         {
-            switch (map.Player.MovementCondition, map.Player.Direction)
+            switch (map.Player.MovementCondition)
             {
-                case (MovementConditions.Running, Direction.Right):
-                    map.MoveCreature(map.Player, Direction.Right, Direction.NoMovement);
+                case MovementConditions.Running:
+                    map.MoveCreature(map.Player, map.Player.Direction);
                     break;
 
-                case (MovementConditions.Running, Direction.Left):
-                    map.MoveCreature(map.Player, Direction.Left, Direction.NoMovement);
+                case MovementConditions.Jumping:
+                    if (map.MoveCreature(map.Player, Direction.Up))
+                        map.MoveCreature(map.Player, map.Player.Direction);
                     break;
 
-                case (MovementConditions.Jumping, Direction.Right):
-                    map.MoveCreature(map.Player, Direction.Right, Direction.Up);
-                    break;
-
-                case (MovementConditions.Jumping, Direction.Left):
-                    map.MoveCreature(map.Player, Direction.Left, Direction.Up);
-                    break;
-
-                case (MovementConditions.Falling, Direction.Right):
-                    map.MoveCreature(map.Player, Direction.Right, Direction.Down);
-                    break;
-
-                case (MovementConditions.Falling, Direction.Left):
-                    map.MoveCreature(map.Player, Direction.Left, Direction.Down);
-                    break;
-
-                case (MovementConditions.Falling, Direction.NoMovement):
-                    map.MoveCreature(map.Player, Direction.NoMovement, Direction.Down);
+                case MovementConditions.Falling:
+                    if (map.MoveCreature(map.Player, Direction.Down))
+                        map.MoveCreature(map.Player, map.Player.Direction);
                     break;
             }
         }
