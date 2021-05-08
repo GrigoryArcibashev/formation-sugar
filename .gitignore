@@ -2,9 +2,8 @@
 .idea/
 */bin/
 */obj/
+*Debug/
 *.exe
 *.user
-*bin/Debug/
-*bin/Debug
 #Nuget packages folder
 packages/
