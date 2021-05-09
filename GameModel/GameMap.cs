@@ -99,14 +99,14 @@ namespace Model
             while (MoveCreatureOn(creature, creaturesLocations[creature] + new Size(0, 1)))
             {
             }
-            
+
             if (creature.Direction is Direction.NoMovement)
                 creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing, Direction.Right);
             creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing, creature.Direction);
             creature.RecoverVelocity();
             return false;
         }
-        
+
         private bool MoveCreatureOn(IMovingCreature creature, Point targetLocation)
         {
             if (!IsMovementPossible(creature, targetLocation))
@@ -127,21 +127,16 @@ namespace Model
                 Math.Max(target.Y, creaturesLocations[creature].Y));
             return IsPointInBounds(target) && IsMapPieceEmpty(creature, topLeftCorner, bottomRightCorner);
         }
-        
+
         private bool IsMapPieceEmpty(IMovingCreature creature, Point topLeftCorner, Point bottomRightCorner)
         {
             for (var x = topLeftCorner.X; x <= bottomRightCorner.X; x++)
-            {
-                for (var y = topLeftCorner.Y; y <= bottomRightCorner.Y; y++)
-                {
-                    if (map [x, y] != creature && map[x, y] != null)
-                        return false;
-                }
-            }
-
+            for (var y = topLeftCorner.Y; y <= bottomRightCorner.Y; y++)
+                if (map[x, y] != creature && map[x, y] != null)
+                    return false;
             return true;
         }
-        
+
         private bool IsPointInBounds(Point point)
         {
             return point.X >= 0
