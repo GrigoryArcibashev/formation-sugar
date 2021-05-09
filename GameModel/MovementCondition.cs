@@ -4,11 +4,11 @@
     {
         Default,
         Standing,
-        Running,
         Sitting,
+        Running,
         Jumping,
-        Attacking,
-        Dying,
         Falling,
+        Attacking,
+        Dying
     }
 }

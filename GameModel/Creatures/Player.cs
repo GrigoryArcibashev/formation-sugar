@@ -2,7 +2,7 @@
 
 namespace Model.Creatures
 {
-    public class Player : IJumpingCreature
+    public class Player : IJumpingCreature, ICreatureWithHealth
     {
         private readonly int initialVelocity;
         public int Velocity { get; private set; }

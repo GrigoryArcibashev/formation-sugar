@@ -12,12 +12,11 @@ namespace formation_sugar
     {
         private readonly GameMap map;
         private readonly Dictionary<ICreature, Dictionary<(MovementConditions, Direction), Animation>> animationsForCreatures;
-        private readonly Timer timerForCreaturesMovements;
 
         public Game()
         {
             map = new GameMap();
-            timerForCreaturesMovements = new Timer {Interval = 100, Enabled = true};
+            var timerForCreaturesMovements = new Timer {Interval = 100, Enabled = true};
             timerForCreaturesMovements.Tick += CheckCreaturesForFalling;
             timerForCreaturesMovements.Tick += UpdatePlayerLocationOnMap;
 
