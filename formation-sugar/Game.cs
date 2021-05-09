@@ -12,6 +12,11 @@ namespace formation_sugar
     {
         private readonly GameMap map;
         private readonly Dictionary<ICreature, Dictionary<(MovementConditions, Direction), Animation>> animationsForCreatures;
+        private bool wIsPressed;
+        private bool sIsPressed;
+        private bool aIsPressed;
+        private bool dIsPressed;
+        private bool leftMouseButtonIsPressed;
 
         public Game()
         {
@@ -39,51 +44,73 @@ namespace formation_sugar
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            // завести булевые премменные на каждую клавишу
             switch (e.KeyCode)
             {
                 case Keys.D:
-                    map.Player.ChangeMovementConditionAndDirectionTo(
-                        map.Player.IsFallingOrJumping() ? map.Player.MovementCondition : MovementConditions.Running,
-                        Direction.Right);
+                    dIsPressed = true;
                     break;
 
                 case Keys.A:
-                    map.Player.ChangeMovementConditionAndDirectionTo(
-                        map.Player.IsFallingOrJumping() ? map.Player.MovementCondition : MovementConditions.Running,
-                        Direction.Left);
+                    aIsPressed = true;
                     break;
 
                 case Keys.S:
-                    if (!map.Player.IsFallingOrJumping())
-                        map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Sitting, map.Player.Direction);
+                    sIsPressed = true;
                     break;
 
                 case Keys.W:
-                    if (!map.Player.IsFallingOrJumping())
-                        map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Jumping,
-                            map.Player.MovementCondition is MovementConditions.Running
-                                ? map.Player.Direction
-                                : Direction.NoMovement);
+                    wIsPressed = true;
                     break;
             }
         }
 
-
         protected override void OnKeyUp(KeyEventArgs e)
         {
+            switch (e.KeyCode)
+            {
+                case Keys.D:
+                    dIsPressed = false;
+                    break;
+
+                case Keys.A:
+                    aIsPressed = false;
+                    break;
+
+                case Keys.S:
+                    sIsPressed = false;
+                    break;
+
+                case Keys.W:
+                    wIsPressed = false;
+                    break;
+            }
+
             if (map.Player.IsFallingOrJumping())
                 map.Player.ChangeMovementConditionAndDirectionTo(map.Player.MovementCondition, Direction.NoMovement);
             else
-            {
-                var direction = map.Player.Direction == Direction.NoMovement ? Direction.Right : map.Player.Direction;
-                map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing, direction);
-            }
+                map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing,
+                    map.Player.Direction == Direction.NoMovement ? Direction.Right : map.Player.Direction);
+        }
+
+        private void ProcessKeystrokes()
+        {
+            if (dIsPressed || aIsPressed)
+                map.Player.ChangeMovementConditionAndDirectionTo(
+                    map.Player.IsFallingOrJumping() ? map.Player.MovementCondition : MovementConditions.Running,
+                    dIsPressed ? Direction.Right : Direction.Left);
+            if (wIsPressed && !map.Player.IsFallingOrJumping())
+                    map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Jumping,
+                        map.Player.MovementCondition is MovementConditions.Running
+                            ? map.Player.Direction
+                            : Direction.NoMovement);
+            if (sIsPressed && !map.Player.IsFallingOrJumping())
+                    map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Sitting, map.Player.Direction);
         }
 
         private void PerformActionsWithCreatures(object sender, EventArgs eventArgs)
         {
             map.CheckCreaturesForFalling();
+            ProcessKeystrokes();
             PlayerLocationUpdater.UpdatePlayerLocation(map);
             map.CheckEnemies();
         }
