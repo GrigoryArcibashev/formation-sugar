@@ -11,10 +11,10 @@ namespace View.AnimationsForCreatures
     {
         public static Dictionary<(MovementConditions, Direction), Animation> GetAnimationFor(ICreature movingCreature)
         {
-            return movingCreature.GetTypeAsString() switch
+            return movingCreature switch
             {
-                "Player" => GetAnimationForCreature(AnimationsForPlayer.AnimationForPlayer),
-                "Box" => GetAnimationForCreature(AnimationsForBox.AnimationForBox),
+                Player _ => GetAnimationForCreature(AnimationsForPlayer.AnimationForPlayer),
+                Box _ => GetAnimationForCreature(AnimationsForBox.AnimationForBox),
                 _ => default
             };
         }

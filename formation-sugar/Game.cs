@@ -41,29 +41,27 @@ namespace formation_sugar
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            //timerForCreaturesMovements.Interval = e.Modifiers == Keys.Shift ? 10 : 30;
-            
             switch (e.KeyCode)
             {
                 case Keys.D:
                     map.Player.ChangeMovementConditionAndDirectionTo(
-                        IsPlayerFallingOrJumping() ? map.Player.MovementCondition : MovementConditions.Running,
+                        map.Player.IsFallingOrJumping() ? map.Player.MovementCondition : MovementConditions.Running,
                         Direction.Right);
                     break;
 
                 case Keys.A:
                     map.Player.ChangeMovementConditionAndDirectionTo(
-                        IsPlayerFallingOrJumping() ? map.Player.MovementCondition : MovementConditions.Running,
+                        map.Player.IsFallingOrJumping() ? map.Player.MovementCondition : MovementConditions.Running,
                         Direction.Left);
                     break;
 
                 case Keys.S:
-                    if (!IsPlayerFallingOrJumping())
+                    if (!map.Player.IsFallingOrJumping())
                         map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Sitting, map.Player.Direction);
                     break;
 
                 case Keys.W:
-                    if (!IsPlayerFallingOrJumping())
+                    if (!map.Player.IsFallingOrJumping())
                         map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Jumping, Direction.NoMovement);
                     return;
             }
@@ -73,7 +71,7 @@ namespace formation_sugar
 
         protected override void OnKeyUp(KeyEventArgs e)
         {
-            if (IsPlayerFallingOrJumping())
+            if (map.Player.IsFallingOrJumping())
                 map.Player.ChangeMovementConditionAndDirectionTo(map.Player.MovementCondition, Direction.NoMovement);
             
             else
@@ -81,11 +79,6 @@ namespace formation_sugar
                 var direction = map.Player.Direction == Direction.NoMovement ? Direction.Right : map.Player.Direction;
                 map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing, direction);
             }
-        }
-        
-        private bool IsPlayerFallingOrJumping()
-        {
-            return map.Player.IsFalling() || map.Player.IsJumping();
         }
 
         private void CheckCreaturesForFalling(object sender, EventArgs eventArgs)

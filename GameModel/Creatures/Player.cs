@@ -38,6 +38,11 @@ namespace Model.Creatures
         {
             return MovementCondition == MovementConditions.Falling;
         }
+
+        public bool IsFallingOrJumping()
+        {
+            return IsFalling() || IsJumping();
+        }
         
         public void ChangeMovementConditionAndDirectionTo(MovementConditions movementConditionTo, Direction directionTo)
         {
@@ -64,11 +69,6 @@ namespace Model.Creatures
         public void ReduceVelocity()
         {
             Velocity--;
-        }
-
-        public string GetTypeAsString()
-        {
-            return "Player";
         }
     }
 }

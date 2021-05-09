@@ -45,26 +45,6 @@ namespace Model
             }
         }
 
-        /*public void MoveCreature(IMovingCreature creature, Direction horizontalDirection, Direction verticalDirection)
-        {
-            switch (verticalDirection)
-            {
-                case Direction.NoMovement:
-                    MoveCreatureToSide(creature, horizontalDirection);
-                    break;
-                case Direction.Up:
-                    MoveCreatureUp(creature, horizontalDirection);
-                    break;
-                case Direction.Down:
-                    MoveCreatureDown(creature, horizontalDirection);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(
-                        nameof(verticalDirection),
-                        "The direction of movement is specified incorrectly");
-            }
-        }*/
-
         public void CheckCreaturesForFalling()
         {
             foreach (var creature in ListOfCreatures.OfType<IMovingCreature>())
@@ -106,11 +86,6 @@ namespace Model
 
             creature.ReduceVelocity();
             return true;
-            
-            /*if (MoveCreatureOn(creature, creaturesLocations[creature] + new Size(0, -creature.Velocity)))
-                creature.ReduceVelocity();
-            if (creature.Velocity <= 0)
-                creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Falling, creature.Direction);*/
         }
 
         private bool MoveCreatureDown(IMovingCreature creature)
@@ -131,38 +106,7 @@ namespace Model
             creature.RecoverVelocity();
             return false;
         }
-
-        /*private void MoveCreatureUp(IMovingCreature creature, Direction horizontalShift)
-        {
-            var shift = horizontalShift switch
-            {
-                Direction.Right => new Size(1, -creature.Velocity),
-                Direction.Left => new Size(-1, -creature.Velocity),
-                _ => throw new ArgumentOutOfRangeException(
-                    nameof(horizontalShift),
-                    "The direction of movement is specified incorrectly")
-            };
-            if (MoveCreatureOn(creature, creaturesLocations[creature] + shift))
-                creature.ReduceVelocity();
-            if (creature.Velocity <= 0)
-                creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Falling, creature.Direction);
-        }
-
-        private void MoveCreatureDown(IMovingCreature creature, Direction horizontalShift)
-        {
-            var shift = horizontalShift switch
-            {
-                Direction.NoMovement => new Size(0, creature.Velocity),
-                Direction.Right => new Size(1, creature.Velocity),
-                Direction.Left => new Size(-1, creature.Velocity),
-                _ => throw new ArgumentOutOfRangeException(
-                    nameof(horizontalShift),
-                    "The direction of movement is specified incorrectly")
-            };
-            if (MoveCreatureOn(creature, creaturesLocations[creature] + shift))
-                creature.IncreaseVelocity();
-        }*/
-
+        
         private bool MoveCreatureOn(IMovingCreature creature, Point targetLocation)
         {
             if (!IsMovementPossible(creature, targetLocation))
