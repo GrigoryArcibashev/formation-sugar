@@ -2,16 +2,18 @@
 
 namespace Model.Creatures
 {
-    public class Player : IJumpingCreature, ICreatureWithHealth
+    public class Player : IJumpingCreature, IAttackingCreature
     {
         private readonly int initialVelocity;
         public int Velocity { get; private set; }
+        public int DamageValue { get; }
         public int Health { get; private set; }
         public MovementConditions MovementCondition { get; private set; }
         public Direction Direction { get; private set; }
 
-        public Player(int initialHealth = 0, int initialVelocity = 0)
+        public Player(int damageValue, int initialHealth, int initialVelocity)
         {
+            DamageValue = damageValue;
             Health = initialHealth;
             Velocity = initialVelocity;
             this.initialVelocity = initialVelocity;
@@ -24,7 +26,7 @@ namespace Model.Creatures
             MovementCondition = movementConditionTo;
             Direction = directionTo;
         }
-        
+
         public void ChangeHealthBy(int deltaHealth)
         {
             Health = Math.Max(0, Health + deltaHealth);

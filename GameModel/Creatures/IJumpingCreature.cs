@@ -2,12 +2,12 @@
 {
     public interface IJumpingCreature : IMovingCreature
     {
-        int Velocity { get; }
-        void RecoverVelocity();
-        void ResetVelocityToZero();
-        void IncreaseVelocity();
-        void ReduceVelocity();
-        bool IsJumping();
-        bool IsFalling();
+        public int Velocity { get; }
+        public void RecoverVelocity();
+        public void ResetVelocityToZero();
+        public void IncreaseVelocity();
+        public void ReduceVelocity();
+        public bool IsJumping();
+        public bool IsFalling();
     }
 }

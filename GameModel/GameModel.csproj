@@ -43,7 +43,7 @@
         <Compile Include="Creatures\Box.cs" />
         <Compile Include="Creatures\Enemy.cs" />
         <Compile Include="Creatures\ICreature.cs" />
-        <Compile Include="Creatures\ICreatureWithHealth.cs" />
+        <Compile Include="Creatures\IAttackingCreature.cs" />
         <Compile Include="Creatures\IEnemy.cs" />
         <Compile Include="Creatures\IJumpingCreature.cs" />
         <Compile Include="Creatures\IMovingCreature.cs" />

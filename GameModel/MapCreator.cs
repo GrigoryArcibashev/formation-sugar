@@ -62,13 +62,16 @@ namespace Model
                 switch (parts[0])
                 {
                     case "P":
-                        player = new Player(initialVelocity: 2);
+                        player = new Player(50, 100, 2);
                         AddCreatureOnMapAndListOfCreatures(player, coordinates);
+                        break;
+                    
+                    case "E":
+                        AddCreatureOnMapAndListOfCreatures(new Enemy(25, 100), coordinates);
                         break;
 
                     case "B":
-                        var box = new Box();
-                        AddCreatureOnMapAndListOfCreatures(box, coordinates);
+                        AddCreatureOnMapAndListOfCreatures(new Box(), coordinates);
                         break;
                 }
             }

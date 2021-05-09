@@ -2,6 +2,6 @@
 {
     public interface IMovingCreature : ICreature
     {
-        void ChangeMovementConditionAndDirectionTo(MovementConditions movementConditionTo, Direction directionTo);
+        public void ChangeMovementConditionAndDirectionTo(MovementConditions movementConditionTo, Direction directionTo);
     }
 }
