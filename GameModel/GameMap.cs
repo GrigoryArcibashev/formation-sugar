@@ -54,10 +54,13 @@ namespace Model
                 creatureCoordinates + new Size(0, -1),
                 creatureCoordinates + new Size(creature.Direction is Direction.Right ? 1 : -1, 0)
             };
+
             foreach (var enemyCoordinates in enemiesCoordinates)
             {
-                if (!IsPointInBounds(enemyCoordinates) || !(map[enemyCoordinates.X, enemyCoordinates.Y] is IAttackingCreature))
+                if (!IsPointInBounds(enemyCoordinates) ||
+                    !(map[enemyCoordinates.X, enemyCoordinates.Y] is IAttackingCreature))
                     continue;
+                
                 var enemy = (IAttackingCreature) map[enemyCoordinates.X, enemyCoordinates.Y];
                 enemy.ChangeHealthBy(creature.DamageValue);
             }
@@ -91,6 +94,15 @@ namespace Model
                     Math.Abs(dx) > 1 ? MovementConditions.Running : MovementConditions.Attacking,
                     dx > 0 ? Direction.Left : Direction.Right);
             }
+        }
+        
+        public void LoadNextMap()
+        {
+            var mapInfo = MapCreator.GetNextMap();
+            ListOfCreatures = mapInfo.ListOfCreatures;
+            Player = mapInfo.Player;
+            map = mapInfo.Map;
+            creaturesLocations = GetCreaturesLocations();
         }
 
         private bool IsThereNothingUnderCreature(IJumpingCreature creature)
@@ -191,15 +203,6 @@ namespace Model
                     if (map[x, y] == creature)
                         locations.Add(creature, new Point(x, y));
             return locations;
-        }
-
-        private void LoadNextMap()
-        {
-            var mapInfo = MapCreator.GetNextMap();
-            ListOfCreatures = mapInfo.ListOfCreatures;
-            Player = mapInfo.Player;
-            map = mapInfo.Map;
-            creaturesLocations = GetCreaturesLocations();
         }
     }
 }

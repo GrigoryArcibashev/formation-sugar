@@ -21,6 +21,7 @@ namespace formation_sugar
         public Game()
         {
             map = new GameMap();
+            map.LoadNextMap();
             var timerForCreaturesActions = new Timer {Interval = 100, Enabled = true};
             timerForCreaturesActions.Tick += PerformActionsWithCreatures;
 
