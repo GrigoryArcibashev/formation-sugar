@@ -45,6 +45,24 @@ namespace Model
             }
         }
 
+        public void Attack(IAttackingCreature creature)
+        {
+            var creatureCoordinates = GetCreatureLocation(creature);
+            var enemiesCoordinates = new[]
+            {
+                creatureCoordinates + new Size(0, 1),
+                creatureCoordinates + new Size(0, -1),
+                creatureCoordinates + new Size(creature.Direction is Direction.Right ? 1 : -1, 0)
+            };
+            foreach (var enemyCoordinates in enemiesCoordinates)
+            {
+                if (!IsPointInBounds(enemyCoordinates) || !(map[enemyCoordinates.X, enemyCoordinates.Y] is IAttackingCreature))
+                    continue;
+                var enemy = (IAttackingCreature) map[enemyCoordinates.X, enemyCoordinates.Y];
+                enemy.ChangeHealthBy(creature.DamageValue);
+            }
+        }
+
         public void CheckCreaturesForFalling()
         {
             foreach (var creature in ListOfCreatures.OfType<IJumpingCreature>())
@@ -53,6 +71,25 @@ namespace Model
                     continue;
                 creature.ResetVelocityToZero();
                 creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Falling, Direction.NoMovement);
+            }
+        }
+
+        public void CheckEnemies()
+        {
+            var playerCoordinates = GetCreatureLocation(Player);
+            foreach (var enemy in ListOfCreatures.OfType<Enemy>())
+            {
+                var dx = GetCreatureLocation(enemy).X - playerCoordinates.X;
+                if (Math.Abs(dx) > 10)
+                {
+                    if (enemy.MovementCondition != MovementConditions.Standing)
+                        enemy.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing, enemy.Direction);
+                    continue;
+                }
+
+                enemy.ChangeMovementConditionAndDirectionTo(
+                    Math.Abs(dx) > 1 ? MovementConditions.Running : MovementConditions.Attacking,
+                    dx > 0 ? Direction.Left : Direction.Right);
             }
         }
 

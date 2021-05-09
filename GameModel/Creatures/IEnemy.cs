@@ -1,7 +1,6 @@
 ﻿namespace Model.Creatures
 {
-    public interface IEnemy
+    public interface IEnemy : ICreature
     {
-        
     }
 }

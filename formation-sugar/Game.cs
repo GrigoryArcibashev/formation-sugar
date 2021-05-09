@@ -16,9 +16,8 @@ namespace formation_sugar
         public Game()
         {
             map = new GameMap();
-            var timerForCreaturesMovements = new Timer {Interval = 100, Enabled = true};
-            timerForCreaturesMovements.Tick += CheckCreaturesForFalling;
-            timerForCreaturesMovements.Tick += UpdatePlayerLocationOnMap;
+            var timerForCreaturesActions = new Timer {Interval = 100, Enabled = true};
+            timerForCreaturesActions.Tick += PerformActionsWithCreatures;
 
             animationsForCreatures = new Dictionary<ICreature, Dictionary<(MovementConditions, Direction), Animation>>();
             foreach (var creature in map.ListOfCreatures)
@@ -40,6 +39,7 @@ namespace formation_sugar
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
+            // завести булевые премменные на каждую клавишу
             switch (e.KeyCode)
             {
                 case Keys.D:
@@ -61,18 +61,19 @@ namespace formation_sugar
 
                 case Keys.W:
                     if (!map.Player.IsFallingOrJumping())
-                        map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Jumping, Direction.NoMovement);
-                    return;
+                        map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Jumping,
+                            map.Player.MovementCondition is MovementConditions.Running
+                                ? map.Player.Direction
+                                : Direction.NoMovement);
+                    break;
             }
         }
-        
-        
+
 
         protected override void OnKeyUp(KeyEventArgs e)
         {
             if (map.Player.IsFallingOrJumping())
                 map.Player.ChangeMovementConditionAndDirectionTo(map.Player.MovementCondition, Direction.NoMovement);
-            
             else
             {
                 var direction = map.Player.Direction == Direction.NoMovement ? Direction.Right : map.Player.Direction;
@@ -80,14 +81,11 @@ namespace formation_sugar
             }
         }
 
-        private void CheckCreaturesForFalling(object sender, EventArgs eventArgs)
+        private void PerformActionsWithCreatures(object sender, EventArgs eventArgs)
         {
             map.CheckCreaturesForFalling();
-        }
-
-        private void UpdatePlayerLocationOnMap(object sender, EventArgs e)
-        {
             PlayerLocationUpdater.UpdatePlayerLocation(map);
+            map.CheckEnemies();
         }
 
         private void AddAnimationsForCreature(ICreature creature)
