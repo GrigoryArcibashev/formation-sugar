@@ -2,7 +2,7 @@
 {
     public class Box : ICreature
     {
-        public MovementConditions MovementCondition { get; private set; }
+        public MovementConditions MovementCondition { get; }
         public Direction Direction { get; }
 
         public Box()

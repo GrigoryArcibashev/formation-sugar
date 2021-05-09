@@ -35,9 +35,9 @@ namespace Model
                 case Direction.Left:
                     return MoveCreatureToSide(creature, direction);
                 case Direction.Up:
-                    return MoveCreatureUp(creature);
+                    return MoveCreatureUp((IJumpingCreature) creature);
                 case Direction.Down:
-                    return MoveCreatureDown(creature);
+                    return MoveCreatureDown((IJumpingCreature) creature);
                 case Direction.NoMovement:
                     return true;
                 default:
@@ -47,7 +47,7 @@ namespace Model
 
         public void CheckCreaturesForFalling()
         {
-            foreach (var creature in ListOfCreatures.OfType<IMovingCreature>())
+            foreach (var creature in ListOfCreatures.OfType<IJumpingCreature>())
             {
                 if (creature.IsFalling() || creature.IsJumping() || !IsThereNothingUnderCreature(creature))
                     continue;
@@ -56,7 +56,7 @@ namespace Model
             }
         }
 
-        private bool IsThereNothingUnderCreature(IMovingCreature creature)
+        private bool IsThereNothingUnderCreature(IJumpingCreature creature)
         {
             return IsMovementPossible(creature, creaturesLocations[creature] + new Size(0, 1));
         }
@@ -74,7 +74,7 @@ namespace Model
             return MoveCreatureOn(creature, creaturesLocations[creature] + shift);
         }
 
-        private bool MoveCreatureUp(IMovingCreature creature)
+        private bool MoveCreatureUp(IJumpingCreature creature)
         {
             if (!MoveCreatureOn(creature, creaturesLocations[creature] + new Size(0, -creature.Velocity))
                 || creature.Velocity <= 0)
@@ -88,7 +88,7 @@ namespace Model
             return true;
         }
 
-        private bool MoveCreatureDown(IMovingCreature creature)
+        private bool MoveCreatureDown(IJumpingCreature creature)
         {
             if (MoveCreatureOn(creature, creaturesLocations[creature] + new Size(0, creature.Velocity)))
             {

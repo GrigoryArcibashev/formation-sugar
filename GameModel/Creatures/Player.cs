@@ -2,7 +2,7 @@
 
 namespace Model.Creatures
 {
-    public class Player : IMovingCreature
+    public class Player : IJumpingCreature
     {
         private readonly int initialVelocity;
         public int Velocity { get; private set; }
@@ -19,6 +19,12 @@ namespace Model.Creatures
             Direction = Direction.Right;
         }
 
+        public void ChangeMovementConditionAndDirectionTo(MovementConditions movementConditionTo, Direction directionTo)
+        {
+            MovementCondition = movementConditionTo;
+            Direction = directionTo;
+        }
+        
         public void ChangeHealthBy(int deltaHealth)
         {
             Health = Math.Max(0, Health + deltaHealth);
@@ -27,7 +33,6 @@ namespace Model.Creatures
                 MovementCondition = MovementConditions.Dying;
             }
         }
-
 
         public bool IsJumping()
         {
@@ -43,13 +48,6 @@ namespace Model.Creatures
         {
             return IsFalling() || IsJumping();
         }
-        
-        public void ChangeMovementConditionAndDirectionTo(MovementConditions movementConditionTo, Direction directionTo)
-        {
-            MovementCondition = movementConditionTo;
-            Direction = directionTo;
-        }
-
 
         public void RecoverVelocity()
         {

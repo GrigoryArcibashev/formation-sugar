@@ -72,14 +72,14 @@ namespace Tests
             MapCreator.GoToLevel(level);
             map = new GameMap();
 
-            foreach (var creature in map.ListOfCreatures.OfType<IMovingCreature>())
+            foreach (var creature in map.ListOfCreatures.OfType<IJumpingCreature>())
                 creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Jumping, creature.Direction);
 
             var expectedMovementConditionsOfCreatures = GetMovementConditionsOfCreaturesOnMap();
             map.CheckCreaturesForFalling();
             Assert.AreEqual(GetMovementConditionsOfCreaturesOnMap(), expectedMovementConditionsOfCreatures);
 
-            foreach (var creature in map.ListOfCreatures.OfType<IMovingCreature>())
+            foreach (var creature in map.ListOfCreatures.OfType<IJumpingCreature>())
                 creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Falling, creature.Direction);
 
             expectedMovementConditionsOfCreatures = GetMovementConditionsOfCreaturesOnMap();
