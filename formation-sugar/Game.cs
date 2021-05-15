@@ -16,7 +16,7 @@ namespace formation_sugar
         private bool sIsPressed;
         private bool aIsPressed;
         private bool dIsPressed;
-        private bool leftMouseButtonIsPressed;
+        private bool spaceIsPressed;
 
         public Game()
         {
@@ -66,6 +66,10 @@ namespace formation_sugar
                 case Keys.W:
                     wIsPressed = true;
                     break;
+                
+                case Keys.Space:
+                    spaceIsPressed = true;
+                    break;
             }
         }
 
@@ -92,6 +96,10 @@ namespace formation_sugar
 
                 case Keys.W:
                     wIsPressed = false;
+                    break;
+                
+                case Keys.Space:
+                    spaceIsPressed = false;
                     break;
             }
 
@@ -120,6 +128,8 @@ namespace formation_sugar
                             : Direction.NoMovement);
             if (sIsPressed && !map.Player.IsFallingOrJumping())
                     map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Sitting, map.Player.Direction);
+            if (spaceIsPressed)
+                map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Attacking, map.Player.Direction);
         }
 
         private void PerformActionsWithCreatures(object sender, EventArgs eventArgs)
