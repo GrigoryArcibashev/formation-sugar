@@ -15,7 +15,7 @@ namespace View.AnimationsForCreatures
             {
                 Player _ => GetAnimationForCreature(AnimationsForPlayer.AnimationForPlayer),
                 Box _ => GetAnimationForCreature(AnimationsForBox.AnimationForBox),
-                Enemy _ => GetAnimationForCreature(AnimationsForEnemy.AnimationForPlayer),
+                Enemy _ => GetAnimationForCreature(AnimationsForEnemy.AnimationForEnemy),
                 _ => default
             };
         }

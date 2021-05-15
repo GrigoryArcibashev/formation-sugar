@@ -5,7 +5,7 @@ namespace View.AnimationsForCreatures
 {
     public static class AnimationsForEnemy
     {
-        public static readonly Dictionary<(MovementConditions, Direction), string> AnimationForPlayer =
+        public static readonly Dictionary<(MovementConditions, Direction), string> AnimationForEnemy =
             new Dictionary<(MovementConditions, Direction), string>
             {
                 {(MovementConditions.Standing, Direction.Right), @"Sprites\enemyAnimations\standingRight"},

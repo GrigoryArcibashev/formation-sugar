@@ -1,6 +1,6 @@
 ﻿namespace Model.Creatures
 {
-    public interface IAttackingCreature : ICreature
+    public interface IAttackingCreature : IMovingCreature
     {
         public int DamageValue { get; }
         public int Health { get; }

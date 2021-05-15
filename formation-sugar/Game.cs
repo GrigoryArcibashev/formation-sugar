@@ -30,7 +30,11 @@ namespace formation_sugar
                 AddAnimationsForCreature(creature);
             new Timer {Interval = 100, Enabled = true}.Tick += (sender, args) =>
             {
-                animationsForCreatures[map.Player][(map.Player.MovementCondition, map.Player.Direction)].MoveNextSprite();
+                foreach (var creature in map.ListOfCreatures)
+                {
+                    animationsForCreatures[creature][(creature.MovementCondition, creature.Direction)].MoveNextSprite(); 
+                }
+                
                 Invalidate();
             };
 
@@ -67,6 +71,11 @@ namespace formation_sugar
 
         protected override void OnKeyUp(KeyEventArgs e)
         {
+            if (map.Player.IsDying())
+            {
+                return;
+            }
+            
             switch (e.KeyCode)
             {
                 case Keys.D:
@@ -95,6 +104,11 @@ namespace formation_sugar
 
         private void ProcessKeystrokes()
         {
+            if (map.Player.IsDying())
+            {
+                return;
+            }
+            
             if (dIsPressed || aIsPressed)
                 map.Player.ChangeMovementConditionAndDirectionTo(
                     map.Player.IsFallingOrJumping() ? map.Player.MovementCondition : MovementConditions.Running,
@@ -112,8 +126,8 @@ namespace formation_sugar
         {
             map.CheckCreaturesForFalling();
             ProcessKeystrokes();
-            PlayerLocationUpdater.UpdatePlayerLocation(map);
-            map.CheckEnemies();
+            CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
+            map.MakeEnemiesAttackingOrRunning();
         }
 
         private void AddAnimationsForCreature(ICreature creature)

@@ -26,6 +26,7 @@ namespace Model.Creatures
         public void ChangeHealthBy(int deltaHealth)
         {
             Health = Math.Max(0, Health + deltaHealth);
+            
             if (Health == 0)
             {
                 MovementCondition = MovementConditions.Dying;

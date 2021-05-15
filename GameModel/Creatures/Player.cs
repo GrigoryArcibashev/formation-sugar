@@ -27,9 +27,15 @@ namespace Model.Creatures
             Direction = directionTo;
         }
 
+        public bool IsDying()
+        {
+            return MovementCondition is MovementConditions.Dying;
+        }
+
         public void ChangeHealthBy(int deltaHealth)
         {
-            Health = Math.Max(0, Health + deltaHealth);
+            Health = Math.Max(0, Health - deltaHealth);
+            
             if (Health == 0)
             {
                 MovementCondition = MovementConditions.Dying;

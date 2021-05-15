@@ -15,13 +15,12 @@ namespace View
             foreach (var creature in map.ListOfCreatures)
                 graphics.DrawImage(
                     animationsForCreatures[creature][(creature.MovementCondition, creature.Direction)].Current,
-                    ScaleCoordinatesInPercents(map.GetCreatureLocation(creature), 200));
+                    GetCoordinationForCreatureInPixels(map.GetCreatureLocation(creature), 40));
         }
 
-        private static Point ScaleCoordinatesInPercents(Point coordinates, double percent) //улучшить метод
+        private static Point GetCoordinationForCreatureInPixels(Point coordinates, int cellSize) //улучшить метод
         {
-            var ds = (int) (1 + percent / 100);
-            return new Point(coordinates.X * ds, coordinates.Y * ds);
+            return new Point(coordinates.X * cellSize, coordinates.Y * cellSize);
         }
     }
 }

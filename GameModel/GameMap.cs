@@ -58,7 +58,8 @@ namespace Model
             foreach (var enemyCoordinates in enemiesCoordinates)
             {
                 if (!IsPointInBounds(enemyCoordinates) ||
-                    !(map[enemyCoordinates.X, enemyCoordinates.Y] is IAttackingCreature))
+                    !(map[enemyCoordinates.X, enemyCoordinates.Y] is IAttackingCreature) ||
+                    map[enemyCoordinates.X, enemyCoordinates.Y].MovementCondition is MovementConditions.Dying)
                     continue;
                 
                 var enemy = (IAttackingCreature) map[enemyCoordinates.X, enemyCoordinates.Y];
@@ -77,11 +78,17 @@ namespace Model
             }
         }
 
-        public void CheckEnemies()
+        public void MakeEnemiesAttackingOrRunning()
         {
             var playerCoordinates = GetCreatureLocation(Player);
             foreach (var enemy in ListOfCreatures.OfType<Enemy>())
             {
+                if (Player.IsDying())
+                {
+                    enemy.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing, enemy.Direction);
+                    return;
+                }
+                
                 var dx = GetCreatureLocation(enemy).X - playerCoordinates.X;
                 if (Math.Abs(dx) > 10)
                 {
