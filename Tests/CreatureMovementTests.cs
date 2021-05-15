@@ -72,14 +72,14 @@ namespace Tests
             MapCreator.GoToLevel(level);
             map = new GameMap();
 
-            foreach (var creature in map.ListOfCreatures.OfType<IMovingCreature>())
+            foreach (var creature in map.ListOfCreatures.OfType<IJumpingCreature>())
                 creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Jumping, creature.Direction);
 
             var expectedMovementConditionsOfCreatures = GetMovementConditionsOfCreaturesOnMap();
             map.CheckCreaturesForFalling();
             Assert.AreEqual(GetMovementConditionsOfCreaturesOnMap(), expectedMovementConditionsOfCreatures);
 
-            foreach (var creature in map.ListOfCreatures.OfType<IMovingCreature>())
+            foreach (var creature in map.ListOfCreatures.OfType<IJumpingCreature>())
                 creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Falling, creature.Direction);
 
             expectedMovementConditionsOfCreatures = GetMovementConditionsOfCreaturesOnMap();
@@ -180,35 +180,35 @@ namespace Tests
             };
 
             map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Running, Direction.Right);
-            PlayerLocationUpdater.UpdatePlayerLocation(map);
+            CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
             Assert.AreEqual(expectedCreatureCoordinates[0], map.GetCreatureLocation(map.Player));
 
             map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Running, Direction.Left);
-            PlayerLocationUpdater.UpdatePlayerLocation(map);
+            CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
             Assert.AreEqual(expectedCreatureCoordinates[1], map.GetCreatureLocation(map.Player));
 
             map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Jumping, Direction.Right);
-            PlayerLocationUpdater.UpdatePlayerLocation(map);
+            CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
             map.Player.RecoverVelocity();
             Assert.AreEqual(expectedCreatureCoordinates[2], map.GetCreatureLocation(map.Player));
 
             map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Jumping, Direction.Left);
-            PlayerLocationUpdater.UpdatePlayerLocation(map);
+            CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
             map.Player.RecoverVelocity();
             Assert.AreEqual(expectedCreatureCoordinates[3], map.GetCreatureLocation(map.Player));
 
             map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Falling, Direction.Right);
-            PlayerLocationUpdater.UpdatePlayerLocation(map);
+            CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
             map.Player.RecoverVelocity();
             Assert.AreEqual(expectedCreatureCoordinates[4], map.GetCreatureLocation(map.Player));
 
             map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Falling, Direction.Left);
-            PlayerLocationUpdater.UpdatePlayerLocation(map);
+            CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
             map.Player.RecoverVelocity();
             Assert.AreEqual(expectedCreatureCoordinates[5], map.GetCreatureLocation(map.Player));
 
             map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Falling, Direction.NoMovement);
-            PlayerLocationUpdater.UpdatePlayerLocation(map);
+            CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
             map.Player.RecoverVelocity();
             Assert.AreEqual(expectedCreatureCoordinates[6], map.GetCreatureLocation(map.Player));
         }
@@ -221,15 +221,15 @@ namespace Tests
             map = new GameMap();
 
             map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Jumping, Direction.Right);
-            PlayerLocationUpdater.UpdatePlayerLocation(map);
-            PlayerLocationUpdater.UpdatePlayerLocation(map);
-            PlayerLocationUpdater.UpdatePlayerLocation(map);
+            CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
+            CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
+            CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
             Assert.AreEqual(MovementConditions.Falling, map.Player.MovementCondition);
 
-            PlayerLocationUpdater.UpdatePlayerLocation(map);
-            PlayerLocationUpdater.UpdatePlayerLocation(map);
-            PlayerLocationUpdater.UpdatePlayerLocation(map);
-            PlayerLocationUpdater.UpdatePlayerLocation(map);
+            CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
+            CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
+            CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
+            CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
             Assert.AreEqual(MovementConditions.Standing, map.Player.MovementCondition);
         }
 
@@ -241,9 +241,9 @@ namespace Tests
             map = new GameMap();
 
             map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Jumping, Direction.Right);
-            PlayerLocationUpdater.UpdatePlayerLocation(map);
-            PlayerLocationUpdater.UpdatePlayerLocation(map);
-            PlayerLocationUpdater.UpdatePlayerLocation(map);
+            CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
+            CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
+            CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
             Assert.AreEqual(MovementConditions.Falling, map.Player.MovementCondition);
         }
 

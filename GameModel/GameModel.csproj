@@ -41,7 +41,11 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Creatures\Box.cs" />
+        <Compile Include="Creatures\Enemy.cs" />
         <Compile Include="Creatures\ICreature.cs" />
+        <Compile Include="Creatures\IAttackingCreature.cs" />
+        <Compile Include="Creatures\IEnemy.cs" />
+        <Compile Include="Creatures\IJumpingCreature.cs" />
         <Compile Include="Creatures\IMovingCreature.cs" />
         <Compile Include="Creatures\Player.cs" />
         <Compile Include="Direction.cs" />
@@ -49,7 +53,7 @@
         <Compile Include="MapCreator.cs" />
         <Compile Include="MapInfo.cs" />
         <Compile Include="MovementCondition.cs" />
-        <Compile Include="PlayerLocationUpdater.cs" />
+        <Compile Include="CreatureLocationAndConditionsUpdater.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

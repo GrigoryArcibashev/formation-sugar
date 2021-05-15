@@ -35,9 +35,9 @@ namespace Model
                 case Direction.Left:
                     return MoveCreatureToSide(creature, direction);
                 case Direction.Up:
-                    return MoveCreatureUp(creature);
+                    return MoveCreatureUp((IJumpingCreature) creature);
                 case Direction.Down:
-                    return MoveCreatureDown(creature);
+                    return MoveCreatureDown((IJumpingCreature) creature);
                 case Direction.NoMovement:
                     return true;
                 default:
@@ -45,9 +45,31 @@ namespace Model
             }
         }
 
+        public void Attack(IAttackingCreature creature)
+        {
+            var creatureCoordinates = GetCreatureLocation(creature);
+            var enemiesCoordinates = new[]
+            {
+                creatureCoordinates + new Size(0, 1),
+                creatureCoordinates + new Size(0, -1),
+                creatureCoordinates + new Size(creature.Direction is Direction.Right ? 1 : -1, 0)
+            };
+
+            foreach (var enemyCoordinates in enemiesCoordinates)
+            {
+                if (!IsPointInBounds(enemyCoordinates) ||
+                    !(map[enemyCoordinates.X, enemyCoordinates.Y] is IAttackingCreature) ||
+                    map[enemyCoordinates.X, enemyCoordinates.Y].MovementCondition is MovementConditions.Dying)
+                    continue;
+                
+                var enemy = (IAttackingCreature) map[enemyCoordinates.X, enemyCoordinates.Y];
+                enemy.ChangeHealthBy(creature.DamageValue);
+            }
+        }
+
         public void CheckCreaturesForFalling()
         {
-            foreach (var creature in ListOfCreatures.OfType<IMovingCreature>())
+            foreach (var creature in ListOfCreatures.OfType<IJumpingCreature>())
             {
                 if (creature.IsFalling() || creature.IsJumping() || !IsThereNothingUnderCreature(creature))
                     continue;
@@ -56,7 +78,41 @@ namespace Model
             }
         }
 
-        private bool IsThereNothingUnderCreature(IMovingCreature creature)
+        public void MakeEnemiesAttackingOrRunning()
+        {
+            var playerCoordinates = GetCreatureLocation(Player);
+            foreach (var enemy in ListOfCreatures.OfType<Enemy>())
+            {
+                if (Player.IsDying())
+                {
+                    enemy.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing, enemy.Direction);
+                    return;
+                }
+                
+                var dx = GetCreatureLocation(enemy).X - playerCoordinates.X;
+                if (Math.Abs(dx) > 10)
+                {
+                    if (enemy.MovementCondition != MovementConditions.Standing)
+                        enemy.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing, enemy.Direction);
+                    continue;
+                }
+
+                enemy.ChangeMovementConditionAndDirectionTo(
+                    Math.Abs(dx) > 1 ? MovementConditions.Running : MovementConditions.Attacking,
+                    dx > 0 ? Direction.Left : Direction.Right);
+            }
+        }
+        
+        public void LoadNextMap()
+        {
+            var mapInfo = MapCreator.GetNextMap();
+            ListOfCreatures = mapInfo.ListOfCreatures;
+            Player = mapInfo.Player;
+            map = mapInfo.Map;
+            creaturesLocations = GetCreaturesLocations();
+        }
+
+        private bool IsThereNothingUnderCreature(IJumpingCreature creature)
         {
             return IsMovementPossible(creature, creaturesLocations[creature] + new Size(0, 1));
         }
@@ -74,7 +130,7 @@ namespace Model
             return MoveCreatureOn(creature, creaturesLocations[creature] + shift);
         }
 
-        private bool MoveCreatureUp(IMovingCreature creature)
+        private bool MoveCreatureUp(IJumpingCreature creature)
         {
             if (!MoveCreatureOn(creature, creaturesLocations[creature] + new Size(0, -creature.Velocity))
                 || creature.Velocity <= 0)
@@ -88,7 +144,7 @@ namespace Model
             return true;
         }
 
-        private bool MoveCreatureDown(IMovingCreature creature)
+        private bool MoveCreatureDown(IJumpingCreature creature)
         {
             if (MoveCreatureOn(creature, creaturesLocations[creature] + new Size(0, creature.Velocity)))
             {
@@ -154,15 +210,6 @@ namespace Model
                     if (map[x, y] == creature)
                         locations.Add(creature, new Point(x, y));
             return locations;
-        }
-
-        private void LoadNextMap()
-        {
-            var mapInfo = MapCreator.GetNextMap();
-            ListOfCreatures = mapInfo.ListOfCreatures;
-            Player = mapInfo.Player;
-            map = mapInfo.Map;
-            creaturesLocations = GetCreaturesLocations();
         }
     }
 }

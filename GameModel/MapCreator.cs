@@ -31,9 +31,9 @@ namespace Model
 
         public static MapInfo GetNextMap()
         {
-            var cratedMap = CreateMap(File.ReadAllLines(levels[numberOfCurrentLevel]));
+            var createdMap = CreateMap(File.ReadAllLines(levels[numberOfCurrentLevel]));
             numberOfCurrentLevel = (numberOfCurrentLevel + 1) % levels.Length;
-            return cratedMap;
+            return createdMap;
         }
 
         public static void GoToLevel(string levelName)
@@ -62,13 +62,16 @@ namespace Model
                 switch (parts[0])
                 {
                     case "P":
-                        player = new Player(initialVelocity: 2);
+                        player = new Player(50, 100, 2);
                         AddCreatureOnMapAndListOfCreatures(player, coordinates);
+                        break;
+                    
+                    case "E":
+                        AddCreatureOnMapAndListOfCreatures(new Enemy(25, 100), coordinates);
                         break;
 
                     case "B":
-                        var box = new Box();
-                        AddCreatureOnMapAndListOfCreatures(box, coordinates);
+                        AddCreatureOnMapAndListOfCreatures(new Box(), coordinates);
                         break;
                 }
             }

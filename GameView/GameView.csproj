@@ -43,6 +43,7 @@
         <Compile Include="Animation.cs" />
         <Compile Include="AnimationsForCreatures\AnimationsForBox.cs" />
         <Compile Include="AnimationsForCreatures\AnimationsForCreatures.cs" />
+        <Compile Include="AnimationsForCreatures\AnimationsForEnemy.cs" />
         <Compile Include="AnimationsForCreatures\AnimationsForPlayer.cs" />
         <Compile Include="GraphicsCreator.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
