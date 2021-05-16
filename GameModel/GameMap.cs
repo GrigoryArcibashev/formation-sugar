@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Net.Mail;
 using Model.Creatures;
 
 namespace Model
@@ -45,7 +46,7 @@ namespace Model
             }
         }
 
-        public void Attack(IAttackingCreature creature)
+        public bool Attack(IAttackingCreature creature)
         {
             var creatureCoordinates = GetCreatureLocation(creature);
             var enemiesCoordinates = new[]
@@ -55,19 +56,20 @@ namespace Model
                 creatureCoordinates + new Size(creature.Direction is Direction.Right ? 1 : -1, 0)
             };
 
+            var isEnemyAttacked = false;
             foreach (var enemyCoordinates in enemiesCoordinates)
             {
-                if (!IsPointInBounds(enemyCoordinates) ||
-                    !(map[enemyCoordinates.X, enemyCoordinates.Y] is IAttackingCreature) ||
-                    map[enemyCoordinates.X, enemyCoordinates.Y].MovementCondition is MovementConditions.Dying)
-                {
-                    creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing, creature.Direction);
+                if (!IsPointInBounds(enemyCoordinates)
+                    || !(map[enemyCoordinates.X, enemyCoordinates.Y] is IAttackingCreature)
+                    || map[enemyCoordinates.X, enemyCoordinates.Y].MovementCondition is MovementConditions.Dying)
                     continue;
-                }
-                
+
                 var enemy = (IAttackingCreature) map[enemyCoordinates.X, enemyCoordinates.Y];
                 enemy.ChangeHealthBy(creature.DamageValue);
+                isEnemyAttacked = true;
             }
+
+            return isEnemyAttacked;
         }
 
         public void CheckCreaturesForFalling()
@@ -91,7 +93,7 @@ namespace Model
                     enemy.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing, enemy.Direction);
                     return;
                 }
-                
+
                 var dx = GetCreatureLocation(enemy).X - playerCoordinates.X;
                 if (Math.Abs(dx) > 10)
                 {
@@ -105,7 +107,32 @@ namespace Model
                     dx > 0 ? Direction.Left : Direction.Right);
             }
         }
-        
+
+        public void RemoveCreatureFromMapIfItIsDead(IAttackingCreature creature)
+        {
+            if (!creature.IsDead())
+                return;
+            var creatureLocation = GetCreatureLocation(creature);
+            map[creatureLocation.X, creatureLocation.Y] = null;
+            ListOfCreatures.Remove(creature);
+        }
+
+        public void RemoveEnemiesFromMapIfTheyAreDead()
+        {
+            var deadEnemies = ListOfCreatures
+                .OfType<IEnemy>()
+                .Where(enemy => enemy.MovementCondition is MovementConditions.Dying)
+                .ToList();
+            while (deadEnemies.Count > 0)
+            {
+                var enemy = deadEnemies[0];
+                var enemyLocation = GetCreatureLocation(enemy);
+                map[enemyLocation.X, enemyLocation.Y] = null;
+                ListOfCreatures.Remove(enemy);
+                deadEnemies.Remove(enemy);
+            }
+        }
+
         public void LoadNextMap()
         {
             var mapInfo = MapCreator.GetNextMap();
