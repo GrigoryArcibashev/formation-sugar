@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 using Model;
 using Model.Creatures;
@@ -16,7 +17,8 @@ namespace formation_sugar
         private bool aIsPressed;
         private bool dIsPressed;
         private bool spaceIsPressed;
-
+        private Timer timerForHearthAnimation;
+        private Label playerHealthPoints;
         public Game()
         {
             map = new GameMap();
@@ -38,13 +40,31 @@ namespace formation_sugar
                 Invalidate();
             };
 
+            playerHealthPoints = new Label
+            {
+                Text = map.Player.Health.ToString(),
+                Location = new Point(40, 10),
+                Font = new Font(FontFamily.GenericMonospace, 10.0f, FontStyle.Bold)
+            };
+            
+            Controls.Add(playerHealthPoints);
+            
+            timerForHearthAnimation = new Timer {Interval = 500, Enabled = true};
+            timerForHearthAnimation.Tick += (sender, args) =>
+            {
+                PlayerHealthAnimation.HearthAnimation.MoveNextSprite();
+                playerHealthPoints.Text = map.Player.Health.ToString();
+                timerForHearthAnimation.Interval = Math.Max(1, map.Player.Health * 5);
+            };
+            
             InitializeComponent();
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
             var graphics = e.Graphics;
-            GraphicsCreator.CreateGraphic(graphics, animationsForCreatures, map);
+            GraphicsCreator.CreateGraphicForCreatures(graphics, animationsForCreatures, map);
+            GraphicsCreator.CreateGraphicForPlayersHealth(graphics, PlayerHealthAnimation.HearthAnimation);
         }
 
         protected override void OnKeyDown(KeyEventArgs e)

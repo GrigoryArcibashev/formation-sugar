@@ -110,11 +110,7 @@ namespace Tests
             map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Running, map.Player.Direction);
             map.CheckCreaturesForFalling();
             Assert.AreEqual(MovementConditions.Falling, map.Player.MovementCondition);
-
-            map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Sitting, map.Player.Direction);
-            map.CheckCreaturesForFalling();
-            Assert.AreEqual(MovementConditions.Falling, map.Player.MovementCondition);
-
+            
             map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing, map.Player.Direction);
             map.CheckCreaturesForFalling();
             Assert.AreEqual(MovementConditions.Falling, map.Player.MovementCondition);
@@ -147,12 +143,7 @@ namespace Tests
             expectedMovementCondition = GetMovementConditionsOfCreaturesOnMap().FirstOrDefault();
             map.CheckCreaturesForFalling();
             Assert.AreEqual(expectedMovementCondition, map.Player.MovementCondition);
-
-            map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Sitting, map.Player.Direction);
-            expectedMovementCondition = GetMovementConditionsOfCreaturesOnMap().FirstOrDefault();
-            map.CheckCreaturesForFalling();
-            Assert.AreEqual(expectedMovementCondition, map.Player.MovementCondition);
-
+            
             map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing, map.Player.Direction);
             expectedMovementCondition = GetMovementConditionsOfCreaturesOnMap().FirstOrDefault();
             map.CheckCreaturesForFalling();

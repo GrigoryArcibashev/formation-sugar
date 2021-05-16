@@ -4,7 +4,6 @@
     {
         Default,
         Standing,
-        Sitting,
         Running,
         Jumping,
         Falling,

@@ -45,6 +45,7 @@
         <Compile Include="AnimationsForCreatures\AnimationsForCreatures.cs" />
         <Compile Include="AnimationsForCreatures\AnimationsForEnemy.cs" />
         <Compile Include="AnimationsForCreatures\AnimationsForPlayer.cs" />
+        <Compile Include="AnimationsForCreatures\PlayerHealthAnimation.cs" />
         <Compile Include="GraphicsCreator.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>

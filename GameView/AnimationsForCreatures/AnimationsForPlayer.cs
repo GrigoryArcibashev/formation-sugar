@@ -13,10 +13,7 @@ namespace View.AnimationsForCreatures
                 
                 {(MovementConditions.Running,Direction.Right), @"Sprites\playerAnimations\runningRight"},
                 {(MovementConditions.Running,Direction.Left), @"Sprites\playerAnimations\runningLeft"},
-                
-                {(MovementConditions.Sitting,Direction.Right), @"Sprites\playerAnimations\sittingRight"},
-                {(MovementConditions.Sitting, Direction.Left), @"Sprites\playerAnimations\sittingLeft"},
-                
+
                 {(MovementConditions.Jumping, Direction.Right), @"Sprites\playerAnimations\jumpingRight"},
                 {(MovementConditions.Jumping, Direction.Left), @"Sprites\playerAnimations\jumpingLeft"},
                 {(MovementConditions.Jumping, Direction.NoMovement), @"Sprites\playerAnimations\jumpingAndFallingNoMovement"},
