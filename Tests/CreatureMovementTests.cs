@@ -12,14 +12,14 @@ namespace Tests
         private static GameMap map;
 
         [Test]
-        public void CreatureMoveToEverySide()
+        public void PlayerMoveToEverySide()
         {
             MapCreator.LoadLevels("LevelsForTests");
             MapCreator.GoToLevel("test1.txt");
             map = new GameMap();
-            
+
             var initCreatureLocation = map.GetCreatureLocation(map.Player);
-            
+
             var expectedCreatureCoordinates = new[]
             {
                 initCreatureLocation + new Size(1, 0),
@@ -43,7 +43,7 @@ namespace Tests
         }
 
         [Test]
-        public void CreatureCanNotMoveOffMap()
+        public void PlayerCanNotMoveOffMap()
         {
             MapCreator.LoadLevels("LevelsForTests");
             MapCreator.GoToLevel("test2.txt");
@@ -89,7 +89,7 @@ namespace Tests
 
 
         [Test]
-        public void CreatureShouldFallWhenEmptySpaceUnderItAndWhenNotJumping()
+        public void PlayerShouldFallWhenEmptySpaceUnderItAndWhenNotJumping()
         {
             MapCreator.LoadLevels("LevelsForTests");
             MapCreator.GoToLevel("test3.txt");
@@ -122,7 +122,7 @@ namespace Tests
 
 
         [Test]
-        public void CreatureShouldNotFallWhenNotEmptySpaceUnderIt()
+        public void PlayerShouldNotFallWhenNotEmptySpaceUnderIt()
         {
             MapCreator.LoadLevels("LevelsForTests");
             MapCreator.GoToLevel("test4.txt");
@@ -245,18 +245,6 @@ namespace Tests
             CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
             CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
             Assert.AreEqual(MovementConditions.Falling, map.Player.MovementCondition);
-        }
-
-        [Test]
-        public void PlayerDiesIfHealthEqualsToZero()
-        {
-            MapCreator.LoadLevels("LevelsForTests");
-            MapCreator.GoToLevel("test8.txt");
-            map = new GameMap();
-
-            map.Player.ChangeHealthBy(-100);
-            Assert.AreEqual(0, map.Player.Health);
-            Assert.AreEqual(MovementConditions.Dying, map.Player.MovementCondition);
         }
 
         [Test]
