@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Net.Mail;
 using Model.Creatures;
 
 namespace Model
@@ -26,24 +25,20 @@ namespace Model
         {
             return creaturesLocations[creature];
         }
+        
+        public ICreature this[int x, int y] =>  map[x, y];
 
         public bool MoveCreature(IMovingCreature creature, Direction direction)
         {
-            switch (direction)
+            return direction switch
             {
-                case Direction.Right:
-                    return MoveCreatureToSide(creature, direction);
-                case Direction.Left:
-                    return MoveCreatureToSide(creature, direction);
-                case Direction.Up:
-                    return MoveCreatureUp((IJumpingCreature) creature);
-                case Direction.Down:
-                    return MoveCreatureDown((IJumpingCreature) creature);
-                case Direction.NoMovement:
-                    return true;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
-            }
+                Direction.Right => MoveCreatureToSide(creature, direction),
+                Direction.Left => MoveCreatureToSide(creature, direction),
+                Direction.Up => MoveCreatureUp((IJumpingCreature) creature),
+                Direction.Down => MoveCreatureDown((IJumpingCreature) creature),
+                Direction.NoMovement => true,
+                _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
+            };
         }
 
         public bool Attack(IAttackingCreature creature)
@@ -108,27 +103,20 @@ namespace Model
             }
         }
 
-        public void RemoveCreatureFromMapIfItIsDead(IAttackingCreature creature)
-        {
-            if (!creature.IsDead())
-                return;
-            var creatureLocation = GetCreatureLocation(creature);
-            map[creatureLocation.X, creatureLocation.Y] = null;
-            ListOfCreatures.Remove(creature);
-        }
-
         public void RemoveEnemiesFromMapIfTheyAreDead()
         {
             var deadEnemies = ListOfCreatures
                 .OfType<IEnemy>()
                 .Where(enemy => enemy.MovementCondition is MovementConditions.Dying)
                 .ToList();
+
             while (deadEnemies.Count > 0)
             {
                 var enemy = deadEnemies[0];
                 var enemyLocation = GetCreatureLocation(enemy);
                 map[enemyLocation.X, enemyLocation.Y] = null;
                 ListOfCreatures.Remove(enemy);
+                creaturesLocations.Remove(enemy);
                 deadEnemies.Remove(enemy);
             }
         }
