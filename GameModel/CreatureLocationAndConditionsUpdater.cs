@@ -24,9 +24,10 @@ namespace Model
                         if (map.MoveCreature(creature, Direction.Down))
                             map.MoveCreature(creature, creature.Direction);
                         break;
-                    
+
                     case MovementConditions.Attacking:
-                        map.Attack((IAttackingCreature)creature);
+                        if (!map.Attack((IAttackingCreature) creature) && !(creature is Player))
+                            creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing, creature.Direction);
                         break;
                 }
             }
