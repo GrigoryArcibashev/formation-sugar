@@ -2,7 +2,7 @@
 
 namespace Model.Creatures
 {
-    public class Enemy : IMovingCreature, IEnemy, IAttackingCreature
+    public class Enemy : IEnemy, IAttackingCreature
     {
         public MovementConditions MovementCondition { get; private set; }
         public Direction Direction { get; private set; }
@@ -21,6 +21,11 @@ namespace Model.Creatures
         {
             MovementCondition = movementConditionTo;
             Direction = directionTo;
+        }
+
+        public bool IsDead()
+        {
+            return MovementCondition is MovementConditions.Dying;
         }
 
         public void ChangeHealthBy(int deltaHealth)

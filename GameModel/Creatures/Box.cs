@@ -10,5 +10,10 @@
             MovementCondition = MovementConditions.Default;
             Direction = Direction.NoMovement;
         }
+        
+        public bool IsDead()
+        {
+            return MovementCondition is MovementConditions.Dying;
+        }
     }
 }

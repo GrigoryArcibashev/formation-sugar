@@ -60,7 +60,10 @@ namespace Model
                 if (!IsPointInBounds(enemyCoordinates) ||
                     !(map[enemyCoordinates.X, enemyCoordinates.Y] is IAttackingCreature) ||
                     map[enemyCoordinates.X, enemyCoordinates.Y].MovementCondition is MovementConditions.Dying)
+                {
+                    creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing, creature.Direction);
                     continue;
+                }
                 
                 var enemy = (IAttackingCreature) map[enemyCoordinates.X, enemyCoordinates.Y];
                 enemy.ChangeHealthBy(creature.DamageValue);
@@ -83,7 +86,7 @@ namespace Model
             var playerCoordinates = GetCreatureLocation(Player);
             foreach (var enemy in ListOfCreatures.OfType<Enemy>())
             {
-                if (Player.IsDying())
+                if (Player.IsDead())
                 {
                     enemy.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing, enemy.Direction);
                     return;

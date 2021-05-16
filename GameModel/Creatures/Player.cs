@@ -27,7 +27,7 @@ namespace Model.Creatures
             Direction = directionTo;
         }
 
-        public bool IsDying()
+        public bool IsDead()
         {
             return MovementCondition is MovementConditions.Dying;
         }
