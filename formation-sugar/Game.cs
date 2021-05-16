@@ -13,7 +13,6 @@ namespace formation_sugar
         private readonly GameMap map;
         private readonly Dictionary<ICreature, Dictionary<(MovementConditions, Direction), Animation>> animationsForCreatures;
         private bool wIsPressed;
-        private bool sIsPressed;
         private bool aIsPressed;
         private bool dIsPressed;
         private bool spaceIsPressed;
@@ -28,14 +27,14 @@ namespace formation_sugar
             animationsForCreatures = new Dictionary<ICreature, Dictionary<(MovementConditions, Direction), Animation>>();
             foreach (var creature in map.ListOfCreatures)
                 AddAnimationsForCreature(creature);
-            
+
             new Timer {Interval = 100, Enabled = true}.Tick += (sender, args) =>
             {
                 foreach (var creature in map.ListOfCreatures)
                 {
-                    animationsForCreatures[creature][(creature.MovementCondition, creature.Direction)].MoveNextSprite(); 
+                    animationsForCreatures[creature][(creature.MovementCondition, creature.Direction)].MoveNextSprite();
                 }
-                
+
                 Invalidate();
             };
 
@@ -60,14 +59,10 @@ namespace formation_sugar
                     aIsPressed = true;
                     break;
 
-                case Keys.S:
-                    sIsPressed = true;
-                    break;
-
                 case Keys.W:
                     wIsPressed = true;
                     break;
-                
+
                 case Keys.Space:
                     spaceIsPressed = true;
                     break;
@@ -80,7 +75,7 @@ namespace formation_sugar
             {
                 return;
             }
-            
+
             switch (e.KeyCode)
             {
                 case Keys.D:
@@ -91,14 +86,10 @@ namespace formation_sugar
                     aIsPressed = false;
                     break;
 
-                case Keys.S:
-                    sIsPressed = false;
-                    break;
-
                 case Keys.W:
                     wIsPressed = false;
                     break;
-                
+
                 case Keys.Space:
                     spaceIsPressed = false;
                     break;
@@ -114,24 +105,24 @@ namespace formation_sugar
         private void ProcessKeystrokes()
         {
             if (map.Player.IsDead())
-            {
                 return;
-            }
-            
+
             if (dIsPressed || aIsPressed)
                 map.Player.ChangeMovementConditionAndDirectionTo(
                     map.Player.IsFallingOrJumping() ? map.Player.MovementCondition : MovementConditions.Running,
                     dIsPressed ? Direction.Right : Direction.Left);
+
             if (wIsPressed && !map.Player.IsFallingOrJumping())
-                    map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Jumping,
-                        map.Player.MovementCondition is MovementConditions.Running
-                            ? map.Player.Direction
-                            : Direction.NoMovement);
-            if (sIsPressed && !map.Player.IsFallingOrJumping())
-                    map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Sitting, map.Player.Direction);
-            
-            if (spaceIsPressed)
-                map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Attacking, map.Player.Direction);
+                map.Player.ChangeMovementConditionAndDirectionTo(
+                    MovementConditions.Jumping,
+                    map.Player.MovementCondition is MovementConditions.Running
+                        ? map.Player.Direction
+                        : Direction.NoMovement);
+
+            if (spaceIsPressed && !map.Player.IsFallingOrJumping())
+                map.Player.ChangeMovementConditionAndDirectionTo(
+                    MovementConditions.Attacking,
+                    map.Player.Direction is Direction.NoMovement ? Direction.Right : map.Player.Direction);
         }
 
         private void PerformActionsWithCreatures(object sender, EventArgs eventArgs)
@@ -139,6 +130,7 @@ namespace formation_sugar
             map.CheckCreaturesForFalling();
             ProcessKeystrokes();
             CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
+            map.RemoveEnemiesFromMapIfTheyAreDead();
             map.MakeEnemiesAttackingOrRunning();
         }
 
