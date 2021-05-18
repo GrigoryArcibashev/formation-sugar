@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using Model;
-using Model.Creatures;
 using Model.Creatures.CreatureInterfaces;
 using NUnit.Framework;
 

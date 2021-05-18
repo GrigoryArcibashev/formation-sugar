@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using Model;
-using Model.Creatures;
 using Model.Creatures.CreatureInterfaces;
 using View;
 using View.Animations;
@@ -19,10 +18,12 @@ namespace formation_sugar
         private bool dIsPressed;
         private bool spaceIsPressed;
         private readonly Label playerHealthPoints;
+
         public Game()
         {
             map = new GameMap();
             map.LoadNextMap();
+
             var timerForCreaturesActions = new Timer {Interval = 100, Enabled = true};
             timerForCreaturesActions.Tick += PerformActionsWithCreatures;
 
@@ -30,14 +31,19 @@ namespace formation_sugar
             foreach (var creature in map.ListOfCreatures)
                 AddAnimationsForCreature(creature);
 
-            new Timer {Interval = 100, Enabled = true}.Tick += (sender, args) =>
+            var timerForCreatureAnimations = new Timer {Interval = 100, Enabled = true};
+            timerForCreatureAnimations.Tick += (sender, args) =>
             {
                 foreach (var creature in map.ListOfCreatures)
-                {
                     animationsForCreatures[creature][(creature.MovementCondition, creature.Direction)].MoveNextSprite();
-                }
-
                 Invalidate();
+            };
+
+            var timerForHearthAnimation = new Timer {Interval = 1000, Enabled = true};
+            timerForHearthAnimation.Tick += (sender, args) =>
+            {
+                PlayerHealthAnimation.HearthAnimation.MoveNextSprite();
+                timerForHearthAnimation.Interval = Math.Max(150, map.Player.Health * 5);
             };
 
             playerHealthPoints = new Label
@@ -46,16 +52,8 @@ namespace formation_sugar
                 Location = new Point(40, 10),
                 Font = new Font(FontFamily.GenericMonospace, 10.0f, FontStyle.Bold)
             };
-            
             Controls.Add(playerHealthPoints);
-            
-            var timerForHearthAnimation = new Timer {Interval = 1000, Enabled = true};
-            timerForHearthAnimation.Tick += (sender, args) =>
-            {
-                PlayerHealthAnimation.HearthAnimation.MoveNextSprite();
-                timerForHearthAnimation.Interval = Math.Max(150, map.Player.Health * 5);
-            };
-            
+
             InitializeComponent();
         }
 

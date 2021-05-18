@@ -16,6 +16,7 @@ namespace Model
 
         public List<ICreature> ListOfCreatures { get; private set; }
         public Player Player { get; private set; }
+        public ICreature this[int x, int y] => map[x, y];
 
         public GameMap()
         {
@@ -26,8 +27,6 @@ namespace Model
         {
             return creaturesLocations[creature];
         }
-
-        public ICreature this[int x, int y] => map[x, y];
 
         public bool MoveCreature(IMovingCreature creature, Direction direction)
         {

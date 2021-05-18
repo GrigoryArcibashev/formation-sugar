@@ -1,6 +1,4 @@
-﻿using Model.Creatures.CreatureInterfaces;
-
-namespace Model.Creatures
+﻿namespace Model.Creatures.CreatureInterfaces
 {
     public interface IMovingCreature : ICreature
     {
