@@ -8,12 +8,14 @@ namespace Model.Creatures
         public MovementConditions MovementCondition { get; private set; }
         public Direction Direction { get; }
         public int Health { get; private set; }
+        public int Score { get; }
 
         public Chest(int health)
         {
             MovementCondition = MovementConditions.Default;
             Direction = Direction.NoMovement;
             Health = health;
+            Score = 10;
         }
 
         public bool IsDead()

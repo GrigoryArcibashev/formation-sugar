@@ -17,22 +17,51 @@ namespace formation_sugar
         private bool aIsPressed;
         private bool dIsPressed;
         private bool spaceIsPressed;
-        private readonly Label playerHealthPoints;
+        private readonly Label score;
 
         public Game()
         {
+            InitializeComponent();
+
             map = new GameMap();
             map.LoadNextMap();
 
+            var playerHealthPoints = new Label
+            {
+                Text = map.Player.Health.ToString(),
+                Location = new Point(40, 10),
+                Font = new Font(FontFamily.GenericMonospace, 12.0f, FontStyle.Bold)
+            };
+
+            score = new Label
+            {
+                Text = @"Score: " + map.Score,
+                Location = new Point(ClientSize.Width / 2, 10),
+                Size = new Size(300, 30),
+                Font = new Font(FontFamily.GenericMonospace, 12.0f, FontStyle.Bold)
+            };
+
+            Controls.Add(playerHealthPoints);
+            Controls.Add(score);
+
             var timerForCreaturesActions = new Timer {Interval = 100, Enabled = true};
-            timerForCreaturesActions.Tick += PerformActionsWithCreatures;
+            timerForCreaturesActions.Tick += delegate
+            {
+                map.CheckCreaturesForFalling();
+                ProcessKeystrokes();
+                CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
+                map.RemoveEnemiesFromMapIfTheyAreDead();
+                map.MakeEnemiesAttackingOrRunning();
+                playerHealthPoints.Text = map.Player.Health.ToString();
+                score.Text = Text = @"Score: " + map.Score;
+            };
 
             animationsForCreatures = new Dictionary<ICreature, Dictionary<(MovementConditions, Direction), Animation>>();
             foreach (var creature in map.ListOfCreatures)
                 AddAnimationsForCreature(creature);
 
             var timerForCreatureAnimations = new Timer {Interval = 100, Enabled = true};
-            timerForCreatureAnimations.Tick += (sender, args) =>
+            timerForCreatureAnimations.Tick += delegate
             {
                 foreach (var creature in map.ListOfCreatures)
                     animationsForCreatures[creature][(creature.MovementCondition, creature.Direction)].MoveNextSprite();
@@ -40,21 +69,11 @@ namespace formation_sugar
             };
 
             var timerForHearthAnimation = new Timer {Interval = 1000, Enabled = true};
-            timerForHearthAnimation.Tick += (sender, args) =>
+            timerForHearthAnimation.Tick += delegate
             {
                 PlayerHealthAnimation.HearthAnimation.MoveNextSprite();
                 timerForHearthAnimation.Interval = Math.Max(150, map.Player.Health * 5);
             };
-
-            playerHealthPoints = new Label
-            {
-                Text = map.Player.Health.ToString(),
-                Location = new Point(40, 10),
-                Font = new Font(FontFamily.GenericMonospace, 10.0f, FontStyle.Bold)
-            };
-            Controls.Add(playerHealthPoints);
-
-            InitializeComponent();
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -140,16 +159,6 @@ namespace formation_sugar
                 map.Player.ChangeMovementConditionAndDirectionTo(
                     MovementConditions.Attacking,
                     map.Player.Direction is Direction.NoMovement ? Direction.Right : map.Player.Direction);
-        }
-
-        private void PerformActionsWithCreatures(object sender, EventArgs eventArgs)
-        {
-            map.CheckCreaturesForFalling();
-            ProcessKeystrokes();
-            CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
-            map.RemoveEnemiesFromMapIfTheyAreDead();
-            map.MakeEnemiesAttackingOrRunning();
-            playerHealthPoints.Text = map.Player.Health.ToString();
         }
 
         private void AddAnimationsForCreature(ICreature creature)
