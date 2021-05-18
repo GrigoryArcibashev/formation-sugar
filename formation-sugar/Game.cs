@@ -17,8 +17,7 @@ namespace formation_sugar
         private bool aIsPressed;
         private bool dIsPressed;
         private bool spaceIsPressed;
-        private Timer timerForHearthAnimation;
-        private Label playerHealthPoints;
+        private readonly Label playerHealthPoints;
         public Game()
         {
             map = new GameMap();
@@ -49,12 +48,11 @@ namespace formation_sugar
             
             Controls.Add(playerHealthPoints);
             
-            timerForHearthAnimation = new Timer {Interval = 500, Enabled = true};
+            var timerForHearthAnimation = new Timer {Interval = 1000, Enabled = true};
             timerForHearthAnimation.Tick += (sender, args) =>
             {
                 PlayerHealthAnimation.HearthAnimation.MoveNextSprite();
-                playerHealthPoints.Text = map.Player.Health.ToString();
-                timerForHearthAnimation.Interval = Math.Max(1, map.Player.Health * 5);
+                timerForHearthAnimation.Interval = Math.Max(10, map.Player.Health * 10);
             };
             
             InitializeComponent();
@@ -152,6 +150,7 @@ namespace formation_sugar
             CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
             map.RemoveEnemiesFromMapIfTheyAreDead();
             map.MakeEnemiesAttackingOrRunning();
+            playerHealthPoints.Text = map.Player.Health.ToString();
         }
 
         private void AddAnimationsForCreature(ICreature creature)
