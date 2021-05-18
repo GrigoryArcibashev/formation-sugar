@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Model;
 using Model.Creatures;
+using Model.Creatures.CreatureInterfaces;
 using View;
 using View.AnimationsForCreatures;
 

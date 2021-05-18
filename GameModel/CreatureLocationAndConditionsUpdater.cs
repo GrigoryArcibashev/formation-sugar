@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Model.Creatures;
+using Model.Creatures.CreatureInterfaces;
 
 namespace Model
 {

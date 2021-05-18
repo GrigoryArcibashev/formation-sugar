@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Model.Creatures;
+using Model.Creatures.CreatureInterfaces;
 
 namespace Model
 {

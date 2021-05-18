@@ -1,4 +1,6 @@
-﻿namespace Model.Creatures
+﻿using Model.Creatures.CreatureInterfaces;
+
+namespace Model.Creatures
 {
     public class Box : ICreature
     {

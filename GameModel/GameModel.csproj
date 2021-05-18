@@ -41,11 +41,13 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Creatures\Box.cs" />
+        <Compile Include="Creatures\Chest.cs" />
+        <Compile Include="Creatures\CreatureInterfaces\IAttackingCreature.cs" />
+        <Compile Include="Creatures\CreatureInterfaces\ICreature.cs" />
+        <Compile Include="Creatures\CreatureInterfaces\ICreatureWithHealth.cs" />
+        <Compile Include="Creatures\CreatureInterfaces\IEnemy.cs" />
+        <Compile Include="Creatures\CreatureInterfaces\IJumpingCreature.cs" />
         <Compile Include="Creatures\Enemy.cs" />
-        <Compile Include="Creatures\ICreature.cs" />
-        <Compile Include="Creatures\IAttackingCreature.cs" />
-        <Compile Include="Creatures\IEnemy.cs" />
-        <Compile Include="Creatures\IJumpingCreature.cs" />
         <Compile Include="Creatures\IMovingCreature.cs" />
         <Compile Include="Creatures\Player.cs" />
         <Compile Include="Direction.cs" />

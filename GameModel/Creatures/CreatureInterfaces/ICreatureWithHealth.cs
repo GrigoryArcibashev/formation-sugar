@@ -1,8 +1,7 @@
-﻿namespace Model.Creatures
+﻿namespace Model.Creatures.CreatureInterfaces
 {
-    public interface IAttackingCreature : IMovingCreature
+    public interface ICreatureWithHealth : ICreature
     {
-        public int DamageValue { get; }
         public int Health { get; }
         public void ChangeHealthBy(int deltaHealth);
         public bool IsDead();

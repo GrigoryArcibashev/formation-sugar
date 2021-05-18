@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Model.Creatures;
+using Model.Creatures.CreatureInterfaces;
 
 namespace Model
 {
@@ -25,8 +26,8 @@ namespace Model
         {
             return creaturesLocations[creature];
         }
-        
-        public ICreature this[int x, int y] =>  map[x, y];
+
+        public ICreature this[int x, int y] => map[x, y];
 
         public bool MoveCreature(IMovingCreature creature, Direction direction)
         {

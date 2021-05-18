@@ -1,4 +1,5 @@
 ﻿using System;
+using Model.Creatures.CreatureInterfaces;
 
 namespace Model.Creatures
 {

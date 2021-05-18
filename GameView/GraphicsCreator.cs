@@ -2,6 +2,7 @@
 using System.Drawing;
 using Model;
 using Model.Creatures;
+using Model.Creatures.CreatureInterfaces;
 
 namespace View
 {

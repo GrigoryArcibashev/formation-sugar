@@ -1,4 +1,4 @@
-﻿namespace Model.Creatures
+﻿namespace Model.Creatures.CreatureInterfaces
 {
     public interface IJumpingCreature : IMovingCreature
     {

@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using Model.Creatures;
+using Model.Creatures.CreatureInterfaces;
 
 namespace Model
 {
