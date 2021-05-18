@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Model;
 
-namespace View.AnimationsForCreatures
+namespace View.Animations
 {
     public static class AnimationsForEnemy
     {
@@ -10,13 +10,13 @@ namespace View.AnimationsForCreatures
             {
                 {(MovementConditions.Standing, Direction.Right), @"Sprites\enemyAnimations\standingRight"},
                 {(MovementConditions.Standing, Direction.Left), @"Sprites\enemyAnimations\standingLeft"},
-                
-                {(MovementConditions.Running,Direction.Right), @"Sprites\enemyAnimations\runningRight"},
-                {(MovementConditions.Running,Direction.Left), @"Sprites\enemyAnimations\runningLeft"},
-                
+
+                {(MovementConditions.Running, Direction.Right), @"Sprites\enemyAnimations\runningRight"},
+                {(MovementConditions.Running, Direction.Left), @"Sprites\enemyAnimations\runningLeft"},
+
                 {(MovementConditions.Attacking, Direction.Right), @"Sprites\enemyAnimations\attackingRight"},
                 {(MovementConditions.Attacking, Direction.Left), @"Sprites\enemyAnimations\attackingLeft"},
-                
+
                 {(MovementConditions.Dying, Direction.Right), @"Sprites\enemyAnimations\dieRight"},
                 {(MovementConditions.Dying, Direction.Left), @"Sprites\enemyAnimations\dieLeft"}
             };

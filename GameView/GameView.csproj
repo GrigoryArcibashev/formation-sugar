@@ -41,11 +41,12 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Animation.cs" />
-        <Compile Include="AnimationsForCreatures\AnimationsForBox.cs" />
-        <Compile Include="AnimationsForCreatures\AnimationsForCreatures.cs" />
-        <Compile Include="AnimationsForCreatures\AnimationsForEnemy.cs" />
-        <Compile Include="AnimationsForCreatures\AnimationsForPlayer.cs" />
-        <Compile Include="AnimationsForCreatures\PlayerHealthAnimation.cs" />
+        <Compile Include="Animations\AnimationsForBox.cs" />
+        <Compile Include="Animations\AnimationsForChest.cs" />
+        <Compile Include="Animations\AnimationsForCreatures.cs" />
+        <Compile Include="Animations\AnimationsForEnemy.cs" />
+        <Compile Include="Animations\AnimationsForPlayer.cs" />
+        <Compile Include="Animations\PlayerHealthAnimation.cs" />
         <Compile Include="GraphicsCreator.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>

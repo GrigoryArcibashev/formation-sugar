@@ -24,7 +24,7 @@ namespace View
             graphics.DrawImage(animation.Current, new Point(5, 5));
         }
 
-        private static Point GetCoordinationForCreatureInPixels(Point coordinates, int cellSize) //улучшить метод
+        private static Point GetCoordinationForCreatureInPixels(Point coordinates, int cellSize)
         {
             return new Point(coordinates.X * cellSize, coordinates.Y * cellSize);
         }

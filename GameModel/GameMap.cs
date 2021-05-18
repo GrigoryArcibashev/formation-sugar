@@ -56,11 +56,11 @@ namespace Model
             foreach (var enemyCoordinates in enemiesCoordinates)
             {
                 if (!IsPointInBounds(enemyCoordinates)
-                    || !(map[enemyCoordinates.X, enemyCoordinates.Y] is IAttackingCreature)
+                    || !(map[enemyCoordinates.X, enemyCoordinates.Y] is ICreatureWithHealth)
                     || map[enemyCoordinates.X, enemyCoordinates.Y].MovementCondition is MovementConditions.Dying)
                     continue;
 
-                var enemy = (IAttackingCreature) map[enemyCoordinates.X, enemyCoordinates.Y];
+                var enemy = (ICreatureWithHealth) map[enemyCoordinates.X, enemyCoordinates.Y];
                 enemy.ChangeHealthBy(creature.DamageValue);
                 isEnemyAttacked = true;
             }
@@ -107,8 +107,8 @@ namespace Model
         public void RemoveEnemiesFromMapIfTheyAreDead()
         {
             var deadEnemies = ListOfCreatures
-                .OfType<IEnemy>()
-                .Where(enemy => enemy.MovementCondition is MovementConditions.Dying)
+                .OfType<ICreatureWithHealth>()
+                .Where(enemy => enemy.MovementCondition is MovementConditions.Dying && !(enemy is Player))
                 .ToList();
 
             while (deadEnemies.Count > 0)

@@ -6,7 +6,7 @@ using Model;
 using Model.Creatures;
 using Model.Creatures.CreatureInterfaces;
 using View;
-using View.AnimationsForCreatures;
+using View.Animations;
 
 namespace formation_sugar
 {
@@ -53,7 +53,7 @@ namespace formation_sugar
             timerForHearthAnimation.Tick += (sender, args) =>
             {
                 PlayerHealthAnimation.HearthAnimation.MoveNextSprite();
-                timerForHearthAnimation.Interval = Math.Max(10, map.Player.Health * 10);
+                timerForHearthAnimation.Interval = Math.Max(150, map.Player.Health * 5);
             };
             
             InitializeComponent();

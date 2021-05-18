@@ -74,6 +74,10 @@ namespace Model
                     case "B":
                         AddCreatureOnMapAndListOfCreatures(new Box(), coordinates);
                         break;
+                    
+                    case "C":
+                        AddCreatureOnMapAndListOfCreatures(new Chest(1), coordinates);
+                        break;
                 }
             }
 

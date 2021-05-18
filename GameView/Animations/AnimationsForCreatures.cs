@@ -6,17 +6,18 @@ using Model;
 using Model.Creatures;
 using Model.Creatures.CreatureInterfaces;
 
-namespace View.AnimationsForCreatures
+namespace View.Animations
 {
     public static class AnimationsForCreatures
     {
-        public static Dictionary<(MovementConditions, Direction), Animation> GetAnimationFor(ICreature movingCreature)
+        public static Dictionary<(MovementConditions, Direction), Animation> GetAnimationFor(ICreature creature)
         {
-            return movingCreature switch
+            return creature switch
             {
                 Player _ => GetAnimationForCreature(AnimationsForPlayer.AnimationForPlayer),
                 Box _ => GetAnimationForCreature(AnimationsForBox.AnimationForBox),
                 Enemy _ => GetAnimationForCreature(AnimationsForEnemy.AnimationForEnemy),
+                Chest _ => GetAnimationForCreature(AnimationsForChest.AnimationForChest),
                 _ => default
             };
         }
@@ -30,7 +31,7 @@ namespace View.AnimationsForCreatures
                 movementConditionAndSpritesForIt => new Animation(
                     new DirectoryInfo(
                         Path.Combine(
-                            currentDirectory ?? throw new Exception("Не удается загрузить анимацию"),
+                            currentDirectory ?? throw new Exception("Unable to load animation"),
                             movementConditionAndSpritesForIt.Value))));
         }
     }
