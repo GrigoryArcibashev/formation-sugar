@@ -12,7 +12,7 @@ namespace Model
         private ICreature[,] map;
         private Dictionary<ICreature, Point> creaturesLocations;
         public int Score { get; private set; }
-        private int Width => map.GetLength(0);
+        public int Width => map.GetLength(0);
         private int Height => map.GetLength(1);
 
         public List<ICreature> ListOfCreatures { get; private set; }
@@ -91,7 +91,7 @@ namespace Model
             }
         }
 
-        public void RemoveEnemiesFromMapIfTheyAreDead()
+        public void RemoveCreaturesFromMapIfTheyAreDead()
         {
             var deadEnemies = ListOfCreatures
                 .OfType<ICreatureWithHealth>()

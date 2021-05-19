@@ -17,7 +17,6 @@ namespace formation_sugar
         private bool aIsPressed;
         private bool dIsPressed;
         private bool spaceIsPressed;
-        private readonly Label score;
 
         public Game()
         {
@@ -33,7 +32,7 @@ namespace formation_sugar
                 Font = new Font(FontFamily.GenericMonospace, 12.0f, FontStyle.Bold)
             };
 
-            score = new Label
+            var score = new Label
             {
                 Text = @"Score: " + map.Score,
                 Location = new Point(ClientSize.Width / 2, 10),
@@ -50,7 +49,7 @@ namespace formation_sugar
                 map.CheckCreaturesForFalling();
                 ProcessKeystrokes();
                 CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
-                map.RemoveEnemiesFromMapIfTheyAreDead();
+                map.RemoveCreaturesFromMapIfTheyAreDead();
                 map.MakeEnemiesAttackingOrRunning();
                 playerHealthPoints.Text = map.Player.Health.ToString();
                 score.Text = Text = @"Score: " + map.Score;
