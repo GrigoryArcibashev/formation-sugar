@@ -11,7 +11,8 @@ namespace Model
     {
         private ICreature[,] map;
         private Dictionary<ICreature, Point> creaturesLocations;
-        private int Width => map.GetLength(0);
+        public int Score { get; private set; }
+        public int Width => map.GetLength(0);
         private int Height => map.GetLength(1);
 
         public List<ICreature> ListOfCreatures { get; private set; }
@@ -51,20 +52,7 @@ namespace Model
                 creatureCoordinates + new Size(creature.Direction is Direction.Right ? 1 : -1, 0)
             };
 
-            var isEnemyAttacked = false;
-            foreach (var enemyCoordinates in enemiesCoordinates)
-            {
-                if (!IsPointInBounds(enemyCoordinates)
-                    || !(map[enemyCoordinates.X, enemyCoordinates.Y] is ICreatureWithHealth)
-                    || map[enemyCoordinates.X, enemyCoordinates.Y].MovementCondition is MovementConditions.Dying)
-                    continue;
-
-                var enemy = (ICreatureWithHealth) map[enemyCoordinates.X, enemyCoordinates.Y];
-                enemy.ChangeHealthBy(creature.DamageValue);
-                isEnemyAttacked = true;
-            }
-
-            return isEnemyAttacked;
+            return Attack(creature, enemiesCoordinates);
         }
 
         public void CheckCreaturesForFalling()
@@ -103,7 +91,7 @@ namespace Model
             }
         }
 
-        public void RemoveEnemiesFromMapIfTheyAreDead()
+        public void RemoveCreaturesFromMapIfTheyAreDead()
         {
             var deadEnemies = ListOfCreatures
                 .OfType<ICreatureWithHealth>()
@@ -128,6 +116,30 @@ namespace Model
             Player = mapInfo.Player;
             map = mapInfo.Map;
             creaturesLocations = GetCreaturesLocations();
+        }
+
+        private bool Attack(IAttackingCreature creature, IEnumerable<Point> enemiesCoordinates)
+        {
+            var isEnemyAttacked = false;
+            foreach (var enemyCoordinates in enemiesCoordinates)
+            {
+                if (!IsAttackPossible(enemyCoordinates))
+                    continue;
+                var enemy = (ICreatureWithHealth) map[enemyCoordinates.X, enemyCoordinates.Y];
+                enemy.ChangeHealthBy(creature.DamageValue);
+                if (enemy is Chest chest)
+                    Score += chest.Score;
+                isEnemyAttacked = true;
+            }
+
+            return isEnemyAttacked;
+        }
+
+        private bool IsAttackPossible(Point enemyCoordinates)
+        {
+            return IsPointInBounds(enemyCoordinates)
+                   && map[enemyCoordinates.X, enemyCoordinates.Y] is ICreatureWithHealth
+                   && !(map[enemyCoordinates.X, enemyCoordinates.Y].MovementCondition is MovementConditions.Dying);
         }
 
         private bool IsThereNothingUnderCreature(IJumpingCreature creature)
