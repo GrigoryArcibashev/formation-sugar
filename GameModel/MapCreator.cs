@@ -37,6 +37,13 @@ namespace Model
             return createdMap;
         }
 
+        public static void ResetLevel()
+        {
+            numberOfCurrentLevel = numberOfCurrentLevel > 0
+                ? numberOfCurrentLevel -= 1
+                : numberOfCurrentLevel = levels.Length - 1;
+        }
+
         public static void GoToLevel(string levelName)
         {
             var index = Array.IndexOf(levels, Path.Combine(fullPathToLevels.FullName, levelName));
@@ -55,6 +62,7 @@ namespace Model
             map = new ICreature[levelSize[0], levelSize[1]];
             listOfCreatures = new List<ICreature>();
             Player player = default;
+            Finish finish = default;
 
             foreach (var line in level.Skip(1))
             {
@@ -66,7 +74,7 @@ namespace Model
                         player = new Player(50, 100, 2);
                         AddCreatureOnMapAndListOfCreatures(player, coordinates);
                         break;
-                    
+
                     case "E":
                         AddCreatureOnMapAndListOfCreatures(new Enemy(5, 100), coordinates);
                         break;
@@ -74,16 +82,23 @@ namespace Model
                     case "B":
                         AddCreatureOnMapAndListOfCreatures(new Box(), coordinates);
                         break;
-                    
+
                     case "C":
                         AddCreatureOnMapAndListOfCreatures(new Chest(1), coordinates);
+                        break;
+
+                    case "F":
+                        finish = new Finish();
+                        AddCreatureOnMapAndListOfCreatures(finish, coordinates);
                         break;
                 }
             }
 
             if (player == default)
                 throw new Exception("You forgot to add a player on the level");
-            return new MapInfo(map, player, listOfCreatures);
+            if (finish == default)
+                throw new Exception("You forgot to add a finish on the level");
+            return new MapInfo(map, listOfCreatures, player, finish);
         }
 
 

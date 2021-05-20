@@ -49,6 +49,7 @@
         <Compile Include="Creatures\CreatureInterfaces\IJumpingCreature.cs" />
         <Compile Include="Creatures\CreatureInterfaces\IMovingCreature.cs" />
         <Compile Include="Creatures\Enemy.cs" />
+        <Compile Include="Creatures\Finish.cs" />
         <Compile Include="Creatures\Player.cs" />
         <Compile Include="Direction.cs" />
         <Compile Include="GameMap.cs" />
