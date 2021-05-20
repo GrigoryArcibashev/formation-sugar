@@ -18,6 +18,7 @@ namespace View.Animations
                 Box _ => GetAnimationForCreature(AnimationsForBox.AnimationForBox),
                 Enemy _ => GetAnimationForCreature(AnimationsForEnemy.AnimationForEnemy),
                 Chest _ => GetAnimationForCreature(AnimationsForChest.AnimationForChest),
+                Finish _ => GetAnimationForCreature(AnimationsForFinish.AnimationForFinish),
                 _ => default
             };
         }
