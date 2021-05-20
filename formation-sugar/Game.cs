@@ -27,13 +27,13 @@ namespace formation_sugar
         public Game()
         {
             InitializeComponent();
+            map = new GameMap();
             InitializeGame();
             InitializeInterface();
         }
 
         private void InitializeGame()
         {
-            map = new GameMap();
             timerForCreaturesActions = new Timer {Interval = 100, Enabled = true};
             timerForCreaturesActions.Tick += delegate
             {
@@ -120,18 +120,34 @@ namespace formation_sugar
 
         private void CheckGameStatus()
         {
-            if (map.GameOver())
+            if (GameOver())
             {
-                StopAllTimers();
                 MapCreator.ResetLevel();
-                InitializeGame();
+                map = new GameMap();
             }
+            else if (GameWon())
+                map.LoadNextMap();
+            else
+                return;
+
+            StopAllTimers();
+            InitializeGame();
         }
 
         private void StopAllTimers()
         {
             foreach (var timer in timers)
                 timer.Enabled = false;
+        }
+
+        private bool GameWon()
+        {
+            return map.Finish.MovementCondition is MovementConditions.Dying;
+        }
+
+        private bool GameOver()
+        {
+            return map.Player.MovementCondition is MovementConditions.Dying;
         }
 
         protected override void OnPaint(PaintEventArgs e)

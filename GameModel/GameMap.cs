@@ -17,6 +17,7 @@ namespace Model
 
         public List<ICreature> ListOfCreatures { get; private set; }
         public Player Player { get; private set; }
+        public Finish Finish { get; private set; }
         public ICreature this[int x, int y] => map[x, y];
 
         public GameMap()
@@ -109,17 +110,13 @@ namespace Model
             }
         }
 
-        public bool GameOver()
-        {
-            return Player.MovementCondition is MovementConditions.Dying;
-        }
-
         public void LoadNextMap()
         {
             var mapInfo = MapCreator.GetNextMap();
+            map = mapInfo.Map;
             ListOfCreatures = mapInfo.ListOfCreatures;
             Player = mapInfo.Player;
-            map = mapInfo.Map;
+            Finish = mapInfo.Finish;
             creaturesLocations = GetCreaturesLocations();
         }
 

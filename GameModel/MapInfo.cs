@@ -6,15 +6,17 @@ namespace Model
 {
     public class MapInfo
     {
-        public readonly Player Player;
-        public readonly List<ICreature> ListOfCreatures;
         public readonly ICreature[,] Map;
+        public readonly List<ICreature> ListOfCreatures;
+        public readonly Player Player;
+        public readonly Finish Finish;
 
-        public MapInfo(ICreature[,] map, Player player, List<ICreature> listOfCreatures)
+        public MapInfo(ICreature[,] map, List<ICreature> listOfCreatures,Player player, Finish finish)
         {
             Map = map;
-            Player = player;
             ListOfCreatures = listOfCreatures;
+            Player = player;
+            Finish = finish;
         }
     }
 }

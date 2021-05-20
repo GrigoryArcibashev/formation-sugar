@@ -62,6 +62,7 @@ namespace Model
             map = new ICreature[levelSize[0], levelSize[1]];
             listOfCreatures = new List<ICreature>();
             Player player = default;
+            Finish finish = default;
 
             foreach (var line in level.Skip(1))
             {
@@ -87,14 +88,17 @@ namespace Model
                         break;
 
                     case "F":
-                        AddCreatureOnMapAndListOfCreatures(new Finish(), coordinates);
+                        finish = new Finish();
+                        AddCreatureOnMapAndListOfCreatures(finish, coordinates);
                         break;
                 }
             }
 
             if (player == default)
                 throw new Exception("You forgot to add a player on the level");
-            return new MapInfo(map, player, listOfCreatures);
+            if (finish == default)
+                throw new Exception("You forgot to add a finish on the level");
+            return new MapInfo(map, listOfCreatures, player, finish);
         }
 
 
