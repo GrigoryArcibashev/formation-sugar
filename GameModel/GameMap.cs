@@ -109,6 +109,11 @@ namespace Model
             }
         }
 
+        public bool GameOver()
+        {
+            return Player.MovementCondition is MovementConditions.Dying;
+        }
+
         public void LoadNextMap()
         {
             var mapInfo = MapCreator.GetNextMap();

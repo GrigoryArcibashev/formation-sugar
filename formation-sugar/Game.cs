@@ -11,41 +11,33 @@ namespace formation_sugar
 {
     public sealed partial class Game : Form
     {
-        private readonly GameMap map;
-        private readonly Dictionary<ICreature, Dictionary<(MovementConditions, Direction), Animation>> animationsForCreatures;
+        private GameMap map;
+        private Dictionary<ICreature, Dictionary<(MovementConditions, Direction), Animation>> animationsForCreatures;
         private bool wIsPressed;
         private bool aIsPressed;
         private bool dIsPressed;
         private bool spaceIsPressed;
+        private Label playerHealthPoints;
+        private Label score;
+        private Timer timerForCreaturesActions;
+        private Timer timerForCreatureAnimations;
+        private Timer timerForHearthAnimation;
+        private List<Timer> timers;
 
         public Game()
         {
             InitializeComponent();
+            InitializeGame();
+            InitializeInterface();
+        }
 
+        private void InitializeGame()
+        {
             map = new GameMap();
-            map.LoadNextMap();
-
-            var playerHealthPoints = new Label
-            {
-                Text = map.Player.Health.ToString(),
-                Location = new Point(40, 10),
-                Font = new Font(FontFamily.GenericMonospace, 12.0f, FontStyle.Bold)
-            };
-
-            var score = new Label
-            {
-                Text = @"Score: " + map.Score,
-                Location = new Point(ClientSize.Width / 2, 10),
-                Size = new Size(300, 30),
-                Font = new Font(FontFamily.GenericMonospace, 12.0f, FontStyle.Bold)
-            };
-
-            Controls.Add(playerHealthPoints);
-            Controls.Add(score);
-
-            var timerForCreaturesActions = new Timer {Interval = 100, Enabled = true};
+            timerForCreaturesActions = new Timer {Interval = 100, Enabled = true};
             timerForCreaturesActions.Tick += delegate
             {
+                CheckGameStatus();
                 map.CheckCreaturesForFalling();
                 ProcessKeystrokes();
                 CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
@@ -59,7 +51,7 @@ namespace formation_sugar
             foreach (var creature in map.ListOfCreatures)
                 AddAnimationsForCreature(creature);
 
-            var timerForCreatureAnimations = new Timer {Interval = 100, Enabled = true};
+            timerForCreatureAnimations = new Timer {Interval = 100, Enabled = true};
             timerForCreatureAnimations.Tick += delegate
             {
                 foreach (var creature in map.ListOfCreatures)
@@ -67,12 +59,79 @@ namespace formation_sugar
                 Invalidate();
             };
 
-            var timerForHearthAnimation = new Timer {Interval = 1000, Enabled = true};
+            timerForHearthAnimation = new Timer {Interval = 1000, Enabled = true};
             timerForHearthAnimation.Tick += delegate
             {
                 PlayerHealthAnimation.HearthAnimation.MoveNextSprite();
                 timerForHearthAnimation.Interval = Math.Max(150, map.Player.Health * 5);
             };
+
+            timers = new List<Timer> {timerForCreaturesActions, timerForCreatureAnimations, timerForHearthAnimation};
+        }
+
+        private void InitializeInterface()
+        {
+            playerHealthPoints = new Label
+            {
+                Text = map.Player.Health.ToString(),
+                Location = new Point(40, 10),
+                Font = new Font(FontFamily.GenericMonospace, 12.0f, FontStyle.Bold)
+            };
+
+            score = new Label
+            {
+                Text = @"Score: " + map.Score,
+                Location = new Point(ClientSize.Width / 2, 10),
+                Size = new Size(300, 30),
+                Font = new Font(FontFamily.GenericMonospace, 12.0f, FontStyle.Bold)
+            };
+
+            Controls.Add(playerHealthPoints);
+            Controls.Add(score);
+        }
+
+        private void ProcessKeystrokes()
+        {
+            if (map.Player.IsDead())
+                return;
+
+            if (dIsPressed || aIsPressed)
+                map.Player.ChangeMovementConditionAndDirectionTo(
+                    map.Player.IsFallingOrJumping() ? map.Player.MovementCondition : MovementConditions.Running,
+                    dIsPressed ? Direction.Right : Direction.Left);
+
+            if (wIsPressed && !map.Player.IsFallingOrJumping())
+                map.Player.ChangeMovementConditionAndDirectionTo(
+                    MovementConditions.Jumping,
+                    map.Player.MovementCondition is MovementConditions.Running
+                        ? map.Player.Direction
+                        : Direction.NoMovement);
+
+            if (spaceIsPressed && !map.Player.IsFallingOrJumping())
+                map.Player.ChangeMovementConditionAndDirectionTo(
+                    MovementConditions.Attacking,
+                    map.Player.Direction is Direction.NoMovement ? Direction.Right : map.Player.Direction);
+        }
+
+        private void AddAnimationsForCreature(ICreature creature)
+        {
+            animationsForCreatures.Add(creature, AnimationsForCreatures.GetAnimationFor(creature));
+        }
+
+        private void CheckGameStatus()
+        {
+            if (map.GameOver())
+            {
+                StopAllTimers();
+                MapCreator.ResetLevel();
+                InitializeGame();
+            }
+        }
+
+        private void StopAllTimers()
+        {
+            foreach (var timer in timers)
+                timer.Enabled = false;
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -135,34 +194,6 @@ namespace formation_sugar
             else
                 map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing,
                     map.Player.Direction == Direction.NoMovement ? Direction.Right : map.Player.Direction);
-        }
-
-        private void ProcessKeystrokes()
-        {
-            if (map.Player.IsDead())
-                return;
-
-            if (dIsPressed || aIsPressed)
-                map.Player.ChangeMovementConditionAndDirectionTo(
-                    map.Player.IsFallingOrJumping() ? map.Player.MovementCondition : MovementConditions.Running,
-                    dIsPressed ? Direction.Right : Direction.Left);
-
-            if (wIsPressed && !map.Player.IsFallingOrJumping())
-                map.Player.ChangeMovementConditionAndDirectionTo(
-                    MovementConditions.Jumping,
-                    map.Player.MovementCondition is MovementConditions.Running
-                        ? map.Player.Direction
-                        : Direction.NoMovement);
-
-            if (spaceIsPressed && !map.Player.IsFallingOrJumping())
-                map.Player.ChangeMovementConditionAndDirectionTo(
-                    MovementConditions.Attacking,
-                    map.Player.Direction is Direction.NoMovement ? Direction.Right : map.Player.Direction);
-        }
-
-        private void AddAnimationsForCreature(ICreature creature)
-        {
-            animationsForCreatures.Add(creature, AnimationsForCreatures.GetAnimationFor(creature));
         }
     }
 }

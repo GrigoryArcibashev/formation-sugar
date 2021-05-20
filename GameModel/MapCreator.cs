@@ -37,6 +37,13 @@ namespace Model
             return createdMap;
         }
 
+        public static void ResetLevel()
+        {
+            numberOfCurrentLevel = numberOfCurrentLevel > 0
+                ? numberOfCurrentLevel -= 1
+                : numberOfCurrentLevel = levels.Length - 1;
+        }
+
         public static void GoToLevel(string levelName)
         {
             var index = Array.IndexOf(levels, Path.Combine(fullPathToLevels.FullName, levelName));
@@ -66,7 +73,7 @@ namespace Model
                         player = new Player(50, 100, 2);
                         AddCreatureOnMapAndListOfCreatures(player, coordinates);
                         break;
-                    
+
                     case "E":
                         AddCreatureOnMapAndListOfCreatures(new Enemy(5, 100), coordinates);
                         break;
@@ -74,11 +81,11 @@ namespace Model
                     case "B":
                         AddCreatureOnMapAndListOfCreatures(new Box(), coordinates);
                         break;
-                    
+
                     case "C":
                         AddCreatureOnMapAndListOfCreatures(new Chest(1), coordinates);
                         break;
-                    
+
                     case "F":
                         AddCreatureOnMapAndListOfCreatures(new Finish(), coordinates);
                         break;
