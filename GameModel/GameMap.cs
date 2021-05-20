@@ -11,6 +11,7 @@ namespace Model
     {
         private ICreature[,] map;
         private Dictionary<ICreature, Point> creaturesLocations;
+        private Dictionary<IAttackingCreature, int> enemiesAttacks;
         public int Score { get; private set; }
         public int Width => map.GetLength(0);
         private int Height => map.GetLength(1);
@@ -115,6 +116,11 @@ namespace Model
             var mapInfo = MapCreator.GetNextMap();
             map = mapInfo.Map;
             ListOfCreatures = mapInfo.ListOfCreatures;
+
+            enemiesAttacks = new Dictionary<IAttackingCreature, int>();
+            foreach (var creature in ListOfCreatures.OfType<IAttackingCreature>())
+                enemiesAttacks.Add(creature, 0);
+
             Player = mapInfo.Player;
             Finish = mapInfo.Finish;
             creaturesLocations = GetCreaturesLocations();
@@ -122,6 +128,13 @@ namespace Model
 
         private bool Attack(IAttackingCreature creature, IEnumerable<Point> enemiesCoordinates)
         {
+            enemiesAttacks[creature] = (enemiesAttacks[creature] + 1) % 5;
+            
+            if (enemiesAttacks[creature] > 0)
+            {
+                return false;
+            }
+            
             var isEnemyAttacked = false;
             foreach (var enemyCoordinates in enemiesCoordinates)
             {

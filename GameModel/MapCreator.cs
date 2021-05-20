@@ -32,7 +32,7 @@ namespace Model
 
         public static MapInfo GetNextMap()
         {
-            var createdMap = CreateMap(File.ReadAllLines(levels[numberOfCurrentLevel]));
+            var createdMap = ParseStringToLevel(File.ReadAllLines(levels[numberOfCurrentLevel]));
             numberOfCurrentLevel = (numberOfCurrentLevel + 1) % levels.Length;
             return createdMap;
         }
@@ -71,7 +71,7 @@ namespace Model
                 switch (parts[0])
                 {
                     case "P":
-                        player = new Player(50, 100, 2);
+                        player = new Player(100, 100, 2);
                         AddCreatureOnMapAndListOfCreatures(player, coordinates);
                         break;
 
@@ -101,13 +101,62 @@ namespace Model
             return new MapInfo(map, listOfCreatures, player, finish);
         }
 
+        private static MapInfo ParseStringToLevel(IReadOnlyList<string> level)
+        {
+            map = new ICreature[level.First().Length, level.Count];
+            listOfCreatures = new List<ICreature>();
+            Player player = default;
+            Finish finish = default;
+
+            for (var y = 0; y < level.Count; y++)
+            {
+                for (var x = 0; x < level.First().Length; x++)
+                {
+                    switch (level[y][x].ToString())
+                    {
+                        case "P":
+                            player = new Player(100, 100, 2);
+                            AddCreatureOnMapAndListOfCreatures(player, new Point(x, y));
+                            break;
+
+                        case "E":
+                            AddCreatureOnMapAndListOfCreatures(new Enemy(5, 100), new Point(x, y));
+                            break;
+
+                        case "B":
+                            AddCreatureOnMapAndListOfCreatures(new Box(), new Point(x, y));
+                            break;
+
+                        case "C":
+                            AddCreatureOnMapAndListOfCreatures(new Chest(1), new Point(x, y));
+                            break;
+
+                        case "F":
+                            finish = new Finish();
+                            AddCreatureOnMapAndListOfCreatures(finish, new Point(x, y));
+                            break;
+                        
+                        case "N":
+                            break;
+                    }
+                }
+            }
+
+            if (player == default)
+                throw new Exception("You forgot to add a player on the level");
+            if (finish == default)
+                throw new Exception("You forgot to add a finish on the level");
+            
+            return new MapInfo(map, listOfCreatures, player, finish);
+        }
 
         private static string[] GetLevelsFrom(string localPathToLevelsRelativeToSolutionDirectory)
         {
             fullPathToLevels = new DirectoryInfo(
                 Path.Combine(
                     new DirectoryInfo(
-                        Directory.GetCurrentDirectory()).Parent?.Parent?.Parent?.FullName ?? throw new FileNotFoundException(),
+                        Directory.GetCurrentDirectory()).Parent?.Parent?.Parent?.FullName ??
+                    throw new FileNotFoundException(),
                     localPathToLevelsRelativeToSolutionDirectory));
             return fullPathToLevels
                 .EnumerateFiles()
