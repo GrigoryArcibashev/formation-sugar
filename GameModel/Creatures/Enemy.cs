@@ -5,17 +5,19 @@ namespace Model.Creatures
 {
     public class Enemy : IEnemy, IAttackingCreature
     {
+        public int ScoreForKilling { get; }
         public MovementConditions MovementCondition { get; private set; }
         public Direction Direction { get; private set; }
         public int DamageValue { get; }
         public int Health { get; private set; }
 
-        public Enemy(int damageValue, int initialHealth)
+        public Enemy(int damageValue, int initialHealth, int scoreForKilling)
         {
             DamageValue = damageValue;
             Health = initialHealth;
             MovementCondition = MovementConditions.Standing;
             Direction = Direction.Right;
+            ScoreForKilling = scoreForKilling;
         }
 
         public void ChangeMovementConditionAndDirectionTo(MovementConditions movementConditionTo, Direction directionTo)

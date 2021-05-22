@@ -12,10 +12,10 @@ namespace Model
         private ICreature[,] map;
         private Dictionary<ICreature, Point> creaturesLocations;
         private Dictionary<IAttackingCreature, int> enemiesAttacks;
-        public int Score { get; private set; }
-        public int Width => map.GetLength(0);
+        private int Width => map.GetLength(0);
         private int Height => map.GetLength(1);
-
+        
+        public int Score { get; private set; }
         public List<ICreature> ListOfCreatures { get; private set; }
         public Player Player { get; private set; }
         public Finish Finish { get; private set; }
@@ -23,7 +23,7 @@ namespace Model
 
         public GameMap()
         {
-            LoadNextMap();
+            LoadNextMap(0);
         }
 
         public Point GetCreatureLocation(ICreature creature)
@@ -111,7 +111,7 @@ namespace Model
             }
         }
 
-        public void LoadNextMap()
+        public void LoadNextMap(int currentScore)
         {
             var mapInfo = MapCreator.GetNextMap();
             map = mapInfo.Map;
@@ -124,6 +124,7 @@ namespace Model
             Player = mapInfo.Player;
             Finish = mapInfo.Finish;
             creaturesLocations = GetCreaturesLocations();
+            Score = currentScore;
         }
 
         private bool Attack(IAttackingCreature creature, IEnumerable<Point> enemiesCoordinates)
@@ -142,8 +143,17 @@ namespace Model
                     continue;
                 var enemy = (ICreatureWithHealth) map[enemyCoordinates.X, enemyCoordinates.Y];
                 enemy.ChangeHealthBy(creature.DamageValue);
-                if (enemy is Chest chest)
-                    Score += chest.Score;
+                switch (enemy)
+                {
+                    case Chest chest:
+                        Score += chest.Score;
+                        break;
+                    
+                    case Enemy enemyWithScore:
+                        Score += enemyWithScore.ScoreForKilling;
+                        break;
+                }
+
                 isEnemyAttacked = true;
             }
 

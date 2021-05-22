@@ -52,55 +52,6 @@ namespace Model
                 : throw new FileNotFoundException($"File '{levelName}' not found");
         }
 
-        private static MapInfo CreateMap(IReadOnlyList<string> level)
-        {
-            var levelSize = level[0]
-                .Split()
-                .Select(int.Parse)
-                .ToArray();
-
-            map = new ICreature[levelSize[0], levelSize[1]];
-            listOfCreatures = new List<ICreature>();
-            Player player = default;
-            Finish finish = default;
-
-            foreach (var line in level.Skip(1))
-            {
-                var parts = line.Split();
-                var coordinates = new Point(int.Parse(parts[1]), int.Parse(parts[2]));
-                switch (parts[0])
-                {
-                    case "P":
-                        player = new Player(100, 100, 2);
-                        AddCreatureOnMapAndListOfCreatures(player, coordinates);
-                        break;
-
-                    case "E":
-                        AddCreatureOnMapAndListOfCreatures(new Enemy(5, 100), coordinates);
-                        break;
-
-                    case "B":
-                        AddCreatureOnMapAndListOfCreatures(new Box(), coordinates);
-                        break;
-
-                    case "C":
-                        AddCreatureOnMapAndListOfCreatures(new Chest(1), coordinates);
-                        break;
-
-                    case "F":
-                        finish = new Finish();
-                        AddCreatureOnMapAndListOfCreatures(finish, coordinates);
-                        break;
-                }
-            }
-
-            if (player == default)
-                throw new Exception("You forgot to add a player on the level");
-            if (finish == default)
-                throw new Exception("You forgot to add a finish on the level");
-            return new MapInfo(map, listOfCreatures, player, finish);
-        }
-
         private static MapInfo ParseStringToLevel(IReadOnlyList<string> level)
         {
             map = new ICreature[level.First().Length, level.Count];
@@ -120,7 +71,7 @@ namespace Model
                             break;
 
                         case "E":
-                            AddCreatureOnMapAndListOfCreatures(new Enemy(5, 100), new Point(x, y));
+                            AddCreatureOnMapAndListOfCreatures(new Enemy(5, 100, 15), new Point(x, y));
                             break;
 
                         case "B":
@@ -135,9 +86,6 @@ namespace Model
                             finish = new Finish();
                             AddCreatureOnMapAndListOfCreatures(finish, new Point(x, y));
                             break;
-                        
-                        case "N":
-                            break;
                     }
                 }
             }
@@ -147,7 +95,7 @@ namespace Model
             
             if (finish == default)
                 throw new Exception("You forgot to add a finish on the level");
-            
+
             return new MapInfo(map, listOfCreatures, player, finish);
         }
 
