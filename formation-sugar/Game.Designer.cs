@@ -41,6 +41,8 @@ namespace formation_sugar
             this.MinimumSize = ClientSize;
             this.MaximizeBox = false;
             this.Text = "Game";
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
+            this.WindowState = FormWindowState.Normal;
         }
 
         #endregion

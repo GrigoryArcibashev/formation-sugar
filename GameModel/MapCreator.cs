@@ -144,6 +144,7 @@ namespace Model
 
             if (player == default)
                 throw new Exception("You forgot to add a player on the level");
+            
             if (finish == default)
                 throw new Exception("You forgot to add a finish on the level");
             
