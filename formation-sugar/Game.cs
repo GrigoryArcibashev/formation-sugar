@@ -85,6 +85,11 @@ namespace formation_sugar
                 case Keys.Space:
                     spaceIsPressed = false;
                     break;
+                case Keys.L:
+                    map.LoadNextMap(map.Score);
+                    StopAllTimers();
+                    InitializeGame();
+                    break;
             }
 
             if (map.Player.IsFallingOrJumping())
@@ -100,13 +105,12 @@ namespace formation_sugar
             ResetTimerForCreaturesAnimations();
             ResetTimerForHeathAnimation();
             timers = new List<Timer> {timerForCreaturesActions, timerForCreaturesAnimations, timerForHearthAnimation};
-
             AddAnimations();
         }
 
         private void ResetTimerForCreaturesActions()
         {
-            timerForCreaturesActions = new Timer {Interval = 60, Enabled = true};
+            timerForCreaturesActions = new Timer {Interval = 80, Enabled = true};
             timerForCreaturesActions.Tick += delegate
             {
                 CheckGameStatus();
@@ -156,7 +160,9 @@ namespace formation_sugar
             {
                 Text = map.Player.Health.ToString(),
                 Location = new Point(40, 10),
-                Font = new Font(FontFamily.GenericMonospace, 12.0f, FontStyle.Bold)
+                Font = new Font(FontFamily.GenericMonospace, 12.0f, FontStyle.Bold),
+                BackColor = Color.Transparent,
+                ForeColor = Color.Aqua
             };
 
             score = new Label
@@ -164,9 +170,11 @@ namespace formation_sugar
                 Text = @"Score: " + map.Score,
                 Location = new Point(ClientSize.Width / 2, 10),
                 Size = new Size(300, 30),
-                Font = new Font(FontFamily.GenericMonospace, 12.0f, FontStyle.Bold)
+                Font = new Font(FontFamily.GenericMonospace, 12.0f, FontStyle.Bold),
+                BackColor = Color.Transparent,
+                ForeColor = Color.Aqua
             };
-
+            
             Controls.Add(playerHealthPoints);
             Controls.Add(score);
         }

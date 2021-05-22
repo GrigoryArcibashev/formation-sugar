@@ -70,7 +70,7 @@ namespace Model
 
         public void MakeEnemiesAttackingOrRunning()
         {
-            var playerCoordinates = GetCreatureLocation(Player);
+            var playerLocation = GetCreatureLocation(Player);
             foreach (var enemy in ListOfCreatures.OfType<Enemy>())
             {
                 if (Player.IsDead())
@@ -79,17 +79,19 @@ namespace Model
                     return;
                 }
 
-                var dx = GetCreatureLocation(enemy).X - playerCoordinates.X;
-                if (Math.Abs(dx) > 10)
+                var enemyLocation = GetCreatureLocation(enemy);
+                var dx = enemyLocation.X - playerLocation.X;
+                var dy = enemyLocation.Y - playerLocation.Y;
+                if (Math.Abs(dx) > 3 || Math.Abs(dy) > 1)
                 {
                     if (enemy.MovementCondition != MovementConditions.Standing)
                         enemy.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing, enemy.Direction);
                     continue;
                 }
-
+                
                 enemy.ChangeMovementConditionAndDirectionTo(
-                    Math.Abs(dx) > 1 ? MovementConditions.Running : MovementConditions.Attacking,
-                    dx > 0 ? Direction.Left : Direction.Right);
+                        Math.Abs(dx) <= 1 && dy * dx == 0 ? MovementConditions.Attacking : MovementConditions.Running,
+                        dx > 0 ? Direction.Left : Direction.Right);
             }
         }
 
@@ -182,6 +184,7 @@ namespace Model
                     nameof(direction),
                     "The direction of movement is specified incorrectly")
             };
+            
             return MoveCreatureOn(creature, creaturesLocations[creature] + shift);
         }
 
@@ -222,6 +225,7 @@ namespace Model
         {
             if (!IsMovementPossible(creature, targetLocation))
                 return false;
+            
             map[creaturesLocations[creature].X, creaturesLocations[creature].Y] = null;
             map[targetLocation.X, targetLocation.Y] = creature;
             creaturesLocations[creature] = targetLocation;
@@ -236,7 +240,15 @@ namespace Model
             var bottomRightCorner = new Point(
                 Math.Max(target.X, creaturesLocations[creature].X),
                 Math.Max(target.Y, creaturesLocations[creature].Y));
-            return IsPointInBounds(target) && IsMapPieceEmpty(creature, topLeftCorner, bottomRightCorner);
+
+            if (!(creature is IJumpingCreature) &&
+                IsPointInBounds(target + new Size(0, 1)) && 
+                (map[target.X, target.Y + 1] is null ||
+                map[target.X, target.Y + 1] is Player))
+                return false;
+            
+            return IsPointInBounds(target) &&
+                   IsMapPieceEmpty(creature, topLeftCorner, bottomRightCorner);
         }
 
         private bool IsMapPieceEmpty(IMovingCreature creature, Point topLeftCorner, Point bottomRightCorner)
