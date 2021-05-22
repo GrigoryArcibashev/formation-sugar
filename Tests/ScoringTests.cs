@@ -19,7 +19,8 @@ namespace Tests
             var chest = (Chest) map[1, 0];
             Assert.AreEqual(0, map.Score);
 
-            map.Attack(map.Player);
+            for (var i = 0; i < 100; i++)
+                map.Attack(map.Player);
             Assert.AreEqual(chest.Score, map.Score);
         }
     }

@@ -45,13 +45,11 @@ namespace Tests
             MapCreator.GoToLevel("test10.txt");
             map = new GameMap();
 
-            map.MakeEnemiesAttackingOrRunning();
-            var enemyDamage = map.ListOfCreatures
-                .OfType<Enemy>()
-                .ToArray()[0]
-                .DamageValue;
-            for (var i = 0; i < map.Player.Health / enemyDamage + 2 * map.Width; i++)
+            for (var i = 0; i < 1000; i++)
+            {
+                map.MakeEnemiesAttackingOrRunning();
                 CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
+            }
 
             Assert.AreEqual(MovementConditions.Dying, map.Player.MovementCondition);
         }
@@ -89,9 +87,12 @@ namespace Tests
             map = new GameMap();
 
             var enemy = map.ListOfCreatures.OfType<IEnemy>().ToArray()[0];
-            map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Attacking, Direction.Right);
-            CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
-            CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
+            for (var i = 0; i < 1000; i++)
+            {
+                map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Attacking, Direction.Right);
+                CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
+            }
+
             Assert.AreEqual(MovementConditions.Dying, enemy.MovementCondition);
         }
 
@@ -116,7 +117,7 @@ namespace Tests
             MapCreator.GoToLevel("test13.txt");
             map = new GameMap();
 
-            var enemy = (IMovingCreature) map[2, 4];
+            var enemy = (IMovingCreature) map[1, 4];
             enemy.ChangeMovementConditionAndDirectionTo(MovementConditions.Dying, enemy.Direction);
             var chest = (ICreatureWithHealth) map[1, 3];
             chest.ChangeHealthBy(int.MaxValue);
@@ -124,7 +125,7 @@ namespace Tests
             map.RemoveCreaturesFromMapIfTheyAreDead();
 
             Assert.AreEqual(false, map.ListOfCreatures.Contains(enemy));
-            Assert.AreEqual(null, map[2, 4]);
+            Assert.AreEqual(null, map[1, 4]);
             Assert.AreEqual(false, map.ListOfCreatures.Contains(chest));
             Assert.AreEqual(null, map[1, 3]);
         }
@@ -138,8 +139,12 @@ namespace Tests
             var expectedPlayerLocation = map.GetCreatureLocation(map.Player);
             expectedPlayerLocation.Y++;
             map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Attacking, Direction.Right);
-            CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
-            CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
+            for (var i = 0; i < 1000; i++)
+            {
+                map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Attacking, Direction.Right);
+                CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
+            }
+            
             map.RemoveCreaturesFromMapIfTheyAreDead();
             map.CheckCreaturesForFalling();
             CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
