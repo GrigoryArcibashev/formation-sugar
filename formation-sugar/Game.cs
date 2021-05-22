@@ -85,10 +85,13 @@ namespace formation_sugar
                 case Keys.Space:
                     spaceIsPressed = false;
                     break;
+
                 case Keys.L:
-                    map.LoadNextMap(map.Score);
-                    StopAllTimers();
-                    InitializeGame();
+                    CheckGameStatus(nextLevel: true);
+                    break;
+
+                case Keys.R:
+                    CheckGameStatus(resetLevel: true);
                     break;
             }
 
@@ -98,7 +101,7 @@ namespace formation_sugar
                 map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing,
                     map.Player.Direction == Direction.NoMovement ? Direction.Right : map.Player.Direction);
         }
-        
+
         private void InitializeGame()
         {
             ResetTimerForCreaturesActions();
@@ -123,7 +126,7 @@ namespace formation_sugar
                 score.Text = Text = @"Score: " + map.Score;
             };
         }
-        
+
         private void ResetTimerForCreaturesAnimations()
         {
             timerForCreaturesAnimations = new Timer {Interval = 100, Enabled = true};
@@ -174,7 +177,7 @@ namespace formation_sugar
                 BackColor = Color.Transparent,
                 ForeColor = Color.Aqua
             };
-            
+
             Controls.Add(playerHealthPoints);
             Controls.Add(score);
         }
@@ -207,15 +210,15 @@ namespace formation_sugar
             animationsForCreatures.Add(creature, AnimationsForCreatures.GetAnimationFor(creature));
         }
 
-        private void CheckGameStatus()
+        private void CheckGameStatus(bool resetLevel = false, bool nextLevel = false)
         {
-            if (GameOver())
+            if (GameOver() || resetLevel)
             {
                 MapCreator.ResetLevel();
                 map = new GameMap();
             }
 
-            else if (GameWon())
+            else if (GameWon() || nextLevel)
                 map.LoadNextMap(map.Score);
             else
                 return;
