@@ -17,22 +17,17 @@ namespace formation_sugar
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
-            {
                 components.Dispose();
-            }
-
             base.Dispose(disposing);
         }
-
-        #region Windows Form Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
+        
         private void InitializeComponent()
         {
-            SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
+            SetStyle(
+                ControlStyles.OptimizedDoubleBuffer 
+                | ControlStyles.UserPaint
+                | ControlStyles.AllPaintingInWmPaint,
+                true);
             UpdateStyles();
             this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -41,11 +36,8 @@ namespace formation_sugar
             this.MaximumSize = ClientSize;
             this.MinimumSize = ClientSize;
             this.MaximizeBox = false;
-            this.Text = "Game";
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
-            this.WindowState = FormWindowState.Normal;
+            this.Text = "Game";
         }
-
-        #endregion
     }
 }
