@@ -19,7 +19,7 @@ namespace Tests
             
             map.Player.ChangeHealthBy(100);
             Assert.AreEqual(0, map.Player.Health);
-            Assert.AreEqual(MovementConditions.Dying, map.Player.MovementCondition);
+            Assert.AreEqual(MovementCondition.Dying, map.Player.MovementCondition);
         }
 
         [Test]
@@ -50,7 +50,7 @@ namespace Tests
                 CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
             }
 
-            Assert.AreEqual(MovementConditions.Dying, map.Player.MovementCondition);
+            Assert.AreEqual(MovementCondition.Dying, map.Player.MovementCondition);
         }
 
         [Test]
@@ -61,7 +61,7 @@ namespace Tests
             map = new GameMap();
             map.MakeEnemiesAttackingOrRunning();
             var enemy = map.ListOfCreatures.OfType<IEnemy>().ToArray()[0];
-            Assert.AreEqual(MovementConditions.Running, enemy.MovementCondition);
+            Assert.AreEqual(MovementCondition.Running, enemy.MovementCondition);
             Assert.AreEqual(Direction.Left, enemy.Direction);
         }
 
@@ -73,7 +73,7 @@ namespace Tests
             map = new GameMap();
             map.MakeEnemiesAttackingOrRunning();
             var enemy = map.ListOfCreatures.OfType<IEnemy>().ToArray()[0];
-            Assert.AreEqual(MovementConditions.Standing, enemy.MovementCondition);
+            Assert.AreEqual(MovementCondition.Standing, enemy.MovementCondition);
         }
 
         [TestCase("test13.txt")]
@@ -88,11 +88,11 @@ namespace Tests
             var enemy = map.ListOfCreatures.OfType<IEnemy>().ToArray()[0];
             for (var i = 0; i < 1000; i++)
             {
-                map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Attacking, Direction.Right);
+                map.Player.ChangeMovementConditionAndDirectionTo(MovementCondition.Attacking, Direction.Right);
                 CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
             }
 
-            Assert.AreEqual(MovementConditions.Dying, enemy.MovementCondition);
+            Assert.AreEqual(MovementCondition.Dying, enemy.MovementCondition);
         }
 
         [Test]
@@ -103,10 +103,10 @@ namespace Tests
             map = new GameMap();
 
             var enemy = map.ListOfCreatures.OfType<IEnemy>().ToArray()[0];
-            map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Attacking, Direction.Left);
+            map.Player.ChangeMovementConditionAndDirectionTo(MovementCondition.Attacking, Direction.Left);
             CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
             CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
-            Assert.AreNotEqual(MovementConditions.Dying, enemy.MovementCondition);
+            Assert.AreNotEqual(MovementCondition.Dying, enemy.MovementCondition);
         }
 
         [Test]
@@ -117,7 +117,7 @@ namespace Tests
             map = new GameMap();
 
             var enemy = (IMovingCreature) map[1, 4];
-            enemy.ChangeMovementConditionAndDirectionTo(MovementConditions.Dying, enemy.Direction);
+            enemy.ChangeMovementConditionAndDirectionTo(MovementCondition.Dying, enemy.Direction);
             var chest = (ICreatureWithHealth) map[1, 3];
             chest.ChangeHealthBy(int.MaxValue);
 
@@ -137,10 +137,10 @@ namespace Tests
             map = new GameMap();
             var expectedPlayerLocation = map.GetCreatureLocation(map.Player);
             expectedPlayerLocation.Y++;
-            map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Attacking, Direction.Right);
+            map.Player.ChangeMovementConditionAndDirectionTo(MovementCondition.Attacking, Direction.Right);
             for (var i = 0; i < 1000; i++)
             {
-                map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Attacking, Direction.Right);
+                map.Player.ChangeMovementConditionAndDirectionTo(MovementCondition.Attacking, Direction.Right);
                 CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
             }
             

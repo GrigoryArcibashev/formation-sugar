@@ -6,7 +6,7 @@ namespace Model.Creatures
     public class Enemy : IEnemy, IAttackingCreature
     {
         public int ScoreForKilling { get; }
-        public MovementConditions MovementCondition { get; private set; }
+        public MovementCondition MovementCondition { get; private set; }
         public Direction Direction { get; private set; }
         public int DamageValue { get; }
         public int Health { get; private set; }
@@ -15,12 +15,12 @@ namespace Model.Creatures
         {
             DamageValue = damageValue;
             Health = initialHealth;
-            MovementCondition = MovementConditions.Standing;
+            MovementCondition = MovementCondition.Standing;
             Direction = Direction.Right;
             ScoreForKilling = scoreForKilling;
         }
 
-        public void ChangeMovementConditionAndDirectionTo(MovementConditions movementConditionTo, Direction directionTo)
+        public void ChangeMovementConditionAndDirectionTo(MovementCondition movementConditionTo, Direction directionTo)
         {
             MovementCondition = movementConditionTo;
             Direction = directionTo;
@@ -28,7 +28,7 @@ namespace Model.Creatures
 
         public bool IsDead()
         {
-            return MovementCondition is MovementConditions.Dying;
+            return MovementCondition is MovementCondition.Dying;
         }
 
         public void ChangeHealthBy(int deltaHealth)
@@ -37,7 +37,7 @@ namespace Model.Creatures
             
             if (Health == 0)
             {
-                MovementCondition = MovementConditions.Dying;
+                MovementCondition = MovementCondition.Dying;
             }
         }
     }

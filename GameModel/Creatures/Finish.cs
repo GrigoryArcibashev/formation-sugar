@@ -5,20 +5,20 @@ namespace Model.Creatures
 {
     public class Finish : ICreatureWithHealth
     {
-        public MovementConditions MovementCondition { get; private set; }
+        public MovementCondition MovementCondition { get; private set; }
         public Direction Direction { get; }
         public int Health { get; private set; }
 
         public Finish()
         {
-            MovementCondition = MovementConditions.Default;
+            MovementCondition = MovementCondition.Default;
             Direction = Direction.NoMovement;
             Health = 1;
         }
 
         public bool IsDead()
         {
-            return MovementCondition is MovementConditions.Dying;
+            return MovementCondition is MovementCondition.Dying;
         }
 
         public void ChangeHealthBy(int deltaHealth)
@@ -27,7 +27,7 @@ namespace Model.Creatures
 
             if (Health == 0)
             {
-                MovementCondition = MovementConditions.Dying;
+                MovementCondition = MovementCondition.Dying;
             }
         }
     }

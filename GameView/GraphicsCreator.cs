@@ -9,7 +9,7 @@ namespace View
     {
         public static void CreateGraphicForCreatures(
             Graphics graphics,
-            Dictionary<ICreature, Dictionary<(MovementConditions, Direction), Animation>> animationsForCreatures,
+            Dictionary<ICreature, Dictionary<(MovementCondition, Direction), Animation>> animationsForCreatures,
             GameMap map)
         {
             foreach (var creature in map.ListOfCreatures)
@@ -23,9 +23,9 @@ namespace View
             graphics.DrawImage(animation.Current, new Point(5, 5));
         }
 
-        private static Point GetCoordinationForCreatureInPixels(Point coordinates, int cellSize)
+        private static Point GetCoordinationForCreatureInPixels(Point coordinates, int cellSizeInPixels)
         {
-            return new Point(coordinates.X * cellSize, coordinates.Y * cellSize);
+            return new Point(coordinates.X * cellSizeInPixels, coordinates.Y * cellSizeInPixels);
         }
     }
 }

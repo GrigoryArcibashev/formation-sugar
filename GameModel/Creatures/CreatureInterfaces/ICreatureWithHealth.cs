@@ -4,6 +4,5 @@
     {
         public int Health { get; }
         public void ChangeHealthBy(int deltaHealth);
-        public bool IsDead();
     }
 }

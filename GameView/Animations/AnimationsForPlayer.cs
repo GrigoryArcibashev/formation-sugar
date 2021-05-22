@@ -5,28 +5,28 @@ namespace View.Animations
 {
     public static class AnimationsForPlayer
     {
-        public static readonly Dictionary<(MovementConditions, Direction), string> AnimationForPlayer =
-            new Dictionary<(MovementConditions, Direction), string>
+        public static readonly Dictionary<(MovementCondition, Direction), string> AnimationForPlayer =
+            new Dictionary<(MovementCondition, Direction), string>
             {
-                {(MovementConditions.Standing, Direction.Right), @"Sprites\playerAnimations\standingRight"},
-                {(MovementConditions.Standing, Direction.Left), @"Sprites\playerAnimations\standingLeft"},
+                {(MovementCondition.Standing, Direction.Right), @"Sprites\playerAnimations\standingRight"},
+                {(MovementCondition.Standing, Direction.Left), @"Sprites\playerAnimations\standingLeft"},
 
-                {(MovementConditions.Running, Direction.Right), @"Sprites\playerAnimations\runningRight"},
-                {(MovementConditions.Running, Direction.Left), @"Sprites\playerAnimations\runningLeft"},
+                {(MovementCondition.Running, Direction.Right), @"Sprites\playerAnimations\runningRight"},
+                {(MovementCondition.Running, Direction.Left), @"Sprites\playerAnimations\runningLeft"},
 
-                {(MovementConditions.Jumping, Direction.Right), @"Sprites\playerAnimations\jumpingRight"},
-                {(MovementConditions.Jumping, Direction.Left), @"Sprites\playerAnimations\jumpingLeft"},
-                {(MovementConditions.Jumping, Direction.NoMovement), @"Sprites\playerAnimations\jumpingAndFallingNoMovement"},
+                {(MovementCondition.Jumping, Direction.Right), @"Sprites\playerAnimations\jumpingRight"},
+                {(MovementCondition.Jumping, Direction.Left), @"Sprites\playerAnimations\jumpingLeft"},
+                {(MovementCondition.Jumping, Direction.NoMovement), @"Sprites\playerAnimations\jumpingAndFallingNoMovement"},
 
-                {(MovementConditions.Falling, Direction.Right), @"Sprites\playerAnimations\jumpingRight"},
-                {(MovementConditions.Falling, Direction.Left), @"Sprites\playerAnimations\jumpingLeft"},
-                {(MovementConditions.Falling, Direction.NoMovement), @"Sprites\playerAnimations\jumpingAndFallingNoMovement"},
+                {(MovementCondition.Falling, Direction.Right), @"Sprites\playerAnimations\jumpingRight"},
+                {(MovementCondition.Falling, Direction.Left), @"Sprites\playerAnimations\jumpingLeft"},
+                {(MovementCondition.Falling, Direction.NoMovement), @"Sprites\playerAnimations\jumpingAndFallingNoMovement"},
 
-                {(MovementConditions.Attacking, Direction.Right), @"Sprites\playerAnimations\attackingRight"},
-                {(MovementConditions.Attacking, Direction.Left), @"Sprites\playerAnimations\attackingLeft"},
+                {(MovementCondition.Attacking, Direction.Right), @"Sprites\playerAnimations\attackingRight"},
+                {(MovementCondition.Attacking, Direction.Left), @"Sprites\playerAnimations\attackingLeft"},
 
-                {(MovementConditions.Dying, Direction.Right), @"Sprites\playerAnimations\dieRight"},
-                {(MovementConditions.Dying, Direction.Left), @"Sprites\playerAnimations\dieLeft"}
+                {(MovementCondition.Dying, Direction.Right), @"Sprites\playerAnimations\dieRight"},
+                {(MovementCondition.Dying, Direction.Left), @"Sprites\playerAnimations\dieLeft"}
             };
     }
 }

@@ -12,23 +12,23 @@ namespace Model
             {
                 switch (creature.MovementCondition)
                 {
-                    case MovementConditions.Running:
+                    case MovementCondition.Running:
                         map.MoveCreature(creature, creature.Direction);
                         break;
 
-                    case MovementConditions.Jumping:
+                    case MovementCondition.Jumping:
                         if (map.MoveCreature(creature, Direction.Up))
                             map.MoveCreature(creature, creature.Direction);
                         break;
 
-                    case MovementConditions.Falling:
+                    case MovementCondition.Falling:
                         if (map.MoveCreature(creature, Direction.Down))
                             map.MoveCreature(creature, creature.Direction);
                         break;
 
-                    case MovementConditions.Attacking:
+                    case MovementCondition.Attacking:
                         if (!map.Attack((IAttackingCreature) creature) && !(creature is Player))
-                            creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing, creature.Direction);
+                            creature.ChangeMovementConditionAndDirectionTo(MovementCondition.Standing, creature.Direction);
                         break;
                 }
             }
