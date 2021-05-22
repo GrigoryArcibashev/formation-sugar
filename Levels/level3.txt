@@ -1,0 +1,23 @@
+BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+B                                   B
+B  BBBBBBBBBBBBBBBBBB               B
+B               EC EB         E   ECB
+BBBBBBBBBBBBBBBBBBBFBBB    BBBBBBBBBB
+BBBBBBBBBBBBBBBBBBBBBBBB            B
+BBBBBBBBBBBBBBBBBBBBBBBB            B
+BBBBBBBBBBBBBBBBBBBBBBBBBB          B
+B                         B         B
+B                              EB  EB
+B                            BBBBBBBB
+B            E      E    E          B
+B        BBBBBBBBBBBBBBBBBBB        B
+B       B                 B B       B
+B    BBBB                 B    B    B
+B                         B    B    B
+BBE                       BCE  B  ECB
+BBBBBBBB                  BBBBBBBBBBB
+B       BB                BBBBBBBBBBB
+BC        BB   BBB   BBB            B
+BBB B  B          B B        B   C  B
+BE    EB E   B E  BPB   E  B  E  B EB
+BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
