@@ -137,7 +137,7 @@ namespace formation_sugar
         private void UpdateInfoAboutGame()
         {
             playerHealthPoints.Text = map.Player.Health.ToString();
-            score.Text = Text = @"Score: " + map.Score;
+            score.Text = @"Score: " + map.Score;
         }
 
         private void ResetTimerForCreaturesAnimations()
