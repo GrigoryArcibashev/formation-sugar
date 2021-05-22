@@ -22,6 +22,8 @@ namespace formation_sugar
         private bool wIsPressed;
         private bool aIsPressed;
         private bool dIsPressed;
+        private bool rIsPressed;
+        private bool nIsPressed;
         private bool spaceIsPressed;
 
         public Game()
@@ -58,6 +60,14 @@ namespace formation_sugar
                 case Keys.Space:
                     spaceIsPressed = true;
                     break;
+
+                case Keys.N:
+                    nIsPressed = true;
+                    break;
+
+                case Keys.R:
+                    rIsPressed = true;
+                    break;
             }
         }
 
@@ -84,12 +94,12 @@ namespace formation_sugar
                     spaceIsPressed = false;
                     break;
 
-                case Keys.L:
-                    CheckGameStatus(nextLevel: true);
+                case Keys.N:
+                    nIsPressed = false;
                     break;
 
                 case Keys.R:
-                    CheckGameStatus(resetLevel: true);
+                    rIsPressed = false;
                     break;
             }
 
@@ -191,6 +201,13 @@ namespace formation_sugar
 
         private void ProcessKeystrokes()
         {
+            if (ProcessLevelChangeAndRestartKeys())
+                return;
+            ProcessPlayerMovementKeys();
+        }
+
+        private void ProcessPlayerMovementKeys()
+        {
             if (map.Player.IsDead())
                 return;
 
@@ -210,6 +227,14 @@ namespace formation_sugar
                 map.Player.ChangeMovementConditionAndDirectionTo(
                     MovementCondition.Attacking,
                     map.Player.Direction is Direction.NoMovement ? Direction.Right : map.Player.Direction);
+        }
+
+        private bool ProcessLevelChangeAndRestartKeys()
+        {
+            if (!nIsPressed && !rIsPressed)
+                return false;
+            CheckGameStatus(nextLevel: nIsPressed, resetLevel: rIsPressed);
+            return true;
         }
 
         private void CheckGameStatus(bool resetLevel = false, bool nextLevel = false)
