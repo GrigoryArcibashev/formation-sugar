@@ -106,7 +106,7 @@ namespace formation_sugar
 
         private void ResetTimerForCreaturesActions()
         {
-            timerForCreaturesActions = new Timer {Interval = 100, Enabled = true};
+            timerForCreaturesActions = new Timer {Interval = 60, Enabled = true};
             timerForCreaturesActions.Tick += delegate
             {
                 CheckGameStatus();
@@ -208,7 +208,7 @@ namespace formation_sugar
             }
 
             else if (GameWon())
-                map.LoadNextMap();
+                map.LoadNextMap(map.Score);
             else
                 return;
 

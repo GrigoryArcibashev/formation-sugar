@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using Model;
-using Model.Creatures;
 using Model.Creatures.CreatureInterfaces;
 using NUnit.Framework;
 
@@ -17,7 +16,7 @@ namespace Tests
             MapCreator.LoadLevels("LevelsForTests");
             MapCreator.GoToLevel("test8.txt");
             map = new GameMap();
-
+            
             map.Player.ChangeHealthBy(100);
             Assert.AreEqual(0, map.Player.Health);
             Assert.AreEqual(MovementConditions.Dying, map.Player.MovementCondition);

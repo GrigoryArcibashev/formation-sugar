@@ -21,6 +21,7 @@ namespace Tests
 
             for (var i = 0; i < 100; i++)
                 map.Attack(map.Player);
+
             Assert.AreEqual(chest.Score, map.Score);
         }
     }
