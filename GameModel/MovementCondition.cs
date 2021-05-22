@@ -1,6 +1,6 @@
 ﻿namespace Model
 {
-    public enum MovementConditions
+    public enum MovementCondition
     {
         Default,
         Standing,

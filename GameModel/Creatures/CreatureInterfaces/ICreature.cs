@@ -2,7 +2,7 @@
 {
     public interface ICreature
     {
-        public MovementConditions MovementCondition { get; }
+        public MovementCondition MovementCondition { get; }
         public Direction Direction { get; }
     }
 }

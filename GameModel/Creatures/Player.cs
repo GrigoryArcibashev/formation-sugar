@@ -9,7 +9,7 @@ namespace Model.Creatures
         public int Velocity { get; private set; }
         public int DamageValue { get; }
         public int Health { get; private set; }
-        public MovementConditions MovementCondition { get; private set; }
+        public MovementCondition MovementCondition { get; private set; }
         public Direction Direction { get; private set; }
 
         public Player(int damageValue, int initialHealth, int initialVelocity)
@@ -18,11 +18,11 @@ namespace Model.Creatures
             Health = initialHealth;
             Velocity = initialVelocity;
             this.initialVelocity = initialVelocity;
-            MovementCondition = MovementConditions.Standing;
+            MovementCondition = MovementCondition.Standing;
             Direction = Direction.Right;
         }
 
-        public void ChangeMovementConditionAndDirectionTo(MovementConditions movementConditionTo, Direction directionTo)
+        public void ChangeMovementConditionAndDirectionTo(MovementCondition movementConditionTo, Direction directionTo)
         {
             MovementCondition = movementConditionTo;
             Direction = directionTo;
@@ -30,7 +30,7 @@ namespace Model.Creatures
 
         public bool IsDead()
         {
-            return MovementCondition is MovementConditions.Dying;
+            return MovementCondition is MovementCondition.Dying;
         }
 
         public void ChangeHealthBy(int deltaHealth)
@@ -39,18 +39,18 @@ namespace Model.Creatures
             
             if (Health == 0)
             {
-                MovementCondition = MovementConditions.Dying;
+                MovementCondition = MovementCondition.Dying;
             }
         }
 
         public bool IsJumping()
         {
-            return MovementCondition == MovementConditions.Jumping;
+            return MovementCondition == MovementCondition.Jumping;
         }
 
         public bool IsFalling()
         {
-            return MovementCondition == MovementConditions.Falling;
+            return MovementCondition == MovementCondition.Falling;
         }
 
         public bool IsFallingOrJumping()

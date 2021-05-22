@@ -14,7 +14,7 @@ namespace Model
         private Dictionary<IAttackingCreature, int> enemiesAttacks;
         private int Width => map.GetLength(0);
         private int Height => map.GetLength(1);
-        
+
         public int Score { get; private set; }
         public List<ICreature> ListOfCreatures { get; private set; }
         public Player Player { get; private set; }
@@ -64,7 +64,7 @@ namespace Model
                 if (creature.IsFalling() || creature.IsJumping() || !IsThereNothingUnderCreature(creature))
                     continue;
                 creature.ResetVelocityToZero();
-                creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Falling, Direction.NoMovement);
+                creature.ChangeMovementConditionAndDirectionTo(MovementCondition.Falling, Direction.NoMovement);
             }
         }
 
@@ -75,7 +75,7 @@ namespace Model
             {
                 if (Player.IsDead())
                 {
-                    enemy.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing, enemy.Direction);
+                    enemy.ChangeMovementConditionAndDirectionTo(MovementCondition.Standing, enemy.Direction);
                     return;
                 }
 
@@ -84,14 +84,14 @@ namespace Model
                 var dy = enemyLocation.Y - playerLocation.Y;
                 if (Math.Abs(dx) > 3 || Math.Abs(dy) > 1)
                 {
-                    if (enemy.MovementCondition != MovementConditions.Standing)
-                        enemy.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing, enemy.Direction);
+                    if (enemy.MovementCondition != MovementCondition.Standing)
+                        enemy.ChangeMovementConditionAndDirectionTo(MovementCondition.Standing, enemy.Direction);
                     continue;
                 }
-                
+
                 enemy.ChangeMovementConditionAndDirectionTo(
-                        Math.Abs(dx) <= 1 && dy * dx == 0 ? MovementConditions.Attacking : MovementConditions.Running,
-                        dx > 0 ? Direction.Left : Direction.Right);
+                    Math.Abs(dx) <= 1 && dy * dx == 0 ? MovementCondition.Attacking : MovementCondition.Running,
+                    dx > 0 ? Direction.Left : Direction.Right);
             }
         }
 
@@ -99,7 +99,7 @@ namespace Model
         {
             var deadEnemies = ListOfCreatures
                 .OfType<ICreatureWithHealth>()
-                .Where(enemy => enemy.MovementCondition is MovementConditions.Dying && !(enemy is Player))
+                .Where(enemy => enemy.MovementCondition is MovementCondition.Dying && !(enemy is Player))
                 .ToList();
 
             while (deadEnemies.Count > 0)
@@ -132,12 +132,12 @@ namespace Model
         private bool Attack(IAttackingCreature creature, IEnumerable<Point> enemiesCoordinates)
         {
             enemiesAttacks[creature] = (enemiesAttacks[creature] + 1) % 5;
-            
+
             if (enemiesAttacks[creature] > 0)
             {
                 return false;
             }
-            
+
             var isEnemyAttacked = false;
             foreach (var enemyCoordinates in enemiesCoordinates)
             {
@@ -150,7 +150,7 @@ namespace Model
                     case Chest chest:
                         Score += chest.Score;
                         break;
-                    
+
                     case Enemy enemyWithScore:
                         Score += enemyWithScore.ScoreForKilling;
                         break;
@@ -166,7 +166,7 @@ namespace Model
         {
             return IsPointInBounds(enemyCoordinates)
                    && map[enemyCoordinates.X, enemyCoordinates.Y] is ICreatureWithHealth
-                   && !(map[enemyCoordinates.X, enemyCoordinates.Y].MovementCondition is MovementConditions.Dying);
+                   && !(map[enemyCoordinates.X, enemyCoordinates.Y].MovementCondition is MovementCondition.Dying);
         }
 
         private bool IsThereNothingUnderCreature(IJumpingCreature creature)
@@ -184,7 +184,7 @@ namespace Model
                     nameof(direction),
                     "The direction of movement is specified incorrectly")
             };
-            
+
             return MoveCreatureOn(creature, creaturesLocations[creature] + shift);
         }
 
@@ -193,7 +193,7 @@ namespace Model
             if (!MoveCreatureOn(creature, creaturesLocations[creature] + new Size(0, -creature.Velocity))
                 || creature.Velocity <= 0)
             {
-                creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Falling, creature.Direction);
+                creature.ChangeMovementConditionAndDirectionTo(MovementCondition.Falling, creature.Direction);
                 creature.ResetVelocityToZero();
                 return false;
             }
@@ -215,8 +215,8 @@ namespace Model
             }
 
             if (creature.Direction is Direction.NoMovement)
-                creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing, Direction.Right);
-            creature.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing, creature.Direction);
+                creature.ChangeMovementConditionAndDirectionTo(MovementCondition.Standing, Direction.Right);
+            creature.ChangeMovementConditionAndDirectionTo(MovementCondition.Standing, creature.Direction);
             creature.RecoverVelocity();
             return false;
         }
@@ -225,7 +225,7 @@ namespace Model
         {
             if (!IsMovementPossible(creature, targetLocation))
                 return false;
-            
+
             map[creaturesLocations[creature].X, creaturesLocations[creature].Y] = null;
             map[targetLocation.X, targetLocation.Y] = creature;
             creaturesLocations[creature] = targetLocation;
@@ -241,14 +241,18 @@ namespace Model
                 Math.Max(target.X, creaturesLocations[creature].X),
                 Math.Max(target.Y, creaturesLocations[creature].Y));
 
-            if (!(creature is IJumpingCreature) &&
-                IsPointInBounds(target + new Size(0, 1)) && 
-                (map[target.X, target.Y + 1] is null ||
-                map[target.X, target.Y + 1] is Player))
-                return false;
-            
-            return IsPointInBounds(target) &&
-                   IsMapPieceEmpty(creature, topLeftCorner, bottomRightCorner);
+
+            return IsPointInBounds(target)
+                   && IsMapPieceEmpty(creature, topLeftCorner, bottomRightCorner)
+                   && !CanCreatureMoveIfItIsNotIJumpingCreature(creature, target);
+        }
+
+        private bool CanCreatureMoveIfItIsNotIJumpingCreature(IMovingCreature creature, Point target)
+        {
+            return !(creature is IJumpingCreature)
+                   && IsPointInBounds(target + new Size(0, 1))
+                   && (map[target.X, target.Y + 1] is null
+                       || map[target.X, target.Y + 1] is Player);
         }
 
         private bool IsMapPieceEmpty(IMovingCreature creature, Point topLeftCorner, Point bottomRightCorner)

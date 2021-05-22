@@ -5,11 +5,11 @@ namespace View.Animations
 {
     public static class AnimationsForFinish
     {
-        public static readonly Dictionary<(MovementConditions, Direction), string> AnimationForFinish =
-            new Dictionary<(MovementConditions, Direction), string>
+        public static readonly Dictionary<(MovementCondition, Direction), string> AnimationForFinish =
+            new Dictionary<(MovementCondition, Direction), string>
             {
-                {(MovementConditions.Default, Direction.NoMovement), @"Sprites\finishAnimations"},
-                {(MovementConditions.Dying, Direction.NoMovement), @"Sprites\finishAnimations"}
+                {(MovementCondition.Default, Direction.NoMovement), @"Sprites\finishAnimations"},
+                {(MovementCondition.Dying, Direction.NoMovement), @"Sprites\finishAnimations"}
             };
     }
 }

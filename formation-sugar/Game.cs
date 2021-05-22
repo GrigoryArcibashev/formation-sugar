@@ -12,7 +12,7 @@ namespace formation_sugar
     public sealed partial class Game : Form
     {
         private GameMap map;
-        private Dictionary<ICreature, Dictionary<(MovementConditions, Direction), Animation>> animationsForCreatures;
+        private Dictionary<ICreature, Dictionary<(MovementCondition, Direction), Animation>> animationsForCreatures;
         private bool wIsPressed;
         private bool aIsPressed;
         private bool dIsPressed;
@@ -98,7 +98,7 @@ namespace formation_sugar
             if (map.Player.IsFallingOrJumping())
                 map.Player.ChangeMovementConditionAndDirectionTo(map.Player.MovementCondition, Direction.NoMovement);
             else
-                map.Player.ChangeMovementConditionAndDirectionTo(MovementConditions.Standing,
+                map.Player.ChangeMovementConditionAndDirectionTo(MovementCondition.Standing,
                     map.Player.Direction == Direction.NoMovement ? Direction.Right : map.Player.Direction);
         }
 
@@ -152,9 +152,14 @@ namespace formation_sugar
         private void AddAnimations()
         {
             animationsForCreatures =
-                new Dictionary<ICreature, Dictionary<(MovementConditions, Direction), Animation>>();
+                new Dictionary<ICreature, Dictionary<(MovementCondition, Direction), Animation>>();
             foreach (var creature in map.ListOfCreatures)
                 AddAnimationsForCreature(creature);
+        }
+
+        private void AddAnimationsForCreature(ICreature creature)
+        {
+            animationsForCreatures.Add(creature, AnimationsForCreatures.GetAnimationFor(creature));
         }
 
         private void InitializeInterface()
@@ -189,25 +194,20 @@ namespace formation_sugar
 
             if (dIsPressed || aIsPressed)
                 map.Player.ChangeMovementConditionAndDirectionTo(
-                    map.Player.IsFallingOrJumping() ? map.Player.MovementCondition : MovementConditions.Running,
+                    map.Player.IsFallingOrJumping() ? map.Player.MovementCondition : MovementCondition.Running,
                     dIsPressed ? Direction.Right : Direction.Left);
 
             if (wIsPressed && !map.Player.IsFallingOrJumping())
                 map.Player.ChangeMovementConditionAndDirectionTo(
-                    MovementConditions.Jumping,
-                    map.Player.MovementCondition is MovementConditions.Running
+                    MovementCondition.Jumping,
+                    map.Player.MovementCondition is MovementCondition.Running
                         ? map.Player.Direction
                         : Direction.NoMovement);
 
             if (spaceIsPressed && !map.Player.IsFallingOrJumping())
                 map.Player.ChangeMovementConditionAndDirectionTo(
-                    MovementConditions.Attacking,
+                    MovementCondition.Attacking,
                     map.Player.Direction is Direction.NoMovement ? Direction.Right : map.Player.Direction);
-        }
-
-        private void AddAnimationsForCreature(ICreature creature)
-        {
-            animationsForCreatures.Add(creature, AnimationsForCreatures.GetAnimationFor(creature));
         }
 
         private void CheckGameStatus(bool resetLevel = false, bool nextLevel = false)
@@ -235,12 +235,12 @@ namespace formation_sugar
 
         private bool GameWon()
         {
-            return map.Finish.MovementCondition is MovementConditions.Dying;
+            return map.Finish.MovementCondition is MovementCondition.Dying;
         }
 
         private bool GameOver()
         {
-            return map.Player.MovementCondition is MovementConditions.Dying;
+            return map.Player.MovementCondition is MovementCondition.Dying;
         }
     }
 }
