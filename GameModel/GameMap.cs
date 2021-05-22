@@ -71,7 +71,9 @@ namespace Model
         public void MakeEnemiesAttackingOrRunning()
         {
             var playerLocation = GetCreatureLocation(Player);
-            foreach (var enemy in ListOfCreatures.OfType<Enemy>())
+            foreach (var enemy in ListOfCreatures
+                .OfType<IEnemy>()
+                .OfType<IMovingCreature>())
             {
                 if (Player.IsDead())
                 {
@@ -134,10 +136,7 @@ namespace Model
             enemiesAttacks[creature] = (enemiesAttacks[creature] + 1) % 5;
 
             if (enemiesAttacks[creature] > 0)
-            {
                 return false;
-            }
-
             var isEnemyAttacked = false;
             foreach (var enemyCoordinates in enemiesCoordinates)
             {
@@ -225,7 +224,6 @@ namespace Model
         {
             if (!IsMovementPossible(creature, targetLocation))
                 return false;
-
             map[creaturesLocations[creature].X, creaturesLocations[creature].Y] = null;
             map[targetLocation.X, targetLocation.Y] = creature;
             creaturesLocations[creature] = targetLocation;
@@ -240,8 +238,6 @@ namespace Model
             var bottomRightCorner = new Point(
                 Math.Max(target.X, creaturesLocations[creature].X),
                 Math.Max(target.Y, creaturesLocations[creature].Y));
-
-
             return IsPointInBounds(target)
                    && IsMapPieceEmpty(creature, topLeftCorner, bottomRightCorner)
                    && !CanCreatureMoveIfItIsNotIJumpingCreature(creature, target);
