@@ -27,6 +27,23 @@ namespace Model
             LoadNextMap(0);
         }
 
+        public void LoadNextMap(int currentScore)
+        {
+            var mapInfo = MapCreator.GetNextMap();
+            map = mapInfo.Map;
+            ListOfCreatures = mapInfo.ListOfCreatures;
+
+            enemiesAttacks = new Dictionary<IAttackingCreature, int>();
+            foreach (var creature in ListOfCreatures.OfType<IAttackingCreature>())
+                enemiesAttacks.Add(creature, 0);
+
+            Player = mapInfo.Player;
+            Finish = mapInfo.Finish;
+            creaturesLocations = GetCreaturesLocations();
+            TotalScore = currentScore;
+            ScoreOnCurrentMap = 0;
+        }
+
         public void ResetScoresForCurrentGame()
         {
             TotalScore -= ScoreOnCurrentMap;
@@ -51,17 +68,17 @@ namespace Model
             };
         }
 
-        public bool Attack(IAttackingCreature creature)
+        public bool Attack(IAttackingCreature attackingCreature)
         {
-            var creatureCoordinates = GetCreatureLocation(creature);
+            var creatureCoordinates = GetCreatureLocation(attackingCreature);
             var enemiesCoordinates = new[]
             {
                 creatureCoordinates + new Size(0, 1),
                 creatureCoordinates + new Size(0, -1),
-                creatureCoordinates + new Size(creature.Direction is Direction.Right ? 1 : -1, 0)
+                creatureCoordinates + new Size(attackingCreature.Direction is Direction.Right ? 1 : -1, 0)
             };
 
-            return Attack(creature, enemiesCoordinates);
+            return Attack(attackingCreature, enemiesCoordinates);
         }
 
         public void CheckCreaturesForFalling()
@@ -122,28 +139,11 @@ namespace Model
             }
         }
 
-        public void LoadNextMap(int currentScore)
+        private bool Attack(IAttackingCreature attackingCreature, IEnumerable<Point> enemiesCoordinates)
         {
-            var mapInfo = MapCreator.GetNextMap();
-            map = mapInfo.Map;
-            ListOfCreatures = mapInfo.ListOfCreatures;
+            enemiesAttacks[attackingCreature] = (enemiesAttacks[attackingCreature] + 1) % 5;
 
-            enemiesAttacks = new Dictionary<IAttackingCreature, int>();
-            foreach (var creature in ListOfCreatures.OfType<IAttackingCreature>())
-                enemiesAttacks.Add(creature, 0);
-
-            Player = mapInfo.Player;
-            Finish = mapInfo.Finish;
-            creaturesLocations = GetCreaturesLocations();
-            TotalScore = currentScore;
-            ScoreOnCurrentMap = 0;
-        }
-
-        private bool Attack(IAttackingCreature creature, IEnumerable<Point> enemiesCoordinates)
-        {
-            enemiesAttacks[creature] = (enemiesAttacks[creature] + 1) % 5;
-
-            if (enemiesAttacks[creature] > 0)
+            if (enemiesAttacks[attackingCreature] > 0)
                 return false;
             var isEnemyAttacked = false;
             foreach (var enemyCoordinates in enemiesCoordinates)
@@ -151,7 +151,7 @@ namespace Model
                 if (!IsAttackPossible(enemyCoordinates))
                     continue;
                 var enemy = (ICreatureWithHealth) map[enemyCoordinates.X, enemyCoordinates.Y];
-                enemy.ChangeHealthBy(creature.DamageValue);
+                enemy.ChangeHealthBy(attackingCreature.DamageValue);
                 switch (enemy)
                 {
                     case Chest chest:

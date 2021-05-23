@@ -11,7 +11,7 @@ namespace formation_sugar
 {
     public sealed partial class Game : Form
     {
-        private GameMap map;
+        private readonly GameMap map;
         private Timer timerForCreaturesActions;
         private Timer timerForCreaturesAnimations;
         private Timer timerForHearthAnimation;
@@ -103,11 +103,12 @@ namespace formation_sugar
                     break;
             }
 
+            /*
             if (map.Player.IsFallingOrJumping())
                 map.Player.ChangeMovementConditionAndDirectionTo(map.Player.MovementCondition, Direction.NoMovement);
             else
                 map.Player.ChangeMovementConditionAndDirectionTo(MovementCondition.Standing,
-                    map.Player.Direction == Direction.NoMovement ? Direction.Right : map.Player.Direction);
+                    map.Player.Direction == Direction.NoMovement ? Direction.Right : map.Player.Direction);*/
         }
 
         private void InitializeGame()
@@ -124,7 +125,9 @@ namespace formation_sugar
             timerForCreaturesActions = new Timer {Interval = 80, Enabled = true};
             timerForCreaturesActions.Tick += delegate
             {
-                CheckGameStatus();
+                CheckGameStatus(
+                    nextLevel: GameStatusChecker.GameWon(map) || nIsPressed,
+                    resetLevel: GameStatusChecker.GameOver(map) || rIsPressed);
                 map.CheckCreaturesForFalling();
                 ProcessKeystrokes();
                 CreatureLocationAndConditionsUpdater.UpdateLocationAndCondition(map);
@@ -201,52 +204,14 @@ namespace formation_sugar
 
         private void ProcessKeystrokes()
         {
-            if (ProcessLevelChangeAndRestartKeys())
-                return;
-            ProcessPlayerMovementKeys();
-        }
-
-        private void ProcessPlayerMovementKeys()
-        {
-            if (map.Player.IsDead())
-                return;
-
-            if (dIsPressed || aIsPressed)
-                map.Player.ChangeMovementConditionAndDirectionTo(
-                    map.Player.IsFallingOrJumping() ? map.Player.MovementCondition : MovementCondition.Running,
-                    dIsPressed ? Direction.Right : Direction.Left);
-
-            if (wIsPressed && !map.Player.IsFallingOrJumping())
-                map.Player.ChangeMovementConditionAndDirectionTo(
-                    MovementCondition.Jumping,
-                    map.Player.MovementCondition is MovementCondition.Running
-                        ? map.Player.Direction
-                        : Direction.NoMovement);
-
-            if (spaceIsPressed && !map.Player.IsFallingOrJumping())
-                map.Player.ChangeMovementConditionAndDirectionTo(
-                    MovementCondition.Attacking,
-                    map.Player.Direction is Direction.NoMovement ? Direction.Right : map.Player.Direction);
-        }
-
-        private bool ProcessLevelChangeAndRestartKeys()
-        {
             if (!nIsPressed && !rIsPressed)
-                return false;
-            CheckGameStatus(nextLevel: nIsPressed, resetLevel: rIsPressed);
-            return true;
+                ProcessorPlayerMovementKeys.ProcessPlayerMovementKeys(map, wIsPressed, dIsPressed, aIsPressed, spaceIsPressed);
         }
 
         private void CheckGameStatus(bool resetLevel = false, bool nextLevel = false)
         {
-            if (GameOver() || resetLevel)
-            {
-                MapCreator.ResetLevel();
-                map.ResetScoresForCurrentGame();
-            }
-            else if (!GameWon() && !nextLevel)
+            if (!GameStatusChecker.CheckGameStatus(map, resetLevel, nextLevel))
                 return;
-            map.LoadNextMap(map.TotalScore);
             StopAllTimers();
             InitializeGame();
         }
@@ -255,16 +220,6 @@ namespace formation_sugar
         {
             foreach (var timer in timers)
                 timer.Enabled = false;
-        }
-
-        private bool GameWon()
-        {
-            return map.Finish.MovementCondition is MovementCondition.Dying;
-        }
-
-        private bool GameOver()
-        {
-            return map.Player.MovementCondition is MovementCondition.Dying;
         }
     }
 }

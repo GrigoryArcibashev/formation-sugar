@@ -1,4 +1,5 @@
-﻿using Model;
+﻿using formation_sugar;
+using Model;
 using Model.Creatures;
 using NUnit.Framework;
 
@@ -39,7 +40,7 @@ namespace Tests
             Assert.AreEqual(enemy.ScoreForKilling, map.TotalScore);
         }
 
-        [Test]
+        /*[Test]
         public void ScoreRemainsAfterLevelChangingOrRestarting()
         {
             MapCreator.LoadLevels("LevelsForTests");
@@ -62,6 +63,21 @@ namespace Tests
             Assert.AreEqual(currentScore, map.TotalScore);
         }
 
-        
+        [Test]
+        public void ScoreForCurrentLevelIsResetIfLevelWasRestarted()
+        {
+            MapCreator.LoadLevels("LevelsForTests");
+            MapCreator.GoToLevel("test18.txt");
+            map = new GameMap();
+            
+            var enemy = (Enemy) map[1, 0];
+            for (var i = 0; i < 100; i++)
+                map.Attack(map.Player);
+            var currentScore = map.TotalScore;
+            Assert.AreEqual(enemy.ScoreForKilling, currentScore);
+            
+                //Game.
+            
+        }  */      
     }
 }
