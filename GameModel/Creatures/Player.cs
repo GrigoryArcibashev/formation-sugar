@@ -28,19 +28,29 @@ namespace Model.Creatures
             Direction = directionTo;
         }
 
+        public void ChangeHealthBy(int deltaHealth)
+        {
+            Health = Math.Max(0, Health - deltaHealth);
+
+            if (Health == 0)
+            {
+                MovementCondition = MovementCondition.Dying;
+            }
+        }
+
         public bool IsDead()
         {
             return MovementCondition is MovementCondition.Dying;
         }
 
-        public void ChangeHealthBy(int deltaHealth)
+        public bool IsStanding()
         {
-            Health = Math.Max(0, Health - deltaHealth);
-            
-            if (Health == 0)
-            {
-                MovementCondition = MovementCondition.Dying;
-            }
+            return MovementCondition == MovementCondition.Standing;
+        }
+
+        public bool IsRunning()
+        {
+            return MovementCondition == MovementCondition.Running;
         }
 
         public bool IsJumping()
@@ -51,6 +61,11 @@ namespace Model.Creatures
         public bool IsFalling()
         {
             return MovementCondition == MovementCondition.Falling;
+        }
+
+        public bool IsAttacking()
+        {
+            return MovementCondition == MovementCondition.Attacking;
         }
 
         public bool IsFallingOrJumping()

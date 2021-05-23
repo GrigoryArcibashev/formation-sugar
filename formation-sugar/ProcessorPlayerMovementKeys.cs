@@ -15,6 +15,12 @@ namespace formation_sugar
             if (player.IsDead())
                 return;
 
+            if (hitIsPressed && !player.IsFallingOrJumping())
+            {
+                MakePlayerAttack(player);
+                return;
+            }
+
             if (upIsPressed && !player.IsFallingOrJumping())
                 MakePlayerJump(player);
 
@@ -24,9 +30,6 @@ namespace formation_sugar
                 MakePlayerStand(player);
             else if (player.IsFallingOrJumping() && !(player.Direction is Direction.NoMovement))
                 player.ChangeMovementConditionAndDirectionTo(player.MovementCondition, Direction.NoMovement);
-
-            if (hitIsPressed && !player.IsFallingOrJumping())
-                MakePlayerAttack(player);
         }
 
         private static void MakePlayerAttack(Player player)
