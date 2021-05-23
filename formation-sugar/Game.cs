@@ -137,7 +137,7 @@ namespace formation_sugar
         private void UpdateInfoAboutGame()
         {
             playerHealthPoints.Text = map.Player.Health.ToString();
-            score.Text = @"Score: " + map.Score;
+            score.Text = @"Score: " + map.TotalScore;
         }
 
         private void ResetTimerForCreaturesAnimations()
@@ -187,7 +187,7 @@ namespace formation_sugar
 
             score = new Label
             {
-                Text = @"Score: " + map.Score,
+                Text = @"Score: " + map.TotalScore,
                 Location = new Point(ClientSize.Width / 2, 10),
                 Size = new Size(300, 30),
                 Font = new Font(FontFamily.GenericMonospace, 12.0f, FontStyle.Bold),
@@ -242,13 +242,11 @@ namespace formation_sugar
             if (GameOver() || resetLevel)
             {
                 MapCreator.ResetLevel();
-                map = new GameMap();
+                map.ResetScoresForCurrentGame();
             }
-            else if (GameWon() || nextLevel)
-                map.LoadNextMap(map.Score);
-            else
+            else if (!GameWon() && !nextLevel)
                 return;
-
+            map.LoadNextMap(map.TotalScore);
             StopAllTimers();
             InitializeGame();
         }

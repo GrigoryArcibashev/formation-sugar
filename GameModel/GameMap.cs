@@ -15,7 +15,8 @@ namespace Model
         private int Width => map.GetLength(0);
         private int Height => map.GetLength(1);
 
-        public int Score { get; private set; }
+        public int TotalScore { get; private set; }
+        public int ScoreOnCurrentMap { get; private set; }
         public List<ICreature> ListOfCreatures { get; private set; }
         public Player Player { get; private set; }
         public Finish Finish { get; private set; }
@@ -24,6 +25,12 @@ namespace Model
         public GameMap()
         {
             LoadNextMap(0);
+        }
+
+        public void ResetScoresForCurrentGame()
+        {
+            TotalScore -= ScoreOnCurrentMap;
+            ScoreOnCurrentMap = 0;
         }
 
         public Point GetCreatureLocation(ICreature creature)
@@ -128,7 +135,8 @@ namespace Model
             Player = mapInfo.Player;
             Finish = mapInfo.Finish;
             creaturesLocations = GetCreaturesLocations();
-            Score = currentScore;
+            TotalScore = currentScore;
+            ScoreOnCurrentMap = 0;
         }
 
         private bool Attack(IAttackingCreature creature, IEnumerable<Point> enemiesCoordinates)
@@ -147,11 +155,13 @@ namespace Model
                 switch (enemy)
                 {
                     case Chest chest:
-                        Score += chest.Score;
+                        TotalScore += chest.Score;
+                        ScoreOnCurrentMap += chest.Score;
                         break;
 
                     case Enemy enemyWithScore:
-                        Score += enemyWithScore.ScoreForKilling;
+                        TotalScore += enemyWithScore.ScoreForKilling;
+                        ScoreOnCurrentMap += enemyWithScore.ScoreForKilling;
                         break;
                 }
 

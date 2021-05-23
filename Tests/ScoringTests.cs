@@ -17,12 +17,12 @@ namespace Tests
             map = new GameMap();
 
             var chest = (Chest) map[1, 0];
-            Assert.AreEqual(0, map.Score);
+            Assert.AreEqual(0, map.TotalScore);
 
             for (var i = 0; i < 100; i++)
                 map.Attack(map.Player);
 
-            Assert.AreEqual(chest.Score, map.Score);
+            Assert.AreEqual(chest.Score, map.TotalScore);
         }
 
         [Test]
@@ -36,7 +36,7 @@ namespace Tests
             for (var i = 0; i < 100; i++)
                 map.Attack(map.Player);
             
-            Assert.AreEqual(enemy.ScoreForKilling, map.Score);
+            Assert.AreEqual(enemy.ScoreForKilling, map.TotalScore);
         }
 
         [Test]
@@ -50,16 +50,16 @@ namespace Tests
             for (var i = 0; i < 100; i++)
                 map.Attack(map.Player);
 
-            var currentScore = map.Score;
+            var currentScore = map.TotalScore;
             
             Assert.AreEqual(enemy.ScoreForKilling, currentScore);
             
             map.LoadNextMap(currentScore);
-            Assert.AreEqual(currentScore, map.Score);
+            Assert.AreEqual(currentScore, map.TotalScore);
             
             MapCreator.ResetLevel();
             map = new GameMap();
-            Assert.AreEqual(currentScore, map.Score);
+            Assert.AreEqual(currentScore, map.TotalScore);
         }
 
         
