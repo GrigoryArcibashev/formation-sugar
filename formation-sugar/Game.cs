@@ -102,13 +102,6 @@ namespace formation_sugar
                     rIsPressed = false;
                     break;
             }
-
-            /*
-            if (map.Player.IsFallingOrJumping())
-                map.Player.ChangeMovementConditionAndDirectionTo(map.Player.MovementCondition, Direction.NoMovement);
-            else
-                map.Player.ChangeMovementConditionAndDirectionTo(MovementCondition.Standing,
-                    map.Player.Direction == Direction.NoMovement ? Direction.Right : map.Player.Direction);*/
         }
 
         private void InitializeGame()
@@ -135,12 +128,6 @@ namespace formation_sugar
                 map.MakeEnemiesAttackingOrRunning();
                 UpdateInfoAboutGame();
             };
-        }
-
-        private void UpdateInfoAboutGame()
-        {
-            playerHealthPoints.Text = map.Player.Health.ToString();
-            score.Text = @"Score: " + map.TotalScore;
         }
 
         private void ResetTimerForCreaturesAnimations()
@@ -202,11 +189,17 @@ namespace formation_sugar
             Controls.Add(score);
         }
 
+        private void UpdateInfoAboutGame()
+        {
+            playerHealthPoints.Text = map.Player.Health.ToString();
+            score.Text = @"Score: " + map.TotalScore;
+        }
+
         private void ProcessKeystrokes()
         {
             if (!nIsPressed && !rIsPressed)
                 ProcessorPlayerMovementKeys.ProcessPlayerMovementKeys(
-                    map,
+                    map.Player,
                     wIsPressed,
                     dIsPressed,
                     aIsPressed,

@@ -1,41 +1,60 @@
 ﻿using Model;
+using Model.Creatures;
 
 namespace formation_sugar
 {
     public static class ProcessorPlayerMovementKeys
     {
         public static void ProcessPlayerMovementKeys(
-            GameMap map,
+            Player player,
             bool upIsPressed,
             bool toRightIsPressed,
             bool toLeftIsPressed,
             bool hitIsPressed)
         {
-            if (map.Player.IsDead())
+            if (player.IsDead())
                 return;
 
-            if (upIsPressed && !map.Player.IsFallingOrJumping())
-                map.Player.ChangeMovementConditionAndDirectionTo(
-                    MovementCondition.Jumping,
-                    map.Player.MovementCondition is MovementCondition.Running
-                        ? map.Player.Direction
-                        : Direction.NoMovement);
+            if (upIsPressed && !player.IsFallingOrJumping())
+                MakePlayerJump(player);
 
             if (toRightIsPressed || toLeftIsPressed)
-                map.Player.ChangeMovementConditionAndDirectionTo(
-                    map.Player.IsFallingOrJumping() ? map.Player.MovementCondition : MovementCondition.Running,
-                    toRightIsPressed ? Direction.Right : Direction.Left);
-            else if (map.Player.IsFallingOrJumping() && !(map.Player.Direction is Direction.NoMovement))
-                map.Player.ChangeMovementConditionAndDirectionTo(map.Player.MovementCondition, Direction.NoMovement);
-            else if (!map.Player.IsFallingOrJumping())
-                map.Player.ChangeMovementConditionAndDirectionTo(
-                    MovementCondition.Standing,
-                    map.Player.Direction == Direction.NoMovement ? Direction.Right : map.Player.Direction);
+                MovePlayerToLeftOrRight(player, toRightIsPressed);
+            else if (!player.IsFallingOrJumping())
+                MakePlayerStand(player);
+            else if (player.IsFallingOrJumping() && !(player.Direction is Direction.NoMovement))
+                player.ChangeMovementConditionAndDirectionTo(player.MovementCondition, Direction.NoMovement);
 
-            if (hitIsPressed && !map.Player.IsFallingOrJumping())
-                map.Player.ChangeMovementConditionAndDirectionTo(
-                    MovementCondition.Attacking,
-                    map.Player.Direction is Direction.NoMovement ? Direction.Right : map.Player.Direction);
+            if (hitIsPressed && !player.IsFallingOrJumping())
+                MakePlayerAttack(player);
+        }
+
+        private static void MakePlayerAttack(Player player)
+        {
+            player.ChangeMovementConditionAndDirectionTo(
+                MovementCondition.Attacking,
+                player.Direction is Direction.NoMovement ? Direction.Right : player.Direction);
+        }
+
+        private static void MakePlayerStand(Player player)
+        {
+            player.ChangeMovementConditionAndDirectionTo(
+                MovementCondition.Standing,
+                player.Direction == Direction.NoMovement ? Direction.Right : player.Direction);
+        }
+
+        private static void MovePlayerToLeftOrRight(Player player, bool movingToRight)
+        {
+            player.ChangeMovementConditionAndDirectionTo(
+                player.IsFallingOrJumping() ? player.MovementCondition : MovementCondition.Running,
+                movingToRight ? Direction.Right : Direction.Left);
+        }
+
+        private static void MakePlayerJump(Player player)
+        {
+            player.ChangeMovementConditionAndDirectionTo(
+                MovementCondition.Jumping,
+                player.MovementCondition is MovementCondition.Running ? player.Direction : Direction.NoMovement);
         }
     }
 }

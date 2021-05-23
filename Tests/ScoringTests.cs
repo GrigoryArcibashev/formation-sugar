@@ -40,7 +40,6 @@ namespace Tests
             Assert.AreEqual(enemy.ScoreForKilling, map.TotalScore);
         }
 
-        //Можно сделать TestCase с параметрами: resetLevel, nextLevel, expectedScore
         [Test]
         public void ScoresAreDeductedIfLevelWasRestarted()
         {
