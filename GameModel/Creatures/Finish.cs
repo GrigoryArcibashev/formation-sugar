@@ -16,11 +16,6 @@ namespace Model.Creatures
             Health = 1;
         }
 
-        public bool IsDead()
-        {
-            return MovementCondition is MovementCondition.Dying;
-        }
-
         public void ChangeHealthBy(int deltaHealth)
         {
             Health = Math.Max(0, Health - deltaHealth);

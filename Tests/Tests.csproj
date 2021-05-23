@@ -49,6 +49,7 @@
     <ItemGroup>
         <Compile Include="AttackAndDeathOfCreaturesTests.cs" />
         <Compile Include="CreatureMovementTests.cs" />
+        <Compile Include="ProcessorPlayerMovementKeysTests.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="ScoringTests.cs" />
     </ItemGroup>
