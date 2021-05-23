@@ -1,5 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
+using View;
+using View.Animations;
 
 namespace formation_sugar
 {
@@ -38,6 +40,7 @@ namespace formation_sugar
             this.MaximizeBox = false;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
             this.Text = "Game";
+            this.BackgroundImage = Background.BackGroundForTheGame;
         }
     }
 }
