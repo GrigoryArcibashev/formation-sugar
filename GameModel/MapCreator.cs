@@ -71,7 +71,7 @@ namespace Model
                             break;
 
                         case "E":
-                            AddCreatureOnMapAndListOfCreatures(new Enemy(5, 100, 15), new Point(x, y));
+                            AddCreatureOnMapAndListOfCreatures(new Enemy(5, 100, 10), new Point(x, y));
                             break;
 
                         case "B":

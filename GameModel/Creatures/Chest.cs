@@ -15,7 +15,7 @@ namespace Model.Creatures
             MovementCondition = MovementCondition.Default;
             Direction = Direction.NoMovement;
             Health = health;
-            Score = 10;
+            Score = 50;
         }
 
         public bool IsDead()

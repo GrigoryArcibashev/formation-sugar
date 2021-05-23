@@ -1,0 +1,24 @@
+BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+BCEE                BB              B
+BBBBBBB          BBBBBC            CB 
+BC               BBBBBBB   EEEEEEECCB
+BC EEEE             BB     BBBBBBBBBB
+BBBBBBBBBBBB BBBBBB BB       EEEEECCB
+B        ECB BBB    BB   BBBBBBBBBBBB
+B    BBBBBBB BBB    BBBB           BB
+B    BB          BBBBBEE           BB
+BE   BB BBBBBBBBBBBBBBBBBBBBBB      B
+BBB                          P   EE B
+BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB B
+B                                   B
+BCEEE                               B
+BBBBBBBB                           BB
+B                                  BB
+B      BBB                         BB
+B             BBB                 BBB
+B                                BBBB
+B        BBB       BBBBBB        BBBB
+B                           BBB  BBBB
+B   BBBB                            B
+B                  F                B
+BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
