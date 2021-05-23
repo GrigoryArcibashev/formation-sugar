@@ -20,5 +20,5 @@ B                                BBBB
 B        BBB       BBBBBB        BBBB
 B                           BBB  BBBB
 B   BBBB                            B
-B                                  FB
+B                  X               FB
 BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB

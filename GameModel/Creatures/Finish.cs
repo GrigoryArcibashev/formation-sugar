@@ -4,23 +4,18 @@ using Model.Creatures.CreatureInterfaces;
 namespace Model.Creatures
 {
     public class Finish : ICreatureWithHealth
-    {
+    { 
+        private int Health { get; set; }
+        
         public MovementCondition MovementCondition { get; private set; }
         public Direction Direction { get; }
-        public int Health { get; private set; }
-
         public Finish()
         {
             MovementCondition = MovementCondition.Default;
             Direction = Direction.NoMovement;
             Health = 1;
         }
-
-        public bool IsDead()
-        {
-            return MovementCondition is MovementCondition.Dying;
-        }
-
+        
         public void ChangeHealthBy(int deltaHealth)
         {
             Health = Math.Max(0, Health - deltaHealth);

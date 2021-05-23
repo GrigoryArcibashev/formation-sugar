@@ -40,6 +40,7 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Creatures\BossEnemy.cs" />
         <Compile Include="Creatures\Box.cs" />
         <Compile Include="Creatures\Chest.cs" />
         <Compile Include="Creatures\CreatureInterfaces\IAttackingCreature.cs" />

@@ -14,9 +14,9 @@ namespace Model
         private Dictionary<IAttackingCreature, int> enemiesAttacks;
         private int Width => map.GetLength(0);
         private int Height => map.GetLength(1);
+        private int ScoreOnCurrentMap { get; set; }
 
         public int TotalScore { get; private set; }
-        public int ScoreOnCurrentMap { get; private set; }
         public List<ICreature> ListOfCreatures { get; private set; }
         public Player Player { get; private set; }
         public Finish Finish { get; private set; }

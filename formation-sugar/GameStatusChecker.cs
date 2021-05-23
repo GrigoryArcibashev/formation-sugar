@@ -11,6 +11,7 @@ namespace formation_sugar
                 MapCreator.ResetLevel();
                 map.ResetScoresForCurrentGame();
             }
+            
             else if (!nextLevel)
                 return false;
 

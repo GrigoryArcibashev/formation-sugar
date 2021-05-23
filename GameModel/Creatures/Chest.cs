@@ -5,9 +5,10 @@ namespace Model.Creatures
 {
     public class Chest : ICreatureWithHealth
     {
+        private int Health { get; set; }
+        
         public MovementCondition MovementCondition { get; private set; }
         public Direction Direction { get; }
-        public int Health { get; private set; }
         public int Score { get; }
 
         public Chest(int health)
@@ -17,12 +18,7 @@ namespace Model.Creatures
             Health = health;
             Score = 50;
         }
-
-        public bool IsDead()
-        {
-            return MovementCondition is MovementCondition.Dying;
-        }
-
+        
         public void ChangeHealthBy(int deltaHealth)
         {
             Health = Math.Max(0, Health - deltaHealth);

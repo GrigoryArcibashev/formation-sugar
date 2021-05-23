@@ -15,6 +15,7 @@ namespace View.Animations
             return creature switch
             {
                 Player _ => GetAnimationForCreature(AnimationsForPlayer.AnimationForPlayer),
+                BossEnemy _ => GetAnimationForCreature(AnimationsForBossEnemy.AnimationForBossEnemy),
                 Box _ => GetAnimationForCreature(AnimationsForBox.AnimationForBox),
                 Enemy _ => GetAnimationForCreature(AnimationsForEnemy.AnimationForEnemy),
                 Chest _ => GetAnimationForCreature(AnimationsForChest.AnimationForChest),
