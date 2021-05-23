@@ -205,7 +205,12 @@ namespace formation_sugar
         private void ProcessKeystrokes()
         {
             if (!nIsPressed && !rIsPressed)
-                ProcessorPlayerMovementKeys.ProcessPlayerMovementKeys(map, wIsPressed, dIsPressed, aIsPressed, spaceIsPressed);
+                ProcessorPlayerMovementKeys.ProcessPlayerMovementKeys(
+                    map,
+                    wIsPressed,
+                    dIsPressed,
+                    aIsPressed,
+                    spaceIsPressed);
         }
 
         private void CheckGameStatus(bool resetLevel = false, bool nextLevel = false)

@@ -32,52 +32,48 @@ namespace Tests
             MapCreator.LoadLevels("LevelsForTests");
             MapCreator.GoToLevel("test18.txt");
             map = new GameMap();
-            
+
             var enemy = (Enemy) map[1, 0];
             for (var i = 0; i < 100; i++)
                 map.Attack(map.Player);
-            
+
             Assert.AreEqual(enemy.ScoreForKilling, map.TotalScore);
         }
 
-        /*[Test]
-        public void ScoreRemainsAfterLevelChangingOrRestarting()
+        //Можно сделать TestCase с параметрами: resetLevel, nextLevel, expectedScore
+        [Test]
+        public void ScoresAreDeductedIfLevelWasRestarted()
         {
             MapCreator.LoadLevels("LevelsForTests");
             MapCreator.GoToLevel("test18.txt");
             map = new GameMap();
-            
+
             var enemy = (Enemy) map[1, 0];
             for (var i = 0; i < 100; i++)
                 map.Attack(map.Player);
 
-            var currentScore = map.TotalScore;
-            
-            Assert.AreEqual(enemy.ScoreForKilling, currentScore);
-            
-            map.LoadNextMap(currentScore);
-            Assert.AreEqual(currentScore, map.TotalScore);
-            
-            MapCreator.ResetLevel();
-            map = new GameMap();
-            Assert.AreEqual(currentScore, map.TotalScore);
+            Assert.AreEqual(enemy.ScoreForKilling, map.TotalScore);
+
+            GameStatusChecker.CheckGameStatus(map, resetLevel: true);
+            Assert.AreEqual(0, map.TotalScore);
         }
 
         [Test]
-        public void ScoreForCurrentLevelIsResetIfLevelWasRestarted()
+        public void ScoresAreSavedIfNextLevelWasLoaded()
         {
             MapCreator.LoadLevels("LevelsForTests");
             MapCreator.GoToLevel("test18.txt");
             map = new GameMap();
-            
+
             var enemy = (Enemy) map[1, 0];
             for (var i = 0; i < 100; i++)
                 map.Attack(map.Player);
+
             var currentScore = map.TotalScore;
             Assert.AreEqual(enemy.ScoreForKilling, currentScore);
-            
-                //Game.
-            
-        }  */      
+
+            GameStatusChecker.CheckGameStatus(map, nextLevel: true);
+            Assert.AreEqual(currentScore, map.TotalScore);
+        }
     }
 }
